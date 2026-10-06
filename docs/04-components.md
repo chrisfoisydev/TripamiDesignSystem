@@ -70,7 +70,7 @@ Full-screen sheet with a sticky ink header ("TRAVEL DATES" eyebrow + "Thu, 12 Ju
 ## Containers
 
 ### Trip cover card · `TPTripCoverCard`
-4:5 photo, `radius.lg`, `elevation.1`. Bottom-left on scrim: trip name in **Newsreader `display`** (or `diaryHeading` in carousels), then `type.subhead` "12–17 Jun · Lisbon". Top-left: glass chip with status ("In 6 days", "Planning", "Now"). Bottom-right: avatar stack (max 4 + "+2").
+4:5 photo, `radius.lg`, `elevation.1`. Bottom-left on scrim: trip name in **`display`** (Bricolage Grotesque 800) (or `diaryHeading` in carousels), then `type.subhead` "12–17 Jun · Lisbon". Top-left: glass chip with status ("In 6 days", "Planning", "Now"). Bottom-right: avatar stack (max 4 + "+2").
 *Bonvoy ref:* Recommended / Destinations cards. *Change:* serif trip name, faces of travelers.
 
 ### Content card · `TPCard`

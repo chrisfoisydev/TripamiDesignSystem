@@ -20,6 +20,9 @@ flutter:
   fonts:
     # Variable fonts: weight and optical size are set through FontVariation
     # in TPType, so each family is declared once.
+    - family: BricolageGrotesque
+      fonts:
+        - asset: lib/fonts/BricolageGrotesque-Variable.ttf
     - family: Inter
       fonts:
         - asset: lib/fonts/Inter-Variable.ttf

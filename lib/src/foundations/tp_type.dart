@@ -2,21 +2,25 @@ import 'package:flutter/painting.dart';
 
 /// Tripami type scale.
 ///
-/// Two bundled variable families:
+/// Three bundled variable families:
+/// - **Bricolage Grotesque** (display): trip names and day headings, set heavy
+///   to echo the wordmark. The only face set above Semibold.
 /// - **Inter** (UI): every control, label, number and body text.
-/// - **Newsreader** (diary voice): trip names, day headings, journal text.
-///   Never on buttons, tabs, inputs or eyebrows.
+/// - **Newsreader** (diary voice): long-form journal text and pull quotes.
 ///
-/// Weights are Regular, Medium and Semibold only; product UI has no Bold.
+/// Neither display nor diary faces go on buttons, tabs, inputs or eyebrows.
+/// UI weights are Regular, Medium and Semibold only.
 /// Styles carry no color. Colors come from `TPColors` or the theme.
 abstract final class TPType {
   static const package = 'tripami_design_system';
+  static const brand = 'BricolageGrotesque';
   static const ui = 'Inter';
   static const diary = 'Newsreader';
 
   static const regular = FontWeight.w400;
   static const medium = FontWeight.w500;
   static const semibold = FontWeight.w600;
+  static const heavy = FontWeight.w800; // display face only
 
   static TextStyle _style(
     String family,
@@ -38,15 +42,21 @@ abstract final class TPType {
       // font size so small text opens up and display text tightens.
       fontVariations: [
         FontVariation.weight(weight.value.toDouble()),
-        FontVariation.opticalSize(size.clamp(family == diary ? 6 : 14, family == diary ? 72 : 32)),
+        FontVariation.opticalSize(switch (family) {
+          diary => size.clamp(6, 72),
+          brand => size.clamp(12, 96),
+          _ => size.clamp(14, 32),
+        }),
       ],
       leadingDistribution: TextLeadingDistribution.even,
     );
   }
 
+  // Display (Bricolage Grotesque), heavy like the wordmark
+  static final display = _style(brand, 34, 38, heavy, -0.7);
+  static final diaryHeading = _style(brand, 24, 30, FontWeight.w700, -0.3);
+
   // Diary voice (Newsreader)
-  static final display = _style(diary, 34, 40, regular, -0.4);
-  static final diaryHeading = _style(diary, 24, 30, regular, -0.2);
   static final diaryBody = _style(diary, 17, 26, regular, 0);
   static final diaryQuote = _style(diary, 22, 30, regular, -0.1, style: FontStyle.italic);
 

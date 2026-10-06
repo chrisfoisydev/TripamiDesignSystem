@@ -92,10 +92,11 @@ Used for: avatar fill (white initials) when there's no photo, a 2pt avatar ring 
 
 ## Typography
 
-Two open-licensed (OFL) variable families, bundled in the package so iOS and Android render identically:
+Three open-licensed (OFL) variable families, bundled in the package so iOS and Android render identically:
 
+- **Bricolage Grotesque** (display): trip names and day headings, set at 800 and 700 to echo the heavy, warm letterforms of the wordmark. It's a close match chosen for the brand, not the logo's own typeface, so never use it to re-typeset the logo. It has optical sizes from 12 to 96pt.
 - **Inter** (UI): every control, label, number and body text. It's a neo-grotesk close to SF Pro, with true tabular figures and an optical-size axis.
-- **Newsreader** (diary voice): trip names, day headings in the itinerary, memories/journal text and pull quotes. *Never* on buttons, tabs, inputs or eyebrows. It's an editorial serif with optical sizes from 6 to 72pt, so display settings tighten and text settings open up.
+- **Newsreader** (diary voice): journal text and pull quotes in Memories. *Never* on buttons, tabs, inputs or eyebrows. It's an editorial serif with optical sizes from 6 to 72pt, so display settings tighten and text settings open up.
 
 Why not SF Pro and New York? Apple's license restricts them to Apple platforms, so a Flutter app shipping to Android can't bundle them. `TPType` sets the `wght` and `opsz` variation axes explicitly, because Flutter doesn't map `FontWeight` onto variable axes on every platform.
 
@@ -103,9 +104,9 @@ Why not SF Pro and New York? Apple's license restricts them to Apple platforms, 
 
 | Token (`TPType.*`) | Family | Size / Line | Weight | Tracking | `TextTheme` slot | Use |
 |---|---|---|---|---|---|---|
-| `type.display` | Newsreader | 34 / 40 | Regular | −0.4 | displaySmall | Trip name on hero, Memories title |
+| `type.display` | Bricolage Grotesque | 34 / 38 | ExtraBold 800 | −0.7 | displaySmall | Trip name on hero, Memories title |
 | `type.title1` | Inter | 28 / 34 | Regular | −0.4 | headlineLarge | Screen large titles ("Trips") |
-| `type.diaryHeading` | Newsreader | 24 / 30 | Regular | −0.2 | headlineMedium | Day headings ("Friday, 13 June") |
+| `type.diaryHeading` | Bricolage Grotesque | 24 / 30 | Bold 700 | −0.3 | headlineMedium | Day headings ("Friday, 13 June") |
 | `type.title2` | Inter | 22 / 28 | Medium | −0.2 | headlineSmall | Section titles ("Needs your vote") |
 | `type.title3` | Inter | 18 / 24 | Medium | −0.1 | titleLarge | Card titles, sheet titles |
 | `type.body` | Inter | 17 / 24 | Regular | −0.2 | bodyLarge | Body, row labels |
@@ -120,7 +121,7 @@ Why not SF Pro and New York? Apple's license restricts them to Apple platforms, 
 | `type.numeral` | `.tabular` extension | inherits | Regular/Medium | 0 | — | Money, times, counts |
 
 **Rules**
-- Weights: Regular, Medium, Semibold. No Bold or Heavy in product UI.
+- Weights: Regular, Medium, Semibold for UI. Bold and ExtraBold exist only in the display face (`display`, `diaryHeading`).
 - Uppercase is only for eyebrows and form labels, never for user content (fixes a Bonvoy weak spot).
 - All times, prices and counts use tabular figures so columns align.
 - Line length for diary text is ≤ 34em; long content goes in a reading view.
@@ -210,7 +211,7 @@ Core set: `house` · `suitcase` (Trips) · `calendarBlank` (Plan) · `chatsCircl
 - Text on photos: white, bottom-left, 24pt inset, always on `overlay.scrim`.
 - Metadata on photos: **glass chips** (`overlay.glass`, `radius.sm`, `type.footnote`, white).
 - Never put a colored block over a photo; let the photo carry the emotion.
-- Fallback when there's no photo: a `bg.sunken` card with the destination name in Newsreader at `display` size. No stock illustration.
+- Fallback when there's no photo: a `bg.sunken` card with the destination name in `display`. No stock illustration.
 
 ---
 

@@ -18,10 +18,13 @@
   .m3 { fill: var(--member-iris); }
   .ring { fill: none; stroke: var(--canvas); stroke-width: 4; }
   .card { rx: var(--radius-lg); }
-  /* The real wordmark stands in for a typed name. It has no reversed version, so it sits on a logo-ground plate (invisible on light canvas). */
-  .words { position: absolute; left: var(--space-6); bottom: var(--space-6); width: 440px; box-sizing: border-box; padding: var(--space-4) var(--space-5) var(--space-5); background: var(--logo-ground); border-radius: var(--radius-lg); }
-  .logo { display: block; width: 400px; height: auto; margin: -24px 0 -20px -36px; }
-  .tag { margin: var(--space-2) 0 0; font-size: 14px; line-height: 20px; color: var(--brand-navy); }
+  /* The real wordmark stands in for a typed name: navy on light grounds, reversed (white) on dark. */
+  .words { position: absolute; left: var(--space-6); bottom: var(--space-6); width: 440px; }
+  .logo { display: block; width: 440px; height: auto; margin: -38px 0 -28px -39px; }
+  .logo.on-dark { display: none; }
+  [data-theme="dark"] .logo.on-light { display: none; }
+  [data-theme="dark"] .logo.on-dark { display: block; }
+  .tag { margin: var(--space-2) 0 0 4px; font-size: 14px; line-height: 20px; color: var(--text-secondary); }
 </style>
 </head>
 <body>
@@ -43,7 +46,8 @@
 </svg>
 </div>
 <div class="words">
-<img class="logo" src="/_blob/4ce3ab8133eb58391fba2ee1fe704ccf" alt="Tripami">
+<img class="logo on-light" src="/_blob/4ce3ab8133eb58391fba2ee1fe704ccf" alt="Tripami">
+<img class="logo on-dark" src="/_blob/2727ff06764fddcb47a9894cfe16054e" alt="Tripami">
 <p class="tag">Group trips, set quietly. Places and people bring the color.</p>
 </div>
 </div>

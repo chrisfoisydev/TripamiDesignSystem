@@ -4,7 +4,7 @@ Tripami is a collaborative group-travel app. Its product UI pairs a hotel concie
 
 1. **Places and people bring the color.** Chrome is `canvas`, `surface` and `text-primary` ink. Color comes from trip photos and the eight `member-*` colors. Cover the photos and avatars on any layout: what's left should be almost monochrome.
 2. **The accent shows state; ink shows action.** `accent` (Tripami orange) marks *you, now, selected, live*: the active tab, a selected chip, your vote, the current itinerary item, links. It covers at most 5% of a layout and is never a button fill. Primary actions are `action-primary` ink pills.
-3. **Editorial hierarchy, set quietly.** Use size, case and space instead of weight or color. Large titles (`title1`) are Regular. Never use Bold; the heaviest weight is 600, for `eyebrow` only. Uppercase is only for `eyebrow` labels, never for user content.
+3. **One loud voice, everything else quiet.** The display face (`display`, `diary-heading`) is set heavy, like the wordmark, and is the only type above weight 600. Everything else gets hierarchy from size, case and space: large titles (`title1`) are Regular, and the heaviest UI weight is 600, for `eyebrow` only. Uppercase is only for `eyebrow` labels, never for user content.
 4. **Social presence without noise.** People appear as avatars and first names inside content ("Waiting on Jonah and Priya"), not as notification feeds. Show activity with an `ActivityDot` (navy for new, orange for needs-you), not a count badge. Emoji appear only as user reactions.
 5. **Utility you don't notice.** Every secondary task is a sheet with a grabber. One primary action per view. Touch targets are at least `size-hit-target`. Every text pairing passes WCAG AA in both themes.
 6. **Calm is a feature.** Motion explains, it doesn't decorate: 120–480ms on `cubic-bezier(0.2, 0, 0, 1)`, and it collapses under reduced motion. Celebrate with a single `accent` check and one warm sentence. No confetti.
@@ -19,8 +19,8 @@ Tripami is a collaborative group-travel app. Its product UI pairs a hotel concie
 
 ## Logo
 
-- The wordmark is `tripami-wordmark.webp` in the `Logos` group: `brand-navy` letters with a `brand-orange` dot on the i. Use the file as supplied: never redraw, recolor, outline, stretch or re-typeset it, and never detach the dot.
-- Place it on light grounds (`canvas`, `surface`, `logo-ground`). There is no reversed version yet, so on dark screens set it on a `logo-ground` plate.
+- The `Logos` group holds two versions, both with the `brand-orange` dot: `tripami-wordmark.webp` (`brand-navy` letters) for light grounds and `tripami-wordmark-reversed.webp` (white letters) for dark grounds and dark photos. Choose by the ground behind it.
+- Use the files as supplied: never redraw, recolor, outline, stretch or re-typeset them, and never detach the dot.
 - Keep clear space of at least the dot's diameter around it.
 - The product UI borrows the logo's logic: navy carries everything, and orange is one small, deliberate point.
 
@@ -39,10 +39,11 @@ Tripami is a collaborative group-travel app. Its product UI pairs a hotel concie
 
 ## Type
 
+- **Bricolage Grotesque** (`--font-display`) is the display voice, chosen to echo the wordmark's heavy, warm letterforms: `display` (800) for trip names and `diary-heading` (700) for day headings. Use it only at those two styles, at most once or twice per view, and never for UI text. It is a close match, not the logo's own typeface: never use it to re-typeset the logo.
 - **Inter** (`--font-ui`) for everything functional: controls, labels, numbers, body.
-- **Newsreader** (`--font-diary`) is the diary voice: `display` for trip names, `diary-heading` for day headings, `diary-body` for journal entries, and `diary-quote` (italic) for pull quotes. Never use it on buttons, tabs, inputs or eyebrows. Money is utility and is always Inter.
-- Scale: `display` 34/40 · `title1` 28/34 · `diary-heading` 24/30 · `title2` 22/28 · `title3` 18/24 · `body` 17/24 · `callout` 15/20 · `subhead` 14/19 · `footnote` 13/18 · `eyebrow` 12/16 caps · `caption` 11/13.
-- Both families are variable fonts with an optical-size axis. Keep `font-optical-sizing: auto` so display sizes tighten and small text opens up.
+- **Newsreader** (`--font-diary`) is the diary voice for long-form reading: `diary-body` for journal entries and `diary-quote` (italic) for pull quotes. Never use it on buttons, tabs, inputs or eyebrows. Money is utility and is always Inter.
+- Scale: `display` 34/38 · `title1` 28/34 · `diary-heading` 24/30 · `title2` 22/28 · `title3` 18/24 · `body` 17/24 · `callout` 15/20 · `subhead` 14/19 · `footnote` 13/18 · `eyebrow` 12/16 caps · `caption` 11/13.
+- All three families are variable fonts with an optical-size axis. Keep `font-optical-sizing: auto` so display sizes tighten and small text opens up.
 
 ## Space, shape, depth
 
@@ -56,7 +57,7 @@ Tripami is a collaborative group-travel app. Its product UI pairs a hotel concie
 - Use Phosphor Icons, **regular** weight, as the default (the `Icons` asset group, or `Tripami.Icon` with `name`). Use the **fill** variant only for the active tab or a toggled state (saved heart, your vote).
 - Sizes: 22px for leading icons in rows, nav bars and quick actions; 18px for chevrons and inline status; 24px in the tab bar.
 - Icons take the color of the text beside them. Use `accent` only when active or selected.
-- The SVG files in the asset group are single-ink near-black `#16171B`. In code, use `Tripami.Icon`, which draws in `currentColor` and so follows `text-primary` navy.
+- The SVG files in the asset group are single-ink `brand-navy`, for light grounds. In code, use `Tripami.Icon`, which draws in `currentColor` and follows `text-primary` in both themes.
 - No emoji as icons.
 
 ## Imagery

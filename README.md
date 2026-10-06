@@ -14,7 +14,9 @@ Both hold the same tokens, and components match by name and props. The Claude De
 
 ![Tripami](brand/tripami-wordmark.webp)
 
-[`brand/tripami-wordmark.webp`](brand/tripami-wordmark.webp) is the wordmark as supplied: navy `#02203A` letters with an orange `#FC6316` dot, on a transparent ground. There's no reversed version yet, so on dark grounds it sits on a paper plate.
+Two versions, as supplied, both on transparent grounds with the orange `#FC6316` dot:
+- [`brand/tripami-wordmark.webp`](brand/tripami-wordmark.webp): navy `#02203A` letters, for light grounds.
+- [`brand/tripami-wordmark-reversed.webp`](brand/tripami-wordmark-reversed.webp): white letters, for dark grounds and dark photos.
 
 ## Docs
 
@@ -26,7 +28,7 @@ Both hold the same tokens, and components match by name and props. The Claude De
 ## The system in one minute
 
 - **Color:** paper `canvas` (`#FAFAF7`), white `surface` and navy `text-primary` (`#02203A`, the logo's wordmark color). Navy ink and one accent, Tripami orange, both from the logo: `#FC6316` for the logo and brand moments, `#B8400F` (text-safe) for state in the UI. Eight `member-*` colors identify travelers.
-- **Type:** Inter for UI (Regular titles, uppercase eyebrows, no Bold). Newsreader is the diary voice for trip names, day headings and memories.
+- **Type:** Bricolage Grotesque, set heavy to echo the wordmark, for trip names and day headings. Inter for UI (Regular titles, uppercase eyebrows). Newsreader for journal text.
 - **Shape:** pills to act, rounded cards to open, circles for people and tools, sheets for side tasks, dashed boxes for what the group hasn't filled yet.
 - **Icons:** a curated Phosphor set, regular by default and fill for active states.
 - **Contrast:** every allowed text pairing passes WCAG AA in light and dark, enforced by `test/contrast_test.dart`.
@@ -63,13 +65,13 @@ Icon(TPIcons.mapPin);
 |---|---|
 | `foundations/tp_palette.dart` | Raw colors and `TPMemberColor` |
 | `foundations/tp_colors.dart` | `TPColors` `ThemeExtension`, light and dark |
-| `foundations/tp_type.dart` | `TPType` scale (Inter + Newsreader) and `.tabular` |
+| `foundations/tp_type.dart` | `TPType` scale (Bricolage Grotesque + Inter + Newsreader) and `.tabular` |
 | `foundations/tp_layout.dart` | `TPSpace`, `TPRadius`, `TPSize`, `TPElevation`, `TPMotion` |
 | `foundations/tp_icons.dart` | `TPIcons` / `TPIconsFill` (Phosphor) |
 | `theme/tp_theme.dart` | `TripamiTheme.light()` / `.dark()`, which restyles standard Material widgets |
 | `components/` | `TPButton`, `TPGlassIconButton`, `TPQuickAction`, `TPFloatingPill`, `TPFilterChip`, `TPUnderlineTabs`, `TPEyebrow`, `TPSectionHeader`, `TPCard`, `TPGlassChip`, `TPTripCoverCard`, `TPTripStrip`, `TPListRow`, `TPSectionBand`, `TPStickyActionBar`, `showTPSheet`, `TPEmptyState`, `TPTabBar`, `TPAvatar`, `TPAvatarStack`, `TPAttribution`, `TPActivityDot`, `TPReactionBar`, `TPPollCard`, `TPItineraryItem`, `TPExpenseRow` |
 
-Fonts are bundled in `lib/fonts/`: Inter and Newsreader (SIL OFL) and Phosphor Icons (MIT), with their licenses. Requires Flutter ≥ 3.32.
+Fonts are bundled in `lib/fonts/`: Bricolage Grotesque, Inter and Newsreader (SIL OFL) and Phosphor Icons (MIT), with their licenses. Requires Flutter ≥ 3.32.
 
 ```sh
 flutter analyze

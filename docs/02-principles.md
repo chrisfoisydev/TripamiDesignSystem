@@ -23,9 +23,9 @@ No decorative gradients, no colored section backgrounds, no illustrated mascots 
 
 ### 3. Editorial hierarchy, set quietly
 - Hierarchy through **size, case and space**, not weight or color.
-- Large titles are **Regular**. We never use Bold in product UI; the heaviest weight is Semibold, and only for eyebrows and buttons.
+- **One loud voice.** The display face (Bricolage Grotesque, chosen to echo the wordmark) is set heavy for trip names and day headings, and it's the only type above Semibold. Everything else is quiet: large titles are **Regular**, and the heaviest UI weight is Semibold, for eyebrows and buttons.
 - Small uppercase **eyebrows** introduce sections.
-- A **serif (Newsreader)** is the *diary voice*. It's used for trip names, day headings and memories, which are moments that belong to the group, not the system. Never for controls.
+- A **serif (Newsreader)** is the *diary voice* for long-form reading: journal entries and pull quotes in Memories, words that belong to the group, not the system. Never for controls.
 
 ### 4. Social presence without social noise
 Tripami is collaborative, but it should feel like a well-kept shared notebook, not a group chat that never stops.
@@ -59,7 +59,7 @@ Marketing can be loud: big color fields, playful type, motion, illustration, ene
 | | Marketing (site, App Store, social) | Product UI |
 |---|---|---|
 | Color | Full brand palette, color fields, gradients allowed | Paper/ink chrome, orange accent ≤ 5%, member colors for people only |
-| Type | Expressive display sizes, tight tracking, mixed weights | Inter Regular/Medium/Semibold + Newsreader for diary moments only |
+| Type | Expressive display sizes, tight tracking, mixed weights | Bricolage Grotesque for trip names and day headings, Inter Regular/Medium/Semibold for UI, Newsreader for journal text |
 | Imagery | Staged lifestyle, collage, stickers | The group's real photos and places; consistent scrims and glass chips |
 | Illustration | Characterful, full color | Grey-scale spot illustration with one accent touch, empty states only |
 | Motion | Showy, looping | Purposeful, 120–480ms, respects Reduce Motion |
