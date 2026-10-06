@@ -3,38 +3,39 @@
 > **Marriott Bonvoy's editorial restraint + a modern social travel diary + Apple-level utility.**
 > The product UI is calmer and more refined than Tripami's marketing.
 
-This repo is Tripami's visual design system, built for **Flutter / Dart**. It holds the research behind it, the principles and specs, design tokens, and a Flutter package with the theme and core components.
+Tripami's components, colors and type, in two forms:
 
-| Trips | Trip Home | Plan | Vote sheet |
-|---|---|---|---|
-| ![Trips](example/test/goldens/trips_light.png) | ![Trip Home](example/test/goldens/trip_home_light.png) | ![Plan](example/test/goldens/plan_light.png) | ![Vote sheet](example/test/goldens/vote_sheet_light.png) |
+- **Claude Design:** the [Tripami design system artifact](https://claude.ai/artifact/RfRNGEUDTXnSNNXjGYTbpa). This is what Claude's design and slide tools build from. Its source is in [`claude-design/`](claude-design).
+- **Flutter / Dart:** the `tripami_design_system` package in [`lib/`](lib), with `TripamiTheme`, tokens and `TP*` widgets.
 
-Dark mode: [Trips](example/test/goldens/trips_dark.png) · [Trip Home](example/test/goldens/trip_home_dark.png) · [Plan](example/test/goldens/plan_dark.png) · [Foundations](example/test/goldens/foundations_dark.png)
+Both hold the same tokens, and components match by name and props. The Claude Design set also includes `Icon`, `TextField`, `Toggle` and `Toast`; in Flutter those come from `TPIcons` and the standard widgets that `TripamiTheme` restyles.
 
-The photos are generated placeholders, and the people are example data.
+## Docs
 
----
-
-## Read in order
-
-1. **[Bonvoy study](docs/01-bonvoy-study.md):** about 45 Marriott Bonvoy iOS screens studied on Mobbin. It explains why the app feels premium, where it falls short, and what Tripami carries over.
-2. **[Principles](docs/02-principles.md):** six rules for settling design disagreements, the product-vs-marketing split, and voice.
+1. **[Bonvoy study](docs/01-bonvoy-study.md):** about 45 Marriott Bonvoy iOS screens studied on Mobbin, and what Tripami takes from them.
+2. **[Principles](docs/02-principles.md):** six rules, the product-vs-marketing split, and voice.
 3. **[Foundations](docs/03-foundations.md):** color, type, spacing, shape, elevation, icons, imagery, motion.
-4. **[Components](docs/04-components.md):** anatomy, tokens and states for every component, with its Bonvoy reference.
-5. **[Patterns](docs/05-patterns.md):** Trips, Trip Home, Plan, Decide together, Split, Memories, Invite, Onboarding, Confirmation.
+4. **[Components](docs/04-components.md):** anatomy, tokens and states for every component.
 
 ## The system in one minute
 
-- **Places and people bring the color.** Chrome is paper (`#FAFAF7`), white and ink (`#16171B`). Photos and *member colors* carry everything else.
-- **The accent shows state; ink shows action.** Lagoon (`#0B6B61`) marks you / now / selected and covers at most 5% of a screen. Primary buttons are ink pills, as in Bonvoy.
-- **Editorial hierarchy, set quietly.** Inter for UI with Regular large titles and uppercase eyebrows, and no Bold. Newsreader is the diary voice for trip names, day headings and memories.
-- **Social presence without social noise.** Faces and names inside content ("Waiting on Jonah and Priya"), dots instead of count badges, and emoji only as reactions.
-- **Utility you don't notice.** Sheets for every secondary task, a trip strip (Arrive · Leave · Nights) wherever a trip appears, 44pt targets, and AA contrast everywhere (enforced by tests).
+- **Color:** paper `canvas` (`#FAFAF7`), white `surface` and ink `text-primary` (`#16171B`). One accent, Lagoon (`#0B6B61`), used for state only. Eight `member-*` colors identify travelers.
+- **Type:** Inter for UI (Regular titles, uppercase eyebrows, no Bold). Newsreader is the diary voice for trip names, day headings and memories.
+- **Shape:** pills to act, rounded cards to open, circles for people and tools, sheets for side tasks, dashed boxes for what the group hasn't filled yet.
+- **Icons:** a curated Phosphor set, regular by default and fill for active states.
+- **Contrast:** every allowed text pairing passes WCAG AA in light and dark, enforced by `test/contrast_test.dart`.
 
-## Using the package
+## Claude Design
+
+The artifact is a Claude Design System. Use it by naming it when you ask Claude for a design, slides or a prototype ("use the Tripami design system"), or by pasting its link. Claude reads its `README.md`, `tokens.json` and component cards and builds with them.
+
+To change it, ask Claude in a session with this repo to edit the files in `claude-design/project/` and re-publish them to the same artifact URL. The asset ids for the uploaded icons and placeholder photos are in `claude-design/asset-ids.txt`. Font files aren't duplicated there: they're published from `lib/fonts/`.
+
+The artifact is private until you share it from its Share menu.
+
+## Flutter
 
 ```yaml
-# pubspec.yaml
 dependencies:
   tripami_design_system:
     git:
@@ -44,51 +45,29 @@ dependencies:
 ```dart
 import 'package:tripami_design_system/tripami_design_system.dart';
 
-MaterialApp(
-  theme: TripamiTheme.light(),
-  darkTheme: TripamiTheme.dark(),
-  home: const TripsScreen(),
-);
+MaterialApp(theme: TripamiTheme.light(), darkTheme: TripamiTheme.dark());
 
-// Inside a widget
 final c = TPColors.of(context);
 Text('Lisbon with the crew', style: TPType.display.copyWith(color: c.textPrimary));
 TPButton.primary(label: 'Create trip', onPressed: createTrip);
-TPAvatarStack(travelers);
 Icon(TPIcons.mapPin);
 ```
 
-`TripamiTheme` restyles standard Material widgets (`FilledButton`, `OutlinedButton`, `TextField`, `Switch`, `Checkbox`, `SnackBar`, `showModalBottomSheet`, dialogs) to follow the system, so plain Flutter code also stays on-brand.
-
-### What's in `lib/`
-
 | | |
 |---|---|
-| `foundations/tp_palette.dart` | Raw colors and `TPMemberColor` (8 traveler hues) |
+| `foundations/tp_palette.dart` | Raw colors and `TPMemberColor` |
 | `foundations/tp_colors.dart` | `TPColors` `ThemeExtension`, light and dark |
-| `foundations/tp_type.dart` | `TPType` scale (Inter + Newsreader, variable axes set explicitly) and the `.tabular` extension |
+| `foundations/tp_type.dart` | `TPType` scale (Inter + Newsreader) and `.tabular` |
 | `foundations/tp_layout.dart` | `TPSpace`, `TPRadius`, `TPSize`, `TPElevation`, `TPMotion` |
-| `foundations/tp_icons.dart` | `TPIcons` / `TPIconsFill`, a curated Phosphor set |
-| `theme/tp_theme.dart` | `TripamiTheme.light()` / `.dark()` |
-| `components/` | `TPButton`, `TPGlassIconButton`, `TPQuickAction`, `TPFloatingPill`, `TPEyebrow`, `TPSectionHeader`, `TPAvatar`, `TPAvatarStack`, `TPAttribution`, `TPActivityDot`, `TPReactionBar`, `TPCard`, `TPGlassChip`, `TPTripCoverCard`, `TPTripStrip`, `TPListRow`, `TPSectionBand`, `TPStickyActionBar`, `TPEmptyState`, `showTPSheet`, `TPTabBar`, `TPUnderlineTabs`, `TPFilterChip`, `TPPollCard`, `TPItineraryItem`, `TPExpenseRow` |
+| `foundations/tp_icons.dart` | `TPIcons` / `TPIconsFill` (Phosphor) |
+| `theme/tp_theme.dart` | `TripamiTheme.light()` / `.dark()`, which restyles standard Material widgets |
+| `components/` | `TPButton`, `TPGlassIconButton`, `TPQuickAction`, `TPFloatingPill`, `TPFilterChip`, `TPUnderlineTabs`, `TPEyebrow`, `TPSectionHeader`, `TPCard`, `TPGlassChip`, `TPTripCoverCard`, `TPTripStrip`, `TPListRow`, `TPSectionBand`, `TPStickyActionBar`, `showTPSheet`, `TPEmptyState`, `TPTabBar`, `TPAvatar`, `TPAvatarStack`, `TPAttribution`, `TPActivityDot`, `TPReactionBar`, `TPPollCard`, `TPItineraryItem`, `TPExpenseRow` |
 
-Fonts are bundled (`lib/fonts/`): Inter and Newsreader (SIL OFL) and Phosphor Icons (MIT). Their licenses sit next to the files. SF Pro and New York aren't used because Apple licenses them for Apple platforms only.
-
-Requires Flutter ≥ 3.32 (for `RoundedSuperellipseBorder`). Tested on Flutter 3.47.6.
-
-## Development
+Fonts are bundled in `lib/fonts/`: Inter and Newsreader (SIL OFL) and Phosphor Icons (MIT), with their licenses. Requires Flutter ≥ 3.32.
 
 ```sh
-flutter analyze                 # package
-flutter test                    # contrast + unit tests (WCAG AA for every allowed pairing)
-
-cd example
-flutter test                    # screenshot (golden) tests, light and dark
-flutter test --update-goldens   # regenerate screenshots after a visual change
-flutter create --platforms=ios,android .   # once, to add runners, then:
-flutter run
+flutter analyze
+flutter test      # WCAG AA contrast for every allowed pairing, plus unit tests
 ```
 
-Golden tests load the real fonts and turn shadows on, so the screenshots match the device. The test renderer has no emoji font, so reaction emoji show as boxes in screenshots only.
-
-`tokens/tokens.json` is the W3C design-tokens source for design tools. If you change a value, update `tp_palette.dart` / `tp_type.dart` / `tp_layout.dart` to match.
+`tokens/tokens.json` holds the same values in W3C design-token format for other tools.

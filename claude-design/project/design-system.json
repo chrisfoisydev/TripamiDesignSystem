@@ -1,0 +1,674 @@
+{
+  "v": 3,
+  "layout": "files",
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-10-06T21:56:54Z"
+  },
+  "title": "Tripami",
+  "namespace": "Tripami",
+  "libraries": [
+    {
+      "name": "react",
+      "version": "18.3.1",
+      "global": "React",
+      "file": "components/lib/react.production.min.js"
+    },
+    {
+      "name": "react-dom",
+      "version": "18.3.1",
+      "global": "ReactDOM",
+      "file": "components/lib/react-dom.production.min.js"
+    }
+  ],
+  "sections": {},
+  "groups": [
+    "Icons",
+    "Placeholders"
+  ],
+  "assetGroups": {
+    "Icons": {
+      "name": "Icons",
+      "tile": "xs",
+      "order": [
+        "airplane.svg",
+        "airplane-fill.svg",
+        "arrow-left.svg",
+        "arrow-left-fill.svg",
+        "arrow-right.svg",
+        "arrow-right-fill.svg",
+        "bed.svg",
+        "bed-fill.svg",
+        "bell.svg",
+        "bell-fill.svg",
+        "calendar-blank.svg",
+        "calendar-blank-fill.svg",
+        "camera.svg",
+        "camera-fill.svg",
+        "caret-down.svg",
+        "caret-down-fill.svg",
+        "caret-right.svg",
+        "caret-right-fill.svg",
+        "chats-circle.svg",
+        "chats-circle-fill.svg",
+        "check-circle.svg",
+        "check-circle-fill.svg",
+        "check.svg",
+        "check-fill.svg",
+        "circle.svg",
+        "circle-fill.svg",
+        "clock.svg",
+        "clock-fill.svg",
+        "dots-three.svg",
+        "dots-three-fill.svg",
+        "export.svg",
+        "export-fill.svg",
+        "fork-knife.svg",
+        "fork-knife-fill.svg",
+        "gear-six.svg",
+        "gear-six-fill.svg",
+        "heart.svg",
+        "heart-fill.svg",
+        "house.svg",
+        "house-fill.svg",
+        "images.svg",
+        "images-fill.svg",
+        "info.svg",
+        "info-fill.svg",
+        "link.svg",
+        "link-fill.svg",
+        "magnifying-glass.svg",
+        "magnifying-glass-fill.svg",
+        "map-pin.svg",
+        "map-pin-fill.svg",
+        "map-trifold.svg",
+        "map-trifold-fill.svg",
+        "notebook.svg",
+        "notebook-fill.svg",
+        "pencil-simple.svg",
+        "pencil-simple-fill.svg",
+        "plus.svg",
+        "plus-fill.svg",
+        "receipt.svg",
+        "receipt-fill.svg",
+        "seal-check.svg",
+        "seal-check-fill.svg",
+        "sign-out.svg",
+        "sign-out-fill.svg",
+        "smiley.svg",
+        "smiley-fill.svg",
+        "suitcase.svg",
+        "suitcase-fill.svg",
+        "ticket.svg",
+        "ticket-fill.svg",
+        "trash.svg",
+        "trash-fill.svg",
+        "user-circle.svg",
+        "user-circle-fill.svg",
+        "user-plus.svg",
+        "user-plus-fill.svg",
+        "users.svg",
+        "users-fill.svg",
+        "wallet.svg",
+        "wallet-fill.svg",
+        "warning.svg",
+        "warning-fill.svg",
+        "x.svg",
+        "x-fill.svg"
+      ],
+      "files": {
+        "airplane.svg": {
+          "name": "airplane.svg",
+          "blob": "25103dbae43d1be8d93cdfcd62607580",
+          "size": 711,
+          "type": "image/svg+xml"
+        },
+        "airplane-fill.svg": {
+          "name": "airplane-fill.svg",
+          "blob": "0b163b16eaf8a1f143a4280acbee4fc5",
+          "size": 456,
+          "type": "image/svg+xml"
+        },
+        "arrow-left.svg": {
+          "name": "arrow-left.svg",
+          "blob": "f1e5a40acd0b1ef5442dee7360bce485",
+          "size": 272,
+          "type": "image/svg+xml"
+        },
+        "arrow-left-fill.svg": {
+          "name": "arrow-left-fill.svg",
+          "blob": "e456c7769bc112030a3c5939b4e1f2ba",
+          "size": 247,
+          "type": "image/svg+xml"
+        },
+        "arrow-right.svg": {
+          "name": "arrow-right.svg",
+          "blob": "41e09d5c15a99b5f879f5c1edca4ea53",
+          "size": 269,
+          "type": "image/svg+xml"
+        },
+        "arrow-right-fill.svg": {
+          "name": "arrow-right-fill.svg",
+          "blob": "50288ae31465de3b8c682643bc9b7f21",
+          "size": 243,
+          "type": "image/svg+xml"
+        },
+        "bed.svg": {
+          "name": "bed.svg",
+          "blob": "b7c3e70898ac85b078a9eefe8292c535",
+          "size": 271,
+          "type": "image/svg+xml"
+        },
+        "bed-fill.svg": {
+          "name": "bed-fill.svg",
+          "blob": "81a18fdaefacb654df6defbc26716e92",
+          "size": 237,
+          "type": "image/svg+xml"
+        },
+        "bell.svg": {
+          "name": "bell.svg",
+          "blob": "e780bd182e491f93e666928295281a87",
+          "size": 424,
+          "type": "image/svg+xml"
+        },
+        "bell-fill.svg": {
+          "name": "bell-fill.svg",
+          "blob": "5a79c9371b099c49d56ea93a52833992",
+          "size": 348,
+          "type": "image/svg+xml"
+        },
+        "calendar-blank.svg": {
+          "name": "calendar-blank.svg",
+          "blob": "48b600bcfc9274803f6a76d2039c4c66",
+          "size": 351,
+          "type": "image/svg+xml"
+        },
+        "calendar-blank-fill.svg": {
+          "name": "calendar-blank-fill.svg",
+          "blob": "d1f08186f22247813dd9addf0b2e1f05",
+          "size": 327,
+          "type": "image/svg+xml"
+        },
+        "camera.svg": {
+          "name": "camera.svg",
+          "blob": "a1eb470f53118418712d9e3f24a564b8",
+          "size": 523,
+          "type": "image/svg+xml"
+        },
+        "camera-fill.svg": {
+          "name": "camera-fill.svg",
+          "blob": "9c321394f51447ff1edce13e4b85dc6c",
+          "size": 334,
+          "type": "image/svg+xml"
+        },
+        "caret-down.svg": {
+          "name": "caret-down.svg",
+          "blob": "166bfba93b655f0cd04caeac26d798ed",
+          "size": 238,
+          "type": "image/svg+xml"
+        },
+        "caret-down-fill.svg": {
+          "name": "caret-down-fill.svg",
+          "blob": "d7ce99fe6bb9f8b78ae9d89fa6f97a26",
+          "size": 212,
+          "type": "image/svg+xml"
+        },
+        "caret-right.svg": {
+          "name": "caret-right.svg",
+          "blob": "8659a2fccfe59927d5171b8b0280d699",
+          "size": 243,
+          "type": "image/svg+xml"
+        },
+        "caret-right-fill.svg": {
+          "name": "caret-right-fill.svg",
+          "blob": "a042b50af644ca291ee64669a603e430",
+          "size": 217,
+          "type": "image/svg+xml"
+        },
+        "chats-circle.svg": {
+          "name": "chats-circle.svg",
+          "blob": "35a3f14174c48385ffb1e1011aed4bfb",
+          "size": 593,
+          "type": "image/svg+xml"
+        },
+        "chats-circle-fill.svg": {
+          "name": "chats-circle-fill.svg",
+          "blob": "2229b9f58b7cf7e6884b26f6a7182069",
+          "size": 481,
+          "type": "image/svg+xml"
+        },
+        "check-circle.svg": {
+          "name": "check-circle.svg",
+          "blob": "a71f7d269651376a1d21e5d5cf6a4ad6",
+          "size": 363,
+          "type": "image/svg+xml"
+        },
+        "check-circle-fill.svg": {
+          "name": "check-circle-fill.svg",
+          "blob": "0578b1d4a8228bc190e5fa231b4bcea4",
+          "size": 292,
+          "type": "image/svg+xml"
+        },
+        "check.svg": {
+          "name": "check.svg",
+          "blob": "dd39dbbf98295611e2c4a0f583c64f1d",
+          "size": 239,
+          "type": "image/svg+xml"
+        },
+        "check-fill.svg": {
+          "name": "check-fill.svg",
+          "blob": "003a879c1dd0025266c11dc9e06e516c",
+          "size": 332,
+          "type": "image/svg+xml"
+        },
+        "circle.svg": {
+          "name": "circle.svg",
+          "blob": "bf1d419862828c00819e2bfad6ecb7c6",
+          "size": 230,
+          "type": "image/svg+xml"
+        },
+        "circle-fill.svg": {
+          "name": "circle-fill.svg",
+          "blob": "d70477e1a777130d67740cbca7395e35",
+          "size": 182,
+          "type": "image/svg+xml"
+        },
+        "clock.svg": {
+          "name": "clock.svg",
+          "blob": "f487561e03a39efc82f3b565a515a4df",
+          "size": 311,
+          "type": "image/svg+xml"
+        },
+        "clock-fill.svg": {
+          "name": "clock-fill.svg",
+          "blob": "b13743a0ca913420b12bafc4b1c8ed64",
+          "size": 246,
+          "type": "image/svg+xml"
+        },
+        "dots-three.svg": {
+          "name": "dots-three.svg",
+          "blob": "d2a5a6d48339a5bd0425910c214f984a",
+          "size": 261,
+          "type": "image/svg+xml"
+        },
+        "dots-three-fill.svg": {
+          "name": "dots-three-fill.svg",
+          "blob": "806dc52487dff95fe76175de1ec0b33c",
+          "size": 351,
+          "type": "image/svg+xml"
+        },
+        "export.svg": {
+          "name": "export.svg",
+          "blob": "ce0bbc7421894e80c239d0a35e8b40e5",
+          "size": 407,
+          "type": "image/svg+xml"
+        },
+        "export-fill.svg": {
+          "name": "export-fill.svg",
+          "blob": "0102ecfdeae7c086bc4e651961081443",
+          "size": 359,
+          "type": "image/svg+xml"
+        },
+        "fork-knife.svg": {
+          "name": "fork-knife.svg",
+          "blob": "7651a5e4d8050d1f6deee0989ccbb204",
+          "size": 574,
+          "type": "image/svg+xml"
+        },
+        "fork-knife-fill.svg": {
+          "name": "fork-knife-fill.svg",
+          "blob": "285081de4708f22116fee90466a7c73f",
+          "size": 493,
+          "type": "image/svg+xml"
+        },
+        "gear-six.svg": {
+          "name": "gear-six.svg",
+          "blob": "6bbebaaff021ac3bf9455f2be0869c88",
+          "size": 1486,
+          "type": "image/svg+xml"
+        },
+        "gear-six-fill.svg": {
+          "name": "gear-six-fill.svg",
+          "blob": "777c3e00e250669c8c5f655d3a769c0c",
+          "size": 751,
+          "type": "image/svg+xml"
+        },
+        "heart.svg": {
+          "name": "heart.svg",
+          "blob": "9075912104de6505f779f4e94ec333ec",
+          "size": 513,
+          "type": "image/svg+xml"
+        },
+        "heart-fill.svg": {
+          "name": "heart-fill.svg",
+          "blob": "2eb0c4d9597964c179e77edd6479c685",
+          "size": 316,
+          "type": "image/svg+xml"
+        },
+        "house.svg": {
+          "name": "house.svg",
+          "blob": "725a7c82bbd041998309bb74248f6184",
+          "size": 380,
+          "type": "image/svg+xml"
+        },
+        "house-fill.svg": {
+          "name": "house-fill.svg",
+          "blob": "e18def940c003a7ed5cca360a5ef1211",
+          "size": 317,
+          "type": "image/svg+xml"
+        },
+        "images.svg": {
+          "name": "images.svg",
+          "blob": "c167c9242a0351c6fa55b9f98b70f566",
+          "size": 525,
+          "type": "image/svg+xml"
+        },
+        "images-fill.svg": {
+          "name": "images-fill.svg",
+          "blob": "b1991a277986a5297d41fd74e209f21b",
+          "size": 457,
+          "type": "image/svg+xml"
+        },
+        "info.svg": {
+          "name": "info.svg",
+          "blob": "19dae7a152cf3ec5fb7194f9d8a713c5",
+          "size": 372,
+          "type": "image/svg+xml"
+        },
+        "info-fill.svg": {
+          "name": "info-fill.svg",
+          "blob": "3c2668c4d31ab35e10b2f7324f6eba3e",
+          "size": 306,
+          "type": "image/svg+xml"
+        },
+        "link.svg": {
+          "name": "link.svg",
+          "blob": "1d4ec9dc2952c83986aa3ca444cf0c9f",
+          "size": 714,
+          "type": "image/svg+xml"
+        },
+        "link-fill.svg": {
+          "name": "link-fill.svg",
+          "blob": "cb885587f9f3fc1ff84010b97da6fa51",
+          "size": 668,
+          "type": "image/svg+xml"
+        },
+        "magnifying-glass.svg": {
+          "name": "magnifying-glass.svg",
+          "blob": "a6ae258af5114236af238cb1246dcc2b",
+          "size": 267,
+          "type": "image/svg+xml"
+        },
+        "magnifying-glass-fill.svg": {
+          "name": "magnifying-glass-fill.svg",
+          "blob": "726a3b3966f9ee3060d5680e44a004ae",
+          "size": 329,
+          "type": "image/svg+xml"
+        },
+        "map-pin.svg": {
+          "name": "map-pin.svg",
+          "blob": "765fc40581a6eace5a206ce623a36527",
+          "size": 483,
+          "type": "image/svg+xml"
+        },
+        "map-pin-fill.svg": {
+          "name": "map-pin-fill.svg",
+          "blob": "0cad7f009daa899300483ecced18a05b",
+          "size": 296,
+          "type": "image/svg+xml"
+        },
+        "map-trifold.svg": {
+          "name": "map-trifold.svg",
+          "blob": "30bc6c5d125369fb389fc92a58497d64",
+          "size": 454,
+          "type": "image/svg+xml"
+        },
+        "map-trifold-fill.svg": {
+          "name": "map-trifold-fill.svg",
+          "blob": "ca63f2da408c16e5f931682715c16b4b",
+          "size": 489,
+          "type": "image/svg+xml"
+        },
+        "notebook.svg": {
+          "name": "notebook.svg",
+          "blob": "75ae7c5b610472f7fcee8e69b83e0464",
+          "size": 363,
+          "type": "image/svg+xml"
+        },
+        "notebook-fill.svg": {
+          "name": "notebook-fill.svg",
+          "blob": "977052b7843f55ab5ce79efec0445b07",
+          "size": 323,
+          "type": "image/svg+xml"
+        },
+        "pencil-simple.svg": {
+          "name": "pencil-simple.svg",
+          "blob": "7828366e21b668699a7b9f36488d2b37",
+          "size": 372,
+          "type": "image/svg+xml"
+        },
+        "pencil-simple-fill.svg": {
+          "name": "pencil-simple-fill.svg",
+          "blob": "76304363f4382c95a5f8938a9c433be7",
+          "size": 334,
+          "type": "image/svg+xml"
+        },
+        "plus.svg": {
+          "name": "plus.svg",
+          "blob": "c48158b71161f17773e55a046fe605cf",
+          "size": 236,
+          "type": "image/svg+xml"
+        },
+        "plus-fill.svg": {
+          "name": "plus-fill.svg",
+          "blob": "57db19c5969c85dd8f60387e58b40aef",
+          "size": 314,
+          "type": "image/svg+xml"
+        },
+        "receipt.svg": {
+          "name": "receipt.svg",
+          "blob": "c9f489166d5ba6af2a8727206b9239ad",
+          "size": 561,
+          "type": "image/svg+xml"
+        },
+        "receipt-fill.svg": {
+          "name": "receipt-fill.svg",
+          "blob": "5dce811214ff3037779b501cf5751ca6",
+          "size": 407,
+          "type": "image/svg+xml"
+        },
+        "seal-check.svg": {
+          "name": "seal-check.svg",
+          "blob": "f984d16bf24af9e1e32070e35c9f6635",
+          "size": 1990,
+          "type": "image/svg+xml"
+        },
+        "seal-check-fill.svg": {
+          "name": "seal-check-fill.svg",
+          "blob": "c9dde4692330c810fa18fa6e33a0229b",
+          "size": 1138,
+          "type": "image/svg+xml"
+        },
+        "sign-out.svg": {
+          "name": "sign-out.svg",
+          "blob": "129fc8a7fd80f07d687e1004c9d2909f",
+          "size": 370,
+          "type": "image/svg+xml"
+        },
+        "sign-out-fill.svg": {
+          "name": "sign-out-fill.svg",
+          "blob": "ed97865edd328329a33eec8632773b04",
+          "size": 343,
+          "type": "image/svg+xml"
+        },
+        "smiley.svg": {
+          "name": "smiley.svg",
+          "blob": "d3dfd01463886d2b5a2124c755f42dcd",
+          "size": 464,
+          "type": "image/svg+xml"
+        },
+        "smiley-fill.svg": {
+          "name": "smiley-fill.svg",
+          "blob": "9b190456abc4db804168313c241953b1",
+          "size": 417,
+          "type": "image/svg+xml"
+        },
+        "suitcase.svg": {
+          "name": "suitcase.svg",
+          "blob": "be979ab681907cf76ff63c42c0c2f554",
+          "size": 368,
+          "type": "image/svg+xml"
+        },
+        "suitcase-fill.svg": {
+          "name": "suitcase-fill.svg",
+          "blob": "7f9e7a090a477101f4b46f7ceba1b88d",
+          "size": 327,
+          "type": "image/svg+xml"
+        },
+        "ticket.svg": {
+          "name": "ticket.svg",
+          "blob": "4a938dcd8f6d362bb8168a32cbf94847",
+          "size": 403,
+          "type": "image/svg+xml"
+        },
+        "ticket-fill.svg": {
+          "name": "ticket-fill.svg",
+          "blob": "6fe5fd0fe3737504333f7f1ab6159ecd",
+          "size": 357,
+          "type": "image/svg+xml"
+        },
+        "trash.svg": {
+          "name": "trash.svg",
+          "blob": "b7ca96a788f32429656439d38b657992",
+          "size": 415,
+          "type": "image/svg+xml"
+        },
+        "trash-fill.svg": {
+          "name": "trash-fill.svg",
+          "blob": "5d59a60f6cb315b429d0ef1100e2e7ab",
+          "size": 392,
+          "type": "image/svg+xml"
+        },
+        "user-circle.svg": {
+          "name": "user-circle.svg",
+          "blob": "183502c8cf6af1ddacb2a23ca807b84e",
+          "size": 400,
+          "type": "image/svg+xml"
+        },
+        "user-circle-fill.svg": {
+          "name": "user-circle-fill.svg",
+          "blob": "3a36e6a138d7c1c799f5bedcdb8cad58",
+          "size": 479,
+          "type": "image/svg+xml"
+        },
+        "user-plus.svg": {
+          "name": "user-plus.svg",
+          "blob": "ecb773bc73d5156416c2f0e0b9a6ce7f",
+          "size": 501,
+          "type": "image/svg+xml"
+        },
+        "user-plus-fill.svg": {
+          "name": "user-plus-fill.svg",
+          "blob": "d63bcd7b16321a3333909bb6c7fcf890",
+          "size": 385,
+          "type": "image/svg+xml"
+        },
+        "users.svg": {
+          "name": "users.svg",
+          "blob": "7d31bde08f7d251fdaf3c2997b5468c4",
+          "size": 530,
+          "type": "image/svg+xml"
+        },
+        "users-fill.svg": {
+          "name": "users-fill.svg",
+          "blob": "b827e2f976958d7f3b98c348f3ddec92",
+          "size": 533,
+          "type": "image/svg+xml"
+        },
+        "wallet.svg": {
+          "name": "wallet.svg",
+          "blob": "2cdaa3e1a677feb3d28affee6a9c79d6",
+          "size": 360,
+          "type": "image/svg+xml"
+        },
+        "wallet-fill.svg": {
+          "name": "wallet-fill.svg",
+          "blob": "e85d52e9dcf963cfc37657cae237434a",
+          "size": 302,
+          "type": "image/svg+xml"
+        },
+        "warning.svg": {
+          "name": "warning.svg",
+          "blob": "3ade232a5b966a9f6f0ec96847a1edc5",
+          "size": 567,
+          "type": "image/svg+xml"
+        },
+        "warning-fill.svg": {
+          "name": "warning-fill.svg",
+          "blob": "f9353e7ce2ed5c5102260b0ed659e1ae",
+          "size": 397,
+          "type": "image/svg+xml"
+        },
+        "x.svg": {
+          "name": "x.svg",
+          "blob": "bf04f0a483d9c59c3f03d095136030fe",
+          "size": 308,
+          "type": "image/svg+xml"
+        },
+        "x-fill.svg": {
+          "name": "x-fill.svg",
+          "blob": "375526ab763e9dabb0113b1f653b2544",
+          "size": 403,
+          "type": "image/svg+xml"
+        }
+      }
+    },
+    "Placeholders": {
+      "name": "Placeholders",
+      "tile": "m",
+      "order": [
+        "lisbon.jpg",
+        "dinner1.jpg",
+        "dinner2.jpg",
+        "dinner3.jpg"
+      ],
+      "files": {
+        "lisbon.jpg": {
+          "name": "lisbon.jpg",
+          "blob": "a32b8584f96aada01e927894c1c3621d",
+          "size": 25787,
+          "type": "image/jpeg"
+        },
+        "dinner1.jpg": {
+          "name": "dinner1.jpg",
+          "blob": "9812f2664feeaecf8facc0789630fac6",
+          "size": 5422,
+          "type": "image/jpeg"
+        },
+        "dinner2.jpg": {
+          "name": "dinner2.jpg",
+          "blob": "501291c5a3da140328c9da478dd22759",
+          "size": 5224,
+          "type": "image/jpeg"
+        },
+        "dinner3.jpg": {
+          "name": "dinner3.jpg",
+          "blob": "31805cf6b3c37ad8ea56073eb26a44d9",
+          "size": 5302,
+          "type": "image/jpeg"
+        }
+      }
+    }
+  },
+  "blobs": {},
+  "docs": {
+    "readme": "project/README.md",
+    "sections": []
+  },
+  "lastChange": {
+    "by": "Claude",
+    "at": "2026-10-06T21:56:54Z",
+    "via": "Claude Code",
+    "note": "First version: tokens, type, icons and 29 components from the Tripami Flutter design system."
+  }
+}

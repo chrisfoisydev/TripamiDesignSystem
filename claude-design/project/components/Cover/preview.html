@@ -1,0 +1,50 @@
+<!-- @dsCard height=288 -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tripami</title>
+<style>
+  html, body { margin: 0; height: 100%; }
+  body { background: var(--canvas); color: var(--text-primary); font-family: var(--font-ui); overflow: hidden; }
+  .cover { position: relative; width: 960px; height: 288px; overflow: hidden; }
+  .art { position: absolute; top: 0; left: 480px; width: 480px; height: 288px; overflow: hidden; }
+  .art svg { display: block; width: 480px; height: 288px; }
+  .ink { fill: var(--action-primary); }
+  .lagoon { fill: var(--accent); }
+  .tint { fill: var(--accent-subtle); }
+  .clay { fill: var(--member-clay); }
+  .marigold { fill: var(--member-marigold); }
+  .ring { fill: none; stroke: var(--canvas); stroke-width: 4; }
+  .card { rx: var(--radius-lg); }
+  .words { position: absolute; left: var(--space-6); bottom: var(--space-6); max-width: 440px; }
+  .name { margin: 0; font-family: var(--font-diary); font-size: 112px; line-height: 0.92; font-weight: 400; letter-spacing: -0.02em; color: var(--text-primary); }
+  .tag { margin: var(--space-2) 0 0 4px; font-size: 14px; line-height: 20px; color: var(--text-secondary); }
+</style>
+</head>
+<body>
+<div class="cover">
+<div class="art" aria-hidden="true">
+<svg viewBox="0 0 480 288" width="480" height="288">
+<!--
+  blocks      action-primary (ink) 176×288 slab bled off the top · accent (Lagoon) 128×168 · accent-subtle tint 144×120 bled off the right · member-clay and member-marigold as 64px discs — ≈38% of 960×288
+  arrangement one tall ink slab with satellites, block bottoms on one line space-6 above the edge, space-4 gutters
+  pattern     overlapping discs, from "a circle is a person": an avatar stack of four discs (member-clay, member-marigold, accent, action-primary) at −space-2 overlap with a canvas ring, floating on the ground above the Lagoon block
+  scales      sides in space-4/space-8 multiples; gutters space-4; corners radius-lg (24); discs 64 = 2× space-8, overlap space-2, ring 2× the 2px avatar stroke
+-->
+<rect class="ink card" x="24" y="-24" width="176" height="288" rx="24"/>
+<rect class="lagoon card" x="216" y="96" width="128" height="168" rx="24"/>
+<rect class="tint card" x="360" y="144" width="144" height="120" rx="24"/>
+<circle class="clay" cx="248" cy="52" r="32"/><circle class="ring" cx="248" cy="52" r="32"/>
+<circle class="marigold" cx="304" cy="52" r="32"/><circle class="ring" cx="304" cy="52" r="32"/>
+<circle class="lagoon" cx="360" cy="52" r="32"/><circle class="ring" cx="360" cy="52" r="32"/>
+<circle class="ink" cx="416" cy="52" r="32"/><circle class="ring" cx="416" cy="52" r="32"/>
+</svg>
+</div>
+<div class="words">
+<h1 class="name">Tripami</h1>
+<p class="tag">Group trips, set quietly. Places and people bring the color.</p>
+</div>
+</div>
+</body>
+</html>

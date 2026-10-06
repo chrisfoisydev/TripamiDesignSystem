@@ -1,0 +1,14 @@
+<!-- @dsCard group="People" height=73 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Attribution preview</title>
+<style>html,body{margin:0;background:var(--canvas);}</style></head>
+<body>
+<div id="root" class="tp-preview "></div>
+<script>
+  var T = window.Tripami, h = React.createElement;
+  var alex={name:'Alex Rivera',color:'clay',online:true}, maya={name:'Maya Chen',color:'marigold',online:true}, leo={name:'Leo Okafor',color:'fern'}, jonah={name:'Jonah Weiss',color:'sky'}, priya={name:'Priya Nair',color:'iris'}, sam={name:'Sam Torres',color:'plum'};
+  ReactDOM.createRoot(document.getElementById('root')).render(h(T.Attribution,{member:maya,action:'added',time:'2h'}));
+</script>
+</body>
+</html>

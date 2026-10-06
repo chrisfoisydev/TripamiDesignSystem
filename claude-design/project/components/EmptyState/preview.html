@@ -1,0 +1,14 @@
+<!-- @dsCard group="Containers" height=226 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>EmptyState preview</title>
+<style>html,body{margin:0;background:var(--canvas);}</style></head>
+<body>
+<div id="root" class="tp-preview "></div>
+<script>
+  var T = window.Tripami, h = React.createElement;
+  var alex={name:'Alex Rivera',color:'clay',online:true}, maya={name:'Maya Chen',color:'marigold',online:true}, leo={name:'Leo Okafor',color:'fern'}, jonah={name:'Jonah Weiss',color:'sky'}, priya={name:'Priya Nair',color:'iris'}, sam={name:'Sam Torres',color:'plum'};
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{style:{maxWidth:420}}, h(T.EmptyState,{title:'Nothing saved yet',message:'Add a place and the group can vote on it.',action:h(T.Button,{small:true},'Add a place')})));
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<!-- @dsCard group="Feedback" height=176 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Toast preview</title>
+<style>html,body{margin:0;background:var(--canvas);}</style></head>
+<body>
+<div id="root" class="tp-preview "></div>
+<script>
+  var T = window.Tripami, h = React.createElement;
+  var alex={name:'Alex Rivera',color:'clay',online:true}, maya={name:'Maya Chen',color:'marigold',online:true}, leo={name:'Leo Okafor',color:'fern'}, jonah={name:'Jonah Weiss',color:'sky'}, priya={name:'Priya Nair',color:'iris'}, sam={name:'Sam Torres',color:'plum'};
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'tp-stack-v',style:{maxWidth:420,gap:12}}, h(T.Toast,{actionLabel:'Undo'},'Removed from Friday. Maya and Leo were notified.'), h(T.Toast,null,'Voted. We’ll tell you when it closes.')));
+</script>
+</body>
+</html>
