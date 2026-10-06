@@ -1,0 +1,37 @@
+name: tripami_design_system
+description: Tripami's design system for Flutter. Tokens, theme and core components.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ">=3.8.0 <4.0.0"
+  flutter: ">=3.32.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  fonts:
+    # Variable fonts: weight and optical size are set through FontVariation
+    # in TPType, so each family is declared once.
+    - family: Inter
+      fonts:
+        - asset: lib/fonts/Inter-Variable.ttf
+    - family: Newsreader
+      fonts:
+        - asset: lib/fonts/Newsreader-Variable.ttf
+        - asset: lib/fonts/Newsreader-Italic-Variable.ttf
+          style: italic
+    # Phosphor Icons (MIT). Exposed through TPIcons / TPIconsFill.
+    - family: PhosphorRegular
+      fonts:
+        - asset: lib/fonts/Phosphor-Regular.ttf
+    - family: PhosphorFill
+      fonts:
+        - asset: lib/fonts/Phosphor-Fill.ttf
