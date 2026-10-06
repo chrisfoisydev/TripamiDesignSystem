@@ -54,7 +54,8 @@ class TPColors extends ThemeExtension<TPColors> {
   final Color actionPrimaryPressed;
   final Color actionPrimaryText;
 
-  /// Lagoon. State only: you / now / selected. At most 5% of a screen.
+  /// Deep Tripami orange. State only: you / now / selected / needs you.
+  /// At most 5% of a screen.
   final Color accent;
   final Color accentPressed;
   final Color accentSubtle;
@@ -63,6 +64,9 @@ class TPColors extends ThemeExtension<TPColors> {
   final Color positive;
   final Color caution;
   final Color critical;
+
+  /// The logo's orange. Logo and brand moments only, never text.
+  Color get brandOrange => TPPalette.brandOrange;
 
   // Overlays don't change with brightness.
   Color get glass => TPPalette.glass;
@@ -89,9 +93,9 @@ class TPColors extends ThemeExtension<TPColors> {
     actionPrimary: TPPalette.textPrimaryLight,
     actionPrimaryPressed: TPPalette.actionPressedLight,
     actionPrimaryText: TPPalette.canvasLight,
-    accent: TPPalette.lagoonLight,
-    accentPressed: TPPalette.lagoonPressedLight,
-    accentSubtle: TPPalette.lagoonSubtleLight,
+    accent: TPPalette.accentLight,
+    accentPressed: TPPalette.accentPressedLight,
+    accentSubtle: TPPalette.accentSubtleLight,
     onAccent: TPPalette.white,
     positive: TPPalette.positiveLight,
     caution: TPPalette.cautionLight,
@@ -114,10 +118,10 @@ class TPColors extends ThemeExtension<TPColors> {
     actionPrimary: TPPalette.textPrimaryDark,
     actionPrimaryPressed: TPPalette.actionPressedDark,
     actionPrimaryText: TPPalette.textPrimaryLight,
-    accent: TPPalette.lagoonDark,
-    accentPressed: TPPalette.lagoonPressedDark,
-    accentSubtle: TPPalette.lagoonSubtleDark,
-    onAccent: TPPalette.canvasDark,
+    accent: TPPalette.accentDark,
+    accentPressed: TPPalette.accentPressedDark,
+    accentSubtle: TPPalette.accentSubtleDark,
+    onAccent: TPPalette.textPrimaryLight,
     positive: TPPalette.positiveDark,
     caution: TPPalette.cautionDark,
     critical: TPPalette.criticalDark,

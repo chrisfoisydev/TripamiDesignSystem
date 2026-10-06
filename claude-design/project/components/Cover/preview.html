@@ -10,16 +10,18 @@
   .cover { position: relative; width: 960px; height: 288px; overflow: hidden; }
   .art { position: absolute; top: 0; left: 480px; width: 480px; height: 288px; overflow: hidden; }
   .art svg { display: block; width: 480px; height: 288px; }
-  .ink { fill: var(--action-primary); }
-  .lagoon { fill: var(--accent); }
+  .stem { fill: var(--action-primary); }
+  .dot { fill: var(--brand-orange); }
   .tint { fill: var(--accent-subtle); }
-  .clay { fill: var(--member-clay); }
-  .marigold { fill: var(--member-marigold); }
+  .m1 { fill: var(--member-lagoon); }
+  .m2 { fill: var(--member-sky); }
+  .m3 { fill: var(--member-iris); }
   .ring { fill: none; stroke: var(--canvas); stroke-width: 4; }
   .card { rx: var(--radius-lg); }
-  .words { position: absolute; left: var(--space-6); bottom: var(--space-6); max-width: 440px; }
-  .name { margin: 0; font-family: var(--font-diary); font-size: 112px; line-height: 0.92; font-weight: 400; letter-spacing: -0.02em; color: var(--text-primary); }
-  .tag { margin: var(--space-2) 0 0 4px; font-size: 14px; line-height: 20px; color: var(--text-secondary); }
+  /* The real wordmark stands in for a typed name. It has no reversed version, so it sits on a logo-ground plate (invisible on light canvas). */
+  .words { position: absolute; left: var(--space-6); bottom: var(--space-6); width: 440px; box-sizing: border-box; padding: var(--space-4) var(--space-5) var(--space-5); background: var(--logo-ground); border-radius: var(--radius-lg); }
+  .logo { display: block; width: 400px; height: auto; margin: -24px 0 -20px -36px; }
+  .tag { margin: var(--space-2) 0 0; font-size: 14px; line-height: 20px; color: var(--brand-navy); }
 </style>
 </head>
 <body>
@@ -27,22 +29,21 @@
 <div class="art" aria-hidden="true">
 <svg viewBox="0 0 480 288" width="480" height="288">
 <!--
-  blocks      action-primary (ink) 176×288 slab bled off the top · accent (Lagoon) 128×168 · accent-subtle tint 144×120 bled off the right · member-clay and member-marigold as 64px discs — ≈38% of 960×288
-  arrangement one tall ink slab with satellites, block bottoms on one line space-6 above the edge, space-4 gutters
-  pattern     overlapping discs, from "a circle is a person": an avatar stack of four discs (member-clay, member-marigold, accent, action-primary) at −space-2 overlap with a canvas ring, floating on the ground above the Lagoon block
-  scales      sides in space-4/space-8 multiples; gutters space-4; corners radius-lg (24); discs 64 = 2× space-8, overlap space-2, ring 2× the 2px avatar stroke
+  blocks      action-primary stem 96×192 (navy; paper in dark) bled off the bottom · brand-orange dot r44 · accent-subtle tint 336×144 bled off the right · member-lagoon, member-sky, member-iris as 56px discs — ≈30% of 960×288
+  arrangement the logo's own "i": a navy stem with the orange dot a space-3 gap above it, beside one wide tint slab; the stack of people sits on the ground under the tint
+  pattern     the literal motif, the dot on the i, plus "a circle is a person": three overlapping member discs at −space-2 with a canvas ring, the avatar stack
+  scales      stem width 96 = 4× space-6; gaps space-3 and space-4; corners radius-lg (24); member discs 56 = size-quick-action, overlap space-2, ring 2× the 2px avatar stroke
 -->
-<rect class="ink card" x="24" y="-24" width="176" height="288" rx="24"/>
-<rect class="lagoon card" x="216" y="96" width="128" height="168" rx="24"/>
-<rect class="tint card" x="360" y="144" width="144" height="120" rx="24"/>
-<circle class="clay" cx="248" cy="52" r="32"/><circle class="ring" cx="248" cy="52" r="32"/>
-<circle class="marigold" cx="304" cy="52" r="32"/><circle class="ring" cx="304" cy="52" r="32"/>
-<circle class="lagoon" cx="360" cy="52" r="32"/><circle class="ring" cx="360" cy="52" r="32"/>
-<circle class="ink" cx="416" cy="52" r="32"/><circle class="ring" cx="416" cy="52" r="32"/>
+<circle class="dot" cx="88" cy="68" r="44"/>
+<rect class="stem card" x="40" y="124" width="96" height="192" rx="24"/>
+<rect class="tint card" x="152" y="40" width="352" height="144" rx="24"/>
+<circle class="m1" cx="196" cy="236" r="28"/><circle class="ring" cx="196" cy="236" r="28"/>
+<circle class="m2" cx="244" cy="236" r="28"/><circle class="ring" cx="244" cy="236" r="28"/>
+<circle class="m3" cx="292" cy="236" r="28"/><circle class="ring" cx="292" cy="236" r="28"/>
 </svg>
 </div>
 <div class="words">
-<h1 class="name">Tripami</h1>
+<img class="logo" src="/_blob/4ce3ab8133eb58391fba2ee1fe704ccf" alt="Tripami">
 <p class="tag">Group trips, set quietly. Places and people bring the color.</p>
 </div>
 </div>

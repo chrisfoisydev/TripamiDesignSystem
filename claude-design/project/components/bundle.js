@@ -198,7 +198,7 @@
 
   function Avatar(p) {
     var size = p.size || 40, m = p.member;
-    var color = 'var(--member-' + (m.color || 'clay') + ')';
+    var color = 'var(--member-' + (m.color || 'lagoon') + ')';
     return h('span', { className: 'tp-avatar', style: { width: size, height: size }, title: m.name },
       m.photo
         ? h('span', { className: 'tp-avatar-ring', style: { background: color } }, h('img', { src: m.photo, alt: m.name }))
@@ -244,7 +244,7 @@
     var closed = !!p.decidedId;
     return h(Card, null,
       h('div', { className: 'tp-poll-head' }, h(Eyebrow, { className: 'tp-grow' }, p.eyebrow),
-        p.deadline && !closed ? h('span', { className: 'footnote tp-caution' }, p.deadline) : null),
+        p.deadline && !closed ? h('span', { className: 'footnote tp-accent' }, p.deadline) : null),
       h('div', { className: 'title3 tp-ink tp-poll-q' }, p.question),
       p.options.map(function (o) {
         var mine = o.id === p.myVoteId, won = o.id === p.decidedId, dim = closed && !won;

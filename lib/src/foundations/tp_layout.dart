@@ -49,15 +49,15 @@ abstract final class TPSize {
 /// hairline instead (see `TPElevation.of`).
 abstract final class TPElevation {
   static const card = [
-    BoxShadow(color: Color(0x0A16171B), offset: Offset(0, 1), blurRadius: 2),
-    BoxShadow(color: Color(0x0F16171B), offset: Offset(0, 6), blurRadius: 20),
+    BoxShadow(color: Color(0x0A02203A), offset: Offset(0, 1), blurRadius: 2),
+    BoxShadow(color: Color(0x0F02203A), offset: Offset(0, 6), blurRadius: 20),
   ];
   static const floating = [
-    BoxShadow(color: Color(0x0D16171B), offset: Offset(0, 2), blurRadius: 6),
-    BoxShadow(color: Color(0x1A16171B), offset: Offset(0, 12), blurRadius: 32),
+    BoxShadow(color: Color(0x0D02203A), offset: Offset(0, 2), blurRadius: 6),
+    BoxShadow(color: Color(0x1A02203A), offset: Offset(0, 12), blurRadius: 32),
   ];
   static const sheet = [
-    BoxShadow(color: Color(0x2416171B), offset: Offset(0, -8), blurRadius: 40),
+    BoxShadow(color: Color(0x2402203A), offset: Offset(0, -8), blurRadius: 40),
   ];
   static const floatingDark = [
     BoxShadow(color: Color(0x66000000), offset: Offset(0, 12), blurRadius: 32),

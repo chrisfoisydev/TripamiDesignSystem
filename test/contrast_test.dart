@@ -48,13 +48,13 @@ void main() {
   });
 
   test('members are assigned in join order and cycle', () {
-    expect(TPMemberColor.forJoinIndex(0), TPMemberColor.clay);
-    expect(TPMemberColor.forJoinIndex(8), TPMemberColor.clay);
-    expect(TPMemberColor.forJoinIndex(9), TPMemberColor.marigold);
+    expect(TPMemberColor.forJoinIndex(0), TPMemberColor.lagoon);
+    expect(TPMemberColor.forJoinIndex(8), TPMemberColor.lagoon);
+    expect(TPMemberColor.forJoinIndex(9), TPMemberColor.sky);
   });
 
   test('initials', () {
-    const m = TPMember(id: '1', name: 'Maya  Chen', color: TPMemberColor.clay);
+    const m = TPMember(id: '1', name: 'Maya  Chen', color: TPMemberColor.lagoon);
     expect(m.initials, 'MC');
     expect(m.firstName, 'Maya');
   });

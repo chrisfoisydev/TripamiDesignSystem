@@ -199,8 +199,8 @@ class TPAttribution extends StatelessWidget {
   }
 }
 
-/// 8pt dot. [urgent] = mentioned or action needed (critical); otherwise new
-/// since your last visit (accent). Use instead of numeric badges.
+/// 8pt dot. [urgent] = mentioned or action needed (accent orange); otherwise new
+/// since your last visit (ink). Red stays for errors. Use instead of numeric badges.
 class TPActivityDot extends StatelessWidget {
   const TPActivityDot({super.key, this.urgent = false});
   final bool urgent;
@@ -211,7 +211,7 @@ class TPActivityDot extends StatelessWidget {
     return Container(
       width: 8,
       height: 8,
-      decoration: BoxDecoration(shape: BoxShape.circle, color: urgent ? c.critical : c.accent),
+      decoration: BoxDecoration(shape: BoxShape.circle, color: urgent ? c.accent : c.textPrimary),
     );
   }
 }

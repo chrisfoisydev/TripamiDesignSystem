@@ -17,7 +17,7 @@ No decorative gradients, no colored section backgrounds, no illustrated mascots 
 > *Test:* cover the photos and avatars on a screen. What's left should be almost monochrome.
 
 ### 2. The accent shows state. Ink shows action.
-**Lagoon** (our single accent) marks *you, now, selected, live*: the active tab, your own vote, today in the itinerary, a selected date, a link. Primary actions are **ink pills**, as in Bonvoy. If everything is colored, nothing is.
+**Tripami orange** (our single accent, from the dot on the logo) marks *you, now, selected, live*: the active tab, your own vote, today in the itinerary, a selected date, a link. Primary actions are **ink pills**, as in Bonvoy. If everything is colored, nothing is.
 
 > *Budget:* accent covers ≤ 5% of any screen's pixels.
 
@@ -47,7 +47,7 @@ Tripami is built in Flutter for iOS and Android, but the bar is Apple-quality ut
 ### 6. Calm is a feature
 - One idea per section, one primary action per screen, one accent per screen.
 - Motion explains rather than entertains: sheets rise, cards settle, votes count up. No confetti, no bouncing.
-- Celebrations are restrained: a single Lagoon check and a short warm sentence ("Everyone's in.").
+- Celebrations are restrained: a single orange check and a short warm sentence ("Everyone's in.").
 - Copy is short, warm and specific, written by *the friend who planned the trip*: second person, names over numbers, no exclamation marks in system copy.
 
 ---
@@ -58,7 +58,7 @@ Marketing can be loud: big color fields, playful type, motion, illustration, ene
 
 | | Marketing (site, App Store, social) | Product UI |
 |---|---|---|
-| Color | Full brand palette, color fields, gradients allowed | Paper/ink chrome, Lagoon ≤ 5%, member colors for people only |
+| Color | Full brand palette, color fields, gradients allowed | Paper/ink chrome, orange accent ≤ 5%, member colors for people only |
 | Type | Expressive display sizes, tight tracking, mixed weights | Inter Regular/Medium/Semibold + Newsreader for diary moments only |
 | Imagery | Staged lifestyle, collage, stickers | The group's real photos and places; consistent scrims and glass chips |
 | Illustration | Characterful, full color | Grey-scale spot illustration with one accent touch, empty states only |

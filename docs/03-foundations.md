@@ -10,59 +10,67 @@ In Dart, read colors with `TPColors.of(context)` so light and dark resolve autom
 
 ## Color
 
-### Neutrals: paper & ink
-A warm, slightly yellow-biased neutral ramp. It's softer than Bonvoy's pure white, which makes it feel like a notebook and keeps photos warm.
+### Brand: from the logo
+The logo is a navy wordmark with an orange dot on the "i". Those two colors are the brand, and the product UI uses them the way the logo does: navy carries everything, and orange is one small, deliberate point.
+
+| Token | Value | Use |
+|---|---|---|
+| `color.brand.navy` | `#02203A` | Logo wordmark; also `text.primary` and the ink pill |
+| `color.brand.orange` | `#FC6316` | The logo dot and brand moments (cover, splash, marketing). 3.0:1 on white, so **never** text or a meaningful UI mark: the UI uses `accent` instead |
+
+### Neutrals: paper & navy ink
+Warm paper with navy ink, like a notebook. The dark theme is a deep navy night rather than neutral black, so it stays on brand.
 
 | Token | Light | Dark | Use |
 |---|---|---|---|
-| `color.bg.canvas` | `#FAFAF7` paper | `#0E0F11` | Screen background |
-| `color.bg.surface` | `#FFFFFF` | `#17181B` | Cards, sheets, sticky bars |
-| `color.bg.sunken` | `#F2F1EC` | `#0A0B0C` | Section bands, input wells, skeletons |
-| `color.bg.raised` | `#FFFFFF` | `#1F2024` | Floating search, popovers |
-| `color.border.hairline` | `#E6E4DE` | `#2A2B30` | Row dividers, card outlines |
-| `color.border.strong` | `#D6D3CB` | `#3A3B41` | Outline buttons, chips, input underline |
-| `color.text.primary` | `#16171B` ink | `#F2F1EC` | Titles, body |
-| `color.text.secondary` | `#5C5E66` | `#A6A7AD` | Metadata, eyebrows, captions |
-| `color.text.tertiary` | `#6F7178` | `#8A8C93` | Placeholders, disabled labels. Use on canvas/surface only, not on sunken |
+| `color.bg.canvas` | `#FAFAF7` paper | `#0B1220` | Screen background |
+| `color.bg.surface` | `#FFFFFF` | `#121A29` | Cards, sheets, sticky bars |
+| `color.bg.sunken` | `#F2F1EC` | `#070C16` | Section bands, input wells, skeletons |
+| `color.bg.raised` | `#FFFFFF` | `#1A2333` | Floating search, popovers |
+| `color.border.hairline` | `#E6E4DE` | `#243045` | Row dividers, card outlines |
+| `color.border.strong` | `#D6D3CB` | `#334058` | Outline buttons, chips, input underline |
+| `color.text.primary` | `#02203A` navy | `#F2F1EC` | Titles, body |
+| `color.text.secondary` | `#525D6E` | `#A7AFBD` | Metadata, eyebrows, captions |
+| `color.text.tertiary` | `#66707F` | `#8C95A3` | Placeholders, disabled labels. Use on canvas/surface only, not on sunken |
 | `color.text.onImage` | `#FFFFFF` | `#FFFFFF` | Text on photo scrims |
-| `color.text.inverse` | `#FAFAF7` | `#16171B` | Text on ink pill |
+| `color.text.inverse` | `#FAFAF7` | `#02203A` | Text on ink pill |
 
-Contrast (WCAG 2.1): primary 17.1:1, secondary 6.2:1 on canvas (5.7:1 on sunken), tertiary 4.9:1 on surface. All pass AA, which fixes a Bonvoy weak spot.
+Contrast (WCAG 2.1): primary 15.8:1, secondary 6.4:1 on canvas (5.9:1 on sunken), tertiary 5.0:1 on surface. All pass AA, which fixes a Bonvoy weak spot.
 
 ### Action: ink
 | Token | Light | Dark |
 |---|---|---|
-| `color.action.primary` | `#16171B` | `#F2F1EC` |
-| `color.action.primaryPressed` | `#2C2D33` | `#D9D8D2` |
-| `color.action.primaryText` | `#FAFAF7` | `#16171B` |
+| `color.action.primary` | `#02203A` | `#F2F1EC` |
+| `color.action.primaryPressed` | `#12355A` | `#D9D8D2` |
+| `color.action.primaryText` | `#FAFAF7` | `#02203A` |
 
 In dark mode the ink pill inverts to a **paper pill**. It stays the highest-contrast object on screen, which matches Bonvoy's black pill on white.
 
-### Accent: Lagoon
-A deep sea-glass teal. It's calm, it reads as travel and water, it's clearly distinct from Bonvoy's copper, and it holds AA on both white and ink.
+### Accent: Tripami orange
+The logo's orange, deepened just enough to pass AA as text on every light ground (5.3:1 on canvas, 4.9:1 on sunken, 5.0:1 on its own subtle tint). In dark mode it brightens to `#FF7A3D` (6.9:1 on surface).
 
 | Token | Light | Dark | Use |
 |---|---|---|---|
-| `color.accent.default` | `#0B6B61` | `#5CC4B4` | Active tab indicator, selected states, links, "today", your vote |
-| `color.accent.pressed` | `#08564E` | `#7DD3C5` | Pressed links |
-| `color.accent.subtle` | `#E3F1EE` | `#12302C` | Selected chip fill, today's row tint |
-| `color.accent.onAccent` | `#FFFFFF` | `#0E0F11` | Text/glyph on accent (checkmarks only) |
+| `color.accent.default` | `#B8400F` | `#FF7A3D` | Active tab indicator, selected states, links, "now", your vote, deadlines, the needs-you dot |
+| `color.accent.pressed` | `#9A3409` | `#FF9866` | Pressed links |
+| `color.accent.subtle` | `#FFF1E8` | `#3A1D10` | Selected chip fill, today's row tint |
+| `color.accent.onAccent` | `#FFFFFF` | `#02203A` | Text/glyph on accent (checkmarks only) |
 
 **Rules:** the accent is never a primary-button fill, never a large background, and covers ≤ 5% of a screen.
 
 ### Member colors: the social layer
-Eight hues, assigned to travelers in join order (the trip creator gets `clay`). They're the *only* saturated UI colors besides the accent, and they always mean **"this belongs to this person."**
+Eight hues, assigned to travelers in join order (the trip creator gets `lagoon`). None sits near the brand orange, so a person's color is never mistaken for the accent. They're the *only* saturated UI colors besides the accent, and they always mean **"this belongs to this person."**
 
 | Token | Hex | White text contrast |
 |---|---|---|
-| `color.member.clay` | `#B4553A` | 4.9:1 |
-| `color.member.marigold` | `#9A6410` | 5.0:1 |
-| `color.member.fern` | `#3F7D4E` | 4.9:1 |
+| `color.member.lagoon` | `#0B6B61` | 6.4:1 |
 | `color.member.sky` | `#2F73A8` | 5.1:1 |
 | `color.member.iris` | `#5160C9` | 5.4:1 |
 | `color.member.plum` | `#7F4FAE` | 5.8:1 |
 | `color.member.rose` | `#B2466E` | 5.3:1 |
+| `color.member.fern` | `#3F7D4E` | 4.9:1 |
 | `color.member.olive` | `#66692B` | 5.8:1 |
+| `color.member.slate` | `#4F5D75` | 6.6:1 |
 
 Used for: avatar fill (white initials) when there's no photo, a 2pt avatar ring when there is one, a voter's dot on a poll, the payer marker on an expense, the "added by" mark on an itinerary item, and a cursor/presence dot. **Never** for buttons, backgrounds, or text longer than a name. Groups larger than 8 cycle the palette and are told apart by initials.
 
@@ -70,15 +78,15 @@ Used for: avatar fill (white initials) when there's no photo, a 2pt avatar ring 
 | Token | Light | Dark | Use |
 |---|---|---|---|
 | `color.status.positive` | `#2E7D4F` | `#6FCF97` | Settled up, confirmed |
-| `color.status.caution` | `#94600F` | `#F2B84B` | Unpaid, deadline soon |
-| `color.status.critical` | `#B42318` | `#F97066` | Errors, destructive actions, @mention dot |
+| `color.status.caution` | `#7A5A00` | `#E8C054` | Unpaid, deadline soon |
+| `color.status.critical` | `#B3133F` | `#FF6B8A` | Errors and destructive actions only. Shifted toward crimson so it never reads as the orange accent |
 
 ### Imagery overlays
 | Token | Value | Use |
 |---|---|---|
-| `color.overlay.scrim` | `linear-gradient(180deg, rgba(14,15,17,0) 40%, rgba(14,15,17,.62) 100%)` | Text on photos (always bottom-aligned) |
-| `color.overlay.glass` | `rgba(22,23,27,.48)` + `blur(16px)` | Chips and icon buttons on photos |
-| `color.overlay.dim` | `rgba(14,15,17,.36)` | Behind sheets |
+| `color.overlay.scrim` | `linear-gradient(180deg, rgba(2,16,30,0) 40%, rgba(2,16,30,.62) 100%)` | Text on photos (always bottom-aligned) |
+| `color.overlay.glass` | `rgba(2,32,58,.48)` + `blur(16px)` | Chips and icon buttons on photos |
+| `color.overlay.dim` | `rgba(2,32,58,.36)` | Behind sheets |
 
 ---
 
@@ -177,9 +185,9 @@ Shadows are soft, wide and low-opacity, warm-tinted with ink rather than pure bl
 | Token | Value (light) | Use |
 |---|---|---|
 | `elevation.0` | none, 1px hairline border | Flat lists, rows on canvas |
-| `elevation.1` | `0 1px 2px rgba(22,23,27,.04), 0 6px 20px rgba(22,23,27,.06)` | Cards |
-| `elevation.2` | `0 2px 6px rgba(22,23,27,.05), 0 12px 32px rgba(22,23,27,.10)` | Floating search, quick-action circles, sticky bars, floating "Map" pill |
-| `elevation.3` | `0 −8px 40px rgba(22,23,27,.14)` | Sheets |
+| `elevation.1` | `0 1px 2px rgba(2,32,58,.04), 0 6px 20px rgba(2,32,58,.06)` | Cards |
+| `elevation.2` | `0 2px 6px rgba(2,32,58,.05), 0 12px 32px rgba(2,32,58,.10)` | Floating search, quick-action circles, sticky bars, floating "Map" pill |
+| `elevation.3` | `0 −8px 40px rgba(2,32,58,.14)` | Sheets |
 
 In dark mode shadows are replaced by surface lightness (`bg.surface` → `bg.raised`) plus a hairline border. `TPElevation.of(brightness)` returns the right list.
 
@@ -189,7 +197,7 @@ In dark mode shadows are replaced by surface lightness (`bg.surface` → `bg.rai
 - **Phosphor Icons** (MIT), bundled in the package and exposed as a curated set: `TPIcons.*` (regular, the default) and `TPIconsFill.*` (filled). Phosphor's regular weight has the same calm, even stroke as SF Symbols, and it ships a matching fill for every glyph.
 - Sizes: 22pt for leading icons in list rows, nav bars and quick actions; 18pt for chevrons and inline status; 24pt in the tab bar.
 - Outline by default; the **filled** variant marks the active tab or a toggled state (saved heart, your vote).
-- Icon color follows the text color it sits next to; Lagoon only on active/selected.
+- Icon color follows the text color it sits next to; the accent only on active/selected.
 - No emoji as icons. Emoji appear only as user reactions.
 - To add an icon, add its codepoint to `lib/src/foundations/tp_icons.dart` in both classes. The curated list keeps the vocabulary small.
 

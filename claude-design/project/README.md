@@ -3,9 +3,9 @@ Tripami is a collaborative group-travel app. Its product UI pairs a hotel concie
 ## Six rules, in priority order
 
 1. **Places and people bring the color.** Chrome is `canvas`, `surface` and `text-primary` ink. Color comes from trip photos and the eight `member-*` colors. Cover the photos and avatars on any layout: what's left should be almost monochrome.
-2. **The accent shows state; ink shows action.** `accent` (Lagoon) marks *you, now, selected, live*: the active tab, a selected chip, your vote, the current itinerary item, links. It covers at most 5% of a layout and is never a button fill. Primary actions are `action-primary` ink pills.
+2. **The accent shows state; ink shows action.** `accent` (Tripami orange) marks *you, now, selected, live*: the active tab, a selected chip, your vote, the current itinerary item, links. It covers at most 5% of a layout and is never a button fill. Primary actions are `action-primary` ink pills.
 3. **Editorial hierarchy, set quietly.** Use size, case and space instead of weight or color. Large titles (`title1`) are Regular. Never use Bold; the heaviest weight is 600, for `eyebrow` only. Uppercase is only for `eyebrow` labels, never for user content.
-4. **Social presence without noise.** People appear as avatars and first names inside content ("Waiting on Jonah and Priya"), not as notification feeds. Show activity with an `ActivityDot`, not a count badge. Emoji appear only as user reactions.
+4. **Social presence without noise.** People appear as avatars and first names inside content ("Waiting on Jonah and Priya"), not as notification feeds. Show activity with an `ActivityDot` (navy for new, orange for needs-you), not a count badge. Emoji appear only as user reactions.
 5. **Utility you don't notice.** Every secondary task is a sheet with a grabber. One primary action per view. Touch targets are at least `size-hit-target`. Every text pairing passes WCAG AA in both themes.
 6. **Calm is a feature.** Motion explains, it doesn't decorate: 120–480ms on `cubic-bezier(0.2, 0, 0, 1)`, and it collapses under reduced motion. Celebrate with a single `accent` check and one warm sentence. No confetti.
 
@@ -17,15 +17,24 @@ Tripami is a collaborative group-travel app. Its product UI pairs a hotel concie
 - **Examples:** "Where's the group headed?" · "Lisbon in 6 days. Here's where things stand." · "Booked. Everyone can see it in the plan." · "Nothing saved yet. Add a place and the group can vote on it." · "Couldn't save the expense. Check your connection and try again."
 - **Numbers:** money, times and counts use tabular figures (`font-variant-numeric: tabular-nums`). Dates are written "Thu 12 Jun", ranges "12–17 Jun", times in 24h ("20:30").
 
+## Logo
+
+- The wordmark is `tripami-wordmark.webp` in the `Logos` group: `brand-navy` letters with a `brand-orange` dot on the i. Use the file as supplied: never redraw, recolor, outline, stretch or re-typeset it, and never detach the dot.
+- Place it on light grounds (`canvas`, `surface`, `logo-ground`). There is no reversed version yet, so on dark screens set it on a `logo-ground` plate.
+- Keep clear space of at least the dot's diameter around it.
+- The product UI borrows the logo's logic: navy carries everything, and orange is one small, deliberate point.
+
 ## Color
+
+- The brand is two colors from the logo: `brand-navy` (#02203A) and `brand-orange` (#FC6316). `brand-orange` is 3.0:1 on white, so it appears only in the logo, the cover and brand moments. In the UI, orange is `accent`, the same hue deepened to pass AA.
 
 - Screens sit on `canvas` (warm paper). Cards, sheets, sticky bars and the tab bar sit on `surface`. Use `sunken` for section bands on hub screens, input wells and the "+N" avatar.
 - Text: `text-primary` for titles and body; `text-secondary` for metadata, eyebrows and captions (AA on every ground); `text-tertiary` for placeholders on `canvas` or `surface` only.
 - Divide with `hairline`. Outline controls with `border-strong`.
 - **Primary action:** `action-primary` fill with `action-primary-text`. In dark mode it inverts to a paper pill, so it stays the highest-contrast object.
 - **Accent:** use `accent` for state, `accent-subtle` for selected fills (with `accent` text on top), and `on-accent` for a glyph on an accent fill.
-- **Members:** each traveler gets a `member-*` color in join order. The trip creator is `member-clay`. Use them for avatar fills (white initials pass AA), avatar rings, vote and payer dots, and pull-quote rules. Never use them for buttons, backgrounds or text longer than a name.
-- **Status:** `positive` (settled, confirmed), `caution` (you owe, closes soon), `critical` (errors, destructive actions, the urgent dot). Always pair status color with a word.
+- **Members:** each traveler gets a `member-*` color in join order. The trip creator is `member-lagoon`. None of the member hues sits near the orange, so a person is never mistaken for the accent. Use them for avatar fills (white initials pass AA), avatar rings, vote and payer dots, and pull-quote rules. Never use them for buttons, backgrounds or text longer than a name.
+- **Status:** `positive` (settled, confirmed), `caution` (you owe), `critical` (errors and destructive actions only; crimson, so it never reads as the accent). Always pair status color with a word.
 - **On photos:** put text bottom-left in `text-on-image` over the scrim (transparent at 40% to `scrim-end`). Put metadata in glass chips (`glass` with a 16px backdrop blur). Never place a colored block over a photo.
 
 ## Type
@@ -47,7 +56,7 @@ Tripami is a collaborative group-travel app. Its product UI pairs a hotel concie
 - Use Phosphor Icons, **regular** weight, as the default (the `Icons` asset group, or `Tripami.Icon` with `name`). Use the **fill** variant only for the active tab or a toggled state (saved heart, your vote).
 - Sizes: 22px for leading icons in rows, nav bars and quick actions; 18px for chevrons and inline status; 24px in the tab bar.
 - Icons take the color of the text beside them. Use `accent` only when active or selected.
-- The SVG files in the asset group are single-ink `#16171B` (`text-primary`, light theme). In code, use `Tripami.Icon`, which draws in `currentColor`.
+- The SVG files in the asset group are single-ink near-black `#16171B`. In code, use `Tripami.Icon`, which draws in `currentColor` and so follows `text-primary` navy.
 - No emoji as icons.
 
 ## Imagery

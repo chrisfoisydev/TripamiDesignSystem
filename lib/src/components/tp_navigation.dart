@@ -33,7 +33,7 @@ class TPTabItem {
   ];
 }
 
-/// Tab bar with Bonvoy's top-edge indicator, in Lagoon. Outline icons,
+/// Tab bar with Bonvoy's top-edge indicator, in the accent orange. Outline icons,
 /// filled when active. Activity is a dot, never a number.
 class TPTabBar extends StatelessWidget {
   const TPTabBar({super.key, required this.items, required this.currentIndex, required this.onTap});
@@ -120,7 +120,7 @@ class _TabCell extends StatelessWidget {
   }
 }
 
-/// Text tabs with a 2pt Lagoon underline on the active tab and a hairline
+/// Text tabs with a 2pt accent underline on the active tab and a hairline
 /// under the row: Upcoming · Planning · Past.
 class TPUnderlineTabs extends StatelessWidget {
   const TPUnderlineTabs({super.key, required this.labels, required this.currentIndex, required this.onChanged});
@@ -181,7 +181,7 @@ class TPUnderlineTabs extends StatelessWidget {
   }
 }
 
-/// Filter chip. Selected uses Lagoon (subtle fill, accent border and text).
+/// Filter chip. Selected uses the accent (subtle fill, accent border and text).
 /// [count] shows an ink badge on the leading edge.
 class TPFilterChip extends StatelessWidget {
   const TPFilterChip({

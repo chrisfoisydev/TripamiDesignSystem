@@ -89,7 +89,7 @@ Grey-scale illustration with **one** spot of accent (an orange roof, orange chai
 | Bonvoy does | Why it works | Tripami translation |
 |---|---|---|
 | Neutral chrome, color from photos | One color source per screen = calm | Neutral chrome; color from **places and people** (photos + member colors) |
-| Accent only for state and location | Accent keeps meaning | Lagoon accent marks *you / now / selected*. It is never a big fill |
+| Accent only for state and location | Accent keeps meaning | The orange accent marks *you / now / selected*. It is never a big fill |
 | Ink-black pill as the primary action | Confident, timeless, never fights photos | Same: **ink pill** is the primary action |
 | Regular-weight large titles + uppercase eyebrows | Editorial hierarchy without shouting | Inter regular titles + eyebrows, plus a **serif (Newsreader)** for the diary voice |
 | Saturated color only for identity | Emotion has a place | **Member colors** identify people; trip covers carry emotion |

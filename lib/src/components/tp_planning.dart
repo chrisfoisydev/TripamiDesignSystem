@@ -21,7 +21,7 @@ class TPPollOption {
 }
 
 /// Group decision card. Each option shows its voters' faces and a 3pt share
-/// bar: ink for others, Lagoon for the option you voted for.
+/// bar: ink for others, accent orange for the option you voted for.
 class TPPollCard extends StatelessWidget {
   const TPPollCard({
     super.key,
@@ -62,7 +62,7 @@ class TPPollCard extends StatelessWidget {
             children: [
               Expanded(child: TPEyebrow(eyebrow)),
               if (deadline != null && !closed)
-                Text(deadline!, style: TPType.footnote.copyWith(color: c.caution)),
+                Text(deadline!, style: TPType.footnote.copyWith(color: c.accent)),
             ],
           ),
           const SizedBox(height: TPSpace.s2),

@@ -3,12 +3,18 @@
 > **Marriott Bonvoy's editorial restraint + a modern social travel diary + Apple-level utility.**
 > The product UI is calmer and more refined than Tripami's marketing.
 
-Tripami's components, colors and type, in two forms:
+Tripami's logo, components, colors and type, in two forms:
 
 - **Claude Design:** the [Tripami design system artifact](https://claude.ai/artifact/RfRNGEUDTXnSNNXjGYTbpa). This is what Claude's design and slide tools build from. Its source is in [`claude-design/`](claude-design).
 - **Flutter / Dart:** the `tripami_design_system` package in [`lib/`](lib), with `TripamiTheme`, tokens and `TP*` widgets.
 
 Both hold the same tokens, and components match by name and props. The Claude Design set also includes `Icon`, `TextField`, `Toggle` and `Toast`; in Flutter those come from `TPIcons` and the standard widgets that `TripamiTheme` restyles.
+
+## Logo
+
+![Tripami](brand/tripami-wordmark.webp)
+
+[`brand/tripami-wordmark.webp`](brand/tripami-wordmark.webp) is the wordmark as supplied: navy `#02203A` letters with an orange `#FC6316` dot, on a transparent ground. There's no reversed version yet, so on dark grounds it sits on a paper plate.
 
 ## Docs
 
@@ -19,7 +25,7 @@ Both hold the same tokens, and components match by name and props. The Claude De
 
 ## The system in one minute
 
-- **Color:** paper `canvas` (`#FAFAF7`), white `surface` and ink `text-primary` (`#16171B`). One accent, Lagoon (`#0B6B61`), used for state only. Eight `member-*` colors identify travelers.
+- **Color:** paper `canvas` (`#FAFAF7`), white `surface` and navy `text-primary` (`#02203A`, the logo's wordmark color). Navy ink and one accent, Tripami orange, both from the logo: `#FC6316` for the logo and brand moments, `#B8400F` (text-safe) for state in the UI. Eight `member-*` colors identify travelers.
 - **Type:** Inter for UI (Regular titles, uppercase eyebrows, no Bold). Newsreader is the diary voice for trip names, day headings and memories.
 - **Shape:** pills to act, rounded cards to open, circles for people and tools, sheets for side tasks, dashed boxes for what the group hasn't filled yet.
 - **Icons:** a curated Phosphor set, regular by default and fill for active states.

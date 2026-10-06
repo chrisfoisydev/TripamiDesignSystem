@@ -35,7 +35,7 @@ Ink pill, height 44, `elevation.2`, centered 24pt above the tab bar. One per scr
 ## Inputs
 
 ### Search pill
-Height 56, `bg.raised`, `radius.pill`, `elevation.2`. Leading `magnifyingglass` in **Lagoon**, placeholder in `text.secondary`.
+Height 56, `bg.raised`, `radius.pill`, `elevation.2`. Leading `magnifyingglass` in the **accent**, placeholder in `text.secondary`.
 Filled state: two lines, destination in `type.body` and dates/travelers in `type.footnote`, with a trailing `pencil` to edit.
 On a hero photo it floats over the image, overlapping the photo's top edge.
 *Bonvoy ref:* "Where can we take you?" → Tripami placeholder **"Where's the group headed?"**
@@ -51,10 +51,10 @@ For chat composer, comments and notes: `bg.sunken`, `radius.sm`, 12/16 padding, 
 ### Filter chip · `TPFilterChip`
 Height 36, `radius.pill`, 1pt `border.strong`, `type.buttonSmall`, optional trailing `chevron.down`.
 Selected: `accent.subtle` fill, `accent.default` border and text, leading `checkmark`. With a count, a 20pt ink circle holding white `type.caption` numerals sits on the leading edge.
-*Bonvoy ref:* "Room Type", "Points", "Standard Rates" chips. *Change:* selection uses Lagoon, not grey.
+*Bonvoy ref:* "Room Type", "Points", "Standard Rates" chips. *Change:* selection uses the accent, not grey.
 
 ### Segmented tabs: underline · `TPUnderlineTabs`
-Text tabs in `type.callout`, `text.secondary`. Active tab is `text.primary` with a 2pt Lagoon underline matching the text width. A hairline runs under the whole row.
+Text tabs in `type.callout`, `text.secondary`. Active tab is `text.primary` with a 2pt accent underline matching the text width. A hairline runs under the whole row.
 Tripami: **Upcoming · Planning · Past** (Trips), **Plan · Ideas · Booked** (Itinerary).
 *Bonvoy ref:* Current / Past / Canceled.
 
@@ -105,7 +105,7 @@ Uses: vote on an option, add expense, invite, item details, filters, confirmatio
 *Bonvoy ref:* "FROM 40 USD / Night · Select Room".
 
 ### Empty state · `TPEmptyState`
-A **dashed** (`border.strong`, 1.5pt, 6/6 dash) `radius.lg` container with 32pt padding. Inside, from the top: an optional 120pt grey-scale spot illustration with one Lagoon detail, a `type.title3` title, a one-line `type.callout` description, and a small primary pill.
+A **dashed** (`border.strong`, 1.5pt, 6/6 dash) `radius.lg` container with 32pt padding. Inside, from the top: an optional 120pt grey-scale spot illustration with one orange detail, a `type.title3` title, a one-line `type.callout` description, and a small primary pill.
 *Bonvoy ref:* "Create your first wishlist". *Change:* copy invites the group ("Add a place and everyone can vote on it").
 
 ### Toast · `SnackBar` via `TripamiTheme`
@@ -128,15 +128,15 @@ Overlap −8pt, 2pt `bg.surface` stroke between avatars, max 4 shown, then a "+N
 
 ### Poll / vote card · `TPPollCard`
 Content card with:
-1. Eyebrow: `DINNER · FRI 13 JUN`, plus a deadline chip if any ("Closes 18:00" in `status.caution`).
+1. Eyebrow: `DINNER · FRI 13 JUN`, plus a deadline chip if any ("Closes 18:00" in `accent`).
 2. Question in `type.title3`: "Where should we eat on Friday?"
-3. Options as rows: 56pt thumbnail, name, `type.footnote` details, and on the right the **voter avatars (24pt)** + count in tabular figures. A 3pt bar under each option shows its share: `border.hairline` track, `text.primary` fill, and **Lagoon** fill for the option *you* voted for.
+3. Options as rows: 56pt thumbnail, name, `type.footnote` details, and on the right the **voter avatars (24pt)** + count in tabular figures. A 3pt bar under each option shows its share: `border.hairline` track, `text.primary` fill, and **accent** fill for the option *you* voted for.
 4. Footer: "Waiting on Jonah and Priya" + primary small pill "Vote" (or "Change vote").
-Closed state: winner row gets a `checkmark.circle.fill` in Lagoon and the label "Decided". Other rows go to `text.secondary`.
+Closed state: winner row gets a `checkmark.circle.fill` in the accent and the label "Decided". Other rows go to `text.secondary`.
 
 ### Itinerary item · `TPItineraryItem`
 Timeline layout: 56pt time column (`type.subhead` tabular, `text.secondary`) | 1pt `border.hairline` rail with an 8pt node | content: title `type.body` Medium, place + duration `type.footnote`, attribution line, reaction row.
-- Now/next item: node and time in **Lagoon**, row tinted `accent.subtle`.
+- Now/next item: node and time in the **accent**, row tinted `accent.subtle`.
 - Booked: trailing `checkmark.seal` in `text.secondary` + confirmation code in tabular footnote.
 - Idea (not yet booked): dashed node, title in `text.secondary`.
 
@@ -151,14 +151,14 @@ Up to 3 user emoji reactions as 28pt `bg.sunken` pills holding emoji + count (`t
 Avatar 32 → name `type.subhead` Medium + time `type.footnote` → text `type.callout`. Threads are indented 40pt. Mentions are `text.primary` Medium, never colored.
 
 ### Activity dot · `TPActivityDot`
-8pt dot. `accent.default` = new since your last visit. `status.critical` = you were mentioned or something needs your action. No numeric badges except on the Chat tab (max "9+").
+8pt dot. `text.primary` (navy) = new since your last visit. `accent.default` (orange) = you were mentioned or something needs your action. Red is kept for errors. No numeric badges except on the Chat tab (max "9+").
 
 ---
 
 ## Navigation
 
 ### Tab bar · `TPTabBar`
-5 tabs: **Trips · Plan · Chat · Memories · You**. `bg.surface` with a top hairline, 24pt `TPIcons` (outline, filled when active), `type.caption` labels. The active item is `text.primary` with a 2pt Lagoon indicator **on the top edge** of the bar, 32pt wide. Inactive items use `text.tertiary`.
+5 tabs: **Trips · Plan · Chat · Memories · You**. `bg.surface` with a top hairline, 24pt `TPIcons` (outline, filled when active), `type.caption` labels. The active item is `text.primary` with a 2pt accent indicator **on the top edge** of the bar, 32pt wide. Inactive items use `text.tertiary`.
 *Bonvoy ref:* the same top-edge indicator in copper.
 
 ### Navigation bar

@@ -2,7 +2,7 @@
 import type { ReactNode } from 'react';
 
 export type IconName = string; // one of Tripami.iconNames (Phosphor, camelCase: 'mapPin', 'calendarBlank', …)
-export type MemberColor = 'clay' | 'marigold' | 'fern' | 'sky' | 'iris' | 'plum' | 'rose' | 'olive';
+export type MemberColor = 'lagoon' | 'sky' | 'iris' | 'plum' | 'rose' | 'fern' | 'olive' | 'slate';
 export interface Member { name: string; color: MemberColor; photo?: string; online?: boolean }
 
 export interface IconProps { name: IconName; size?: number; fill?: boolean; label?: string; color?: string; className?: string }

@@ -86,3 +86,4 @@ Icons warning-fill.svg f9353e7ce2ed5c5102260b0ed659e1ae 397
 Icons warning.svg 3ade232a5b966a9f6f0ec96847a1edc5 567
 Icons x-fill.svg 375526ab763e9dabb0113b1f653b2544 403
 Icons x.svg bf04f0a483d9c59c3f03d095136030fe 308
+Logos tripami-wordmark.webp 4ce3ab8133eb58391fba2ee1fe704ccf 72018 image/webp

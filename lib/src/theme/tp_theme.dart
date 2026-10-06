@@ -16,7 +16,7 @@ import '../foundations/tp_type.dart';
 /// ```
 ///
 /// Material components are restyled to follow the system: ink pills for
-/// primary actions, Lagoon only for selection, underline inputs, sheets with a
+/// primary actions, the accent only for selection, underline inputs, sheets with a
 /// grabber, and no Material tint or ripple color shifts.
 abstract final class TripamiTheme {
   static ThemeData light() => _build(Brightness.light, TPColors.light);
@@ -48,7 +48,7 @@ abstract final class TripamiTheme {
       inversePrimary: brightness == Brightness.light
           ? TPColors.dark.accent
           : TPColors.light.accent,
-      shadow: const Color(0xFF16171B),
+      shadow: const Color(0xFF02203A),
       scrim: c.dim,
       surfaceTint: Colors.transparent,
     );
@@ -245,7 +245,7 @@ abstract final class TripamiTheme {
         contentTextStyle: TPType.callout.copyWith(color: c.textSecondary),
         barrierColor: c.dim,
       ),
-      // Toast: ink capsule with inverse text; Undo in the opposite theme's Lagoon.
+      // Toast: ink capsule with inverse text; Undo in the opposite theme's accent.
       snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
         backgroundColor: c.actionPrimary,

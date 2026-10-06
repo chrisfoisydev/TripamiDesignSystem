@@ -71,7 +71,7 @@
 .tp-toggle-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); min-height: var(--size-row-min); color: var(--text-primary); }
 .tp-toggle { position: relative; width: 51px; height: 31px; border-radius: var(--radius-pill); border: 0; padding: 0; background: var(--border-strong); cursor: pointer; transition: background-color 200ms; }
 .tp-toggle.is-on { background: var(--action-primary); }
-.tp-toggle-thumb { position: absolute; top: 2px; left: 2px; width: 27px; height: 27px; border-radius: 50%; background: var(--surface); box-shadow: 0 2px 6px rgba(22, 23, 27, 0.2); transition: transform 200ms cubic-bezier(0.2, 0, 0, 1); }
+.tp-toggle-thumb { position: absolute; top: 2px; left: 2px; width: 27px; height: 27px; border-radius: 50%; background: var(--surface); box-shadow: 0 2px 6px rgba(2, 32, 58, 0.2); transition: transform 200ms cubic-bezier(0.2, 0, 0, 1); }
 .tp-toggle.is-on .tp-toggle-thumb { transform: translateX(20px); background: var(--action-primary-text); }
 
 /* ---------- Text ---------- */
@@ -143,8 +143,8 @@ button.tp-row { cursor: pointer; }
 .tp-stack-more { place-items: center; border-radius: 50%; background: var(--sunken); color: var(--text-secondary); }
 .tp-stack.on-image .tp-stack-more { background: var(--glass); color: var(--text-on-image); }
 .tp-attr { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--text-secondary); }
-.tp-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex: none; }
-.tp-dot.is-urgent { background: var(--critical); }
+.tp-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--text-primary); flex: none; }
+.tp-dot.is-urgent { background: var(--accent); }
 .tp-reactions { display: flex; flex-wrap: wrap; gap: 6px; }
 .tp-reaction { display: inline-flex; align-items: center; height: 28px; padding: 0 var(--space-2); border-radius: var(--radius-pill); background: var(--sunken); color: var(--text-secondary); border: 1px solid transparent; cursor: pointer; font-family: var(--font-ui); }
 .tp-reaction.is-mine { background: var(--accent-subtle); border-color: var(--accent); color: var(--accent); }

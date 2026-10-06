@@ -23,10 +23,26 @@
   ],
   "sections": {},
   "groups": [
+    "Logos",
     "Icons",
     "Placeholders"
   ],
   "assetGroups": {
+    "Logos": {
+      "name": "Logos",
+      "tile": "l",
+      "order": [
+        "tripami-wordmark.webp"
+      ],
+      "files": {
+        "tripami-wordmark.webp": {
+          "name": "tripami-wordmark.webp",
+          "blob": "4ce3ab8133eb58391fba2ee1fe704ccf",
+          "size": 72018,
+          "type": "image/webp"
+        }
+      }
+    },
     "Icons": {
       "name": "Icons",
       "tile": "xs",
@@ -667,8 +683,8 @@
   },
   "lastChange": {
     "by": "Claude",
-    "at": "2026-10-06T21:56:54Z",
+    "at": "2026-10-06T22:37:32Z",
     "via": "Claude Code",
-    "note": "First version: tokens, type, icons and 29 components from the Tripami Flutter design system."
+    "note": "Rebased on the Tripami logo: navy ink, orange accent, logo asset, new member palette and cover."
   }
 }
