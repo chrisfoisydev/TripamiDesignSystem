@@ -20,7 +20,11 @@
 .tp-icon { flex: none; display: inline-block; vertical-align: middle; }
 
 /* Focus: a solid 2px ink ring, offset, on every surface. */
-.tp-preview :focus-visible { outline: 2px solid var(--text-primary); outline-offset: 2px; }
+.tp-preview :focus-visible, [class^="tp-"]:focus-visible, [class*=" tp-"]:focus-visible { outline: 2px solid var(--text-primary); outline-offset: 2px; }
+/* 48px tap areas around small controls, without changing how they look. */
+.tp-chip, .tp-reaction { position: relative; }
+.tp-chip::after { content: ""; position: absolute; inset: -6px 0; }
+.tp-reaction::after { content: ""; position: absolute; inset: -10px -2px; }
 
 /* ---------- Button ---------- */
 .tp-btn { font-family: var(--font-ui); display: inline-flex; align-items: center; justify-content: center; gap: var(--space-1); border: 0; cursor: pointer; white-space: nowrap; transition: transform 120ms cubic-bezier(0.2, 0, 0, 1), background-color 120ms; }

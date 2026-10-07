@@ -15,6 +15,7 @@ export 'src/components/tp_navigation.dart';
 export 'src/components/tp_people.dart';
 export 'src/components/tp_planning.dart';
 export 'src/components/tp_text.dart';
+export 'src/foundations/tp_a11y.dart';
 export 'src/foundations/tp_colors.dart';
 export 'src/foundations/tp_icons.dart';
 export 'src/foundations/tp_layout.dart';

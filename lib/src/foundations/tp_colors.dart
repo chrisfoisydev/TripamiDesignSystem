@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'tp_palette.dart';
+import 'tp_ramps.dart';
 
 /// Semantic colors, resolved for the current brightness.
 ///
@@ -125,6 +126,34 @@ class TPColors extends ThemeExtension<TPColors> {
     positive: TPPalette.positiveDark,
     caution: TPPalette.cautionDark,
     critical: TPPalette.criticalDark,
+  );
+
+  /// For iOS "Increase Contrast" / Android high-contrast text: every text color
+  /// and the accent reach 7:1 (AAA) on canvas, surface and sunken, and borders
+  /// that carry meaning reach 3:1. Same layout, same hues, more ink.
+  static final lightHighContrast = light.copyWith(
+    hairline: TPRamps.neutral[400],
+    borderStrong: TPRamps.neutral[500],
+    textSecondary: TPRamps.neutral[800],
+    textTertiary: TPRamps.neutral[700],
+    accent: TPRamps.orange[700],
+    accentPressed: TPRamps.orange[800],
+    accentSubtle: TPRamps.orange[50],
+    positive: TPRamps.green[700],
+    caution: TPRamps.amber[700],
+    critical: TPRamps.red[700],
+  );
+
+  static final darkHighContrast = dark.copyWith(
+    hairline: TPRamps.neutral[600],
+    borderStrong: TPRamps.neutral[500],
+    textSecondary: TPRamps.neutral[100],
+    textTertiary: TPRamps.neutral[200],
+    accent: TPRamps.orange[200],
+    accentPressed: TPRamps.orange[100],
+    positive: TPRamps.green[200],
+    caution: TPRamps.amber[200],
+    critical: TPRamps.red[200],
   );
 
   static TPColors of(BuildContext context) =>

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+import '../foundations/tp_a11y.dart';
 import '../foundations/tp_colors.dart';
 import '../foundations/tp_icons.dart';
 import '../foundations/tp_layout.dart';
@@ -23,9 +24,10 @@ class TPCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = TPColors.of(context);
     final brightness = Theme.of(context).brightness;
-    return TPPressable.scaleOnly(
-      enabled: onTap != null,
+    return TPPressable(
+      onTap: onTap,
       pressedScale: 0.99,
+      focusShape: RoundedSuperellipseBorder(borderRadius: BorderRadius.circular(TPRadius.md)),
       child: DecoratedBox(
         decoration: ShapeDecoration(
           color: c.surface,
@@ -37,11 +39,7 @@ class TPCard extends StatelessWidget {
         ),
         child: ClipRSuperellipse(
           borderRadius: BorderRadius.circular(TPRadius.md),
-          child: GestureDetector(
-            onTap: onTap,
-            behavior: HitTestBehavior.opaque,
-            child: Padding(padding: padding, child: child),
-          ),
+          child: Padding(padding: padding, child: child),
         ),
       ),
     );
@@ -72,7 +70,7 @@ class TPGlassChip extends StatelessWidget {
                 Icon(icon, size: 14, color: c.textOnImage),
                 const SizedBox(width: TPSpace.s1 + 2),
               ],
-              Text(label, style: TPType.footnote.copyWith(color: c.textOnImage)),
+              Flexible(child: Text(label, maxLines: 2, overflow: TextOverflow.ellipsis, style: TPType.footnote.copyWith(color: c.textOnImage))),
             ],
           ),
         ),
@@ -116,6 +114,7 @@ class TPTripCoverCard extends StatelessWidget {
       child: TPPressable(
         onTap: onTap,
         behavior: HitTestBehavior.deferToChild,
+        focusShape: RoundedSuperellipseBorder(borderRadius: BorderRadius.circular(TPRadius.lg)),
         child: DecoratedBox(
           decoration: ShapeDecoration(
             shape: RoundedSuperellipseBorder(borderRadius: BorderRadius.circular(TPRadius.lg)),
@@ -342,28 +341,33 @@ class TPStickyActionBar extends StatelessWidget {
         top: false,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: TPSpace.margin, vertical: TPSpace.s4),
-          child: Row(
-            children: [
-              if (label != null || value != null || detail != null)
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (label != null) TPEyebrow(label!),
-                      if (value != null)
-                        Text(value!, style: TPType.title3.tabular.copyWith(color: c.textPrimary)),
-                      if (detail != null)
-                        Text(detail!, style: TPType.footnote.copyWith(color: c.textSecondary)),
-                    ],
-                  ),
-                )
-              else
-                const Spacer(),
-              const SizedBox(width: TPSpace.s4),
-              action,
-            ],
-          ),
+          // Large text stacks the fact over a full-width action.
+          child: Builder(builder: (context) {
+            final hasFact = label != null || value != null || detail != null;
+            final fact = Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (label != null) TPEyebrow(label!),
+                if (value != null) Text(value!, style: TPType.title3.tabular.copyWith(color: c.textPrimary)),
+                if (detail != null) Text(detail!, style: TPType.footnote.copyWith(color: c.textSecondary)),
+              ],
+            );
+            if (TPA11y.largeText(context)) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: [if (hasFact) ...[fact, const SizedBox(height: TPSpace.s3)], action],
+              );
+            }
+            return Row(
+              children: [
+                if (hasFact) Expanded(child: fact) else const Spacer(),
+                const SizedBox(width: TPSpace.s4),
+                action,
+              ],
+            );
+          }),
         ),
       ),
     );

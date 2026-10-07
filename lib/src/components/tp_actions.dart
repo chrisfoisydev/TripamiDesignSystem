@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+import '../foundations/tp_a11y.dart';
 import '../foundations/tp_colors.dart';
 import '../foundations/tp_icons.dart';
 import '../foundations/tp_layout.dart';
@@ -145,7 +146,7 @@ class TPGlassIconButton extends StatelessWidget {
         onTap: onPressed,
         pressedScale: 0.94,
         child: SizedBox.square(
-          dimension: TPSize.hitTarget,
+          dimension: TPA11y.minTapTarget,
           child: Center(
             child: ClipOval(
               child: BackdropFilter(
@@ -189,6 +190,7 @@ class TPQuickAction extends StatelessWidget {
       child: TPPressable(
         onTap: onPressed,
         pressedScale: 0.96,
+        focusShape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(TPRadius.sm))),
         child: SizedBox(
           width: 72,
           child: Column(

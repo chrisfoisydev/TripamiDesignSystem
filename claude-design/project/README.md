@@ -35,7 +35,7 @@ Tripami is a collaborative group-travel app. Its product UI pairs a hotel concie
 - Divide with `hairline`. Outline controls with `border-strong`.
 - **Primary action:** `action-primary` fill with `action-primary-text`. In dark mode it inverts to a paper pill, so it stays the highest-contrast object.
 - **Accent:** use `accent` for state, `accent-subtle` for selected fills (with `accent` text on top), and `on-accent` for a glyph on an accent fill.
-- **Members:** each traveler gets a `member-*` color in join order. The trip creator is `member-lagoon`. None of the member hues sits near the orange, so a person is never mistaken for the accent. Use them for avatar fills (white initials pass AA), avatar rings, vote and payer dots, and pull-quote rules. Never use them for buttons, backgrounds or text longer than a name.
+- **Members:** each traveler gets a `member-*` color in join order: lagoon (the trip creator), plum, fern, iris, olive, rose, sky, slate. That order keeps colors furthest apart for color-blind travelers; color is never the only cue (initials, faces, names). None of the member hues sits near the orange, so a person is never mistaken for the accent. Use them for avatar fills (white initials pass AA), avatar rings, vote and payer dots, and pull-quote rules. Never use them for buttons, backgrounds or text longer than a name.
 - **Status:** `positive` (settled, confirmed), `caution` (you owe), `critical` (errors and destructive actions only; crimson, so it never reads as the accent). Always pair status color with a word.
 - **On photos:** put text bottom-left in `text-on-image` over the scrim (transparent at 40% to `scrim-end`). Put metadata in glass chips (`glass` with a 16px backdrop blur). Never place a colored block over a photo.
 
@@ -87,6 +87,15 @@ The Plan view draws the day as a braid (`BraidDay`): one strand per traveler, bu
 - `select` (tick): changing tab, chip, toggle or option. `join` (light): primary buttons, voting, reacting. `reorder` (medium): dragging plans. `success` (firm, then light): "Everyone's in", with `SuccessCheck`. `warning` (heavy): something refused.
 - Silent: secondary, tertiary and destructive buttons, the current tab, sheets, toasts, scrolling, navigation.
 - Components already play theirs (see the **Haptics** card). On the web, `Tripami.haptic(kind)` vibrates where the browser allows; in Flutter, `TPHaptics`.
+
+## Accessibility
+
+- **Contrast:** body text 4.5:1 in light and dark, 7:1 in the high-contrast themes (iOS Increase Contrast). Meaningful borders and icons 3:1. Two colors 500 grades apart always pass.
+- **Never color alone:** status pairs with a word or icon; a traveler's color pairs with initials, a face or a name; the accent pairs with a check, underline or word.
+- **Touch:** every tap area is at least 48×48, even around 28px reaction pills and 36px chips.
+- **Large text:** layouts reflow up to 310%. Side-by-side rows stack (amounts under titles, voters under options, actions under facts); never fix a height around text. Tab labels alone cap at 130%.
+- **Bold Text, Reduce Motion, keyboards:** styles step up two weights with Bold Text; motion becomes fades; every control is reachable by Tab with a 2px `text-primary` focus ring and activates with Enter or Space.
+- **Screen readers:** label by meaning ("Chat, needs you"; "👍 3, including you"); a poll option reads as one item; braid strands and decoration are silent.
 
 ## Iconography
 

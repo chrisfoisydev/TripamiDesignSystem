@@ -63,16 +63,18 @@ The logo's orange, deepened just enough to pass AA as text on every light ground
 ### Member colors: the social layer
 Eight hues, assigned to travelers in join order (the trip creator gets `lagoon`). None sits near the brand orange, so a person's color is never mistaken for the accent. They're the *only* saturated UI colors besides the accent, and they always mean **"this belongs to this person."**
 
-| Token | Hex | White text contrast |
-|---|---|---|
-| `color.member.lagoon` | `#0B6B61` | 6.4:1 |
-| `color.member.sky` | `#2F73A8` | 5.1:1 |
-| `color.member.iris` | `#5160C9` | 5.4:1 |
-| `color.member.plum` | `#7F4FAE` | 5.8:1 |
-| `color.member.rose` | `#B2466E` | 5.3:1 |
-| `color.member.fern` | `#3F7D4E` | 4.9:1 |
-| `color.member.olive` | `#66692B` | 5.8:1 |
-| `color.member.slate` | `#4F5D75` | 6.6:1 |
+| Join order | Token | Hex | White text contrast |
+|---|---|---|---|
+| 1 (trip creator) | `color.member.lagoon` | `#0B6B61` | 6.4:1 |
+| 2 | `color.member.plum` | `#7F4FAE` | 5.8:1 |
+| 3 | `color.member.fern` | `#3F7D4E` | 4.9:1 |
+| 4 | `color.member.iris` | `#5160C9` | 5.4:1 |
+| 5 | `color.member.olive` | `#66692B` | 5.8:1 |
+| 6 | `color.member.rose` | `#B2466E` | 5.3:1 |
+| 7 | `color.member.sky` | `#2F73A8` | 5.1:1 |
+| 8 | `color.member.slate` | `#4F5D75` | 6.6:1 |
+
+**The join order is chosen for color blindness.** We simulated protanopia, deuteranopia and tritanopia and picked the order that keeps the first *k* colors furthest apart for every trip size. The worst pair stays at ΔE ≥ 3.7 for trips of up to six (in plain hue order it dropped to 2.0). With seven or eight travelers some pairs converge for some readers, so **color is never the only cue**: avatars carry initials, braid knots show faces, and every plan names who's in it. `TPMemberColor.forJoinIndex(i)` applies the order.
 
 Each member color also has a **strand** value for the braid: the same hex in light mode, and a lighter version in dark mode (lagoon `#0F9083`, sky `#3683C0`, iris `#6C79D1`, plum `#966EBD`, rose `#BF5D81`, fern `#468B56`, olive `#7F8235`, slate `#6E809D`), each ≥ 4.5:1 on dark canvas. Avatar fills keep the base color in both themes.
 

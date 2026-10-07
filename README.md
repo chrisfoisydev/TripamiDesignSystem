@@ -29,6 +29,7 @@ See **[Using the design system in the app](docs/05-using-in-the-app.md)**: how t
 3. **[Foundations](docs/03-foundations.md):** color, type, spacing, shape, elevation, icons, imagery, motion.
 4. **[Components](docs/04-components.md):** anatomy, tokens and states for every component.
 5. **[Using it in the app](docs/05-using-in-the-app.md):** adding the package, the theme, and setting up Claude Code in the app repo.
+6. **[Accessibility](docs/06-accessibility.md):** the platform settings we honor (VoiceOver, Larger Text to 310%, Bold Text, Increase Contrast, Reduce Motion, keyboards, color blindness), the rules, and how to test a screen.
 
 ## The system in one minute
 
@@ -39,7 +40,7 @@ See **[Using the design system in the app](docs/05-using-in-the-app.md)**: how t
 - **The braid:** the day drawn as one strand per traveler, bundling when people are together and parting when they split. It scales to 50+ by turning strands into group ribbons.
 - **Motion:** calm by default (`TPMotion.ease`, `gentle`), playful only when people come together (`playful` spring, at most once per screen): the braid drawing in, avatars popping when someone joins, the orange dot, a single success check. Every component has press feedback and haptics built in (`TPHaptics`: select, join, reorder, success, warning). Everything respects reduced motion.
 - **Icons:** a curated Phosphor set, regular by default and fill for active states.
-- **Contrast:** every allowed text pairing passes WCAG AA in light and dark, enforced by `test/contrast_test.dart`.
+- **Accessibility:** WCAG AA in light and dark, AAA in the high-contrast themes; 48pt tap targets; layouts that reflow to 310% text; Bold Text, Reduce Motion, keyboard focus and screen-reader labels throughout; member colors ordered for color blindness. A test sweep checks every component (`test/a11y_test.dart`).
 
 ## MCP server
 

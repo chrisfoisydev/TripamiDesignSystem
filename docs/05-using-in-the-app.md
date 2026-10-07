@@ -34,10 +34,15 @@ import 'package:tripami_design_system/tripami_design_system.dart';
 MaterialApp(
   theme: TripamiTheme.light(),
   darkTheme: TripamiTheme.dark(),
+  highContrastTheme: TripamiTheme.highContrastLight(),   // iOS Increase Contrast
+  highContrastDarkTheme: TripamiTheme.highContrastDark(),
   themeMode: TripamiTheme.defaultMode, // light by default
+  builder: TripamiTheme.builder,       // OS Bold Text
   home: const TripsScreen(),
 );
 ```
+
+The high-contrast themes and the `builder` are what make Increase Contrast and Bold Text work. See [06 · Accessibility](./06-accessibility.md).
 
 **Tripami is light by default.** Flutter's own default (`ThemeMode.system`) would follow the phone into dark mode, so always pass `themeMode`. To offer dark mode, add an Appearance setting (Light · Dark · Match phone) and pass the user's choice instead (`ThemeMode.dark` / `.system`). The dark theme is fully specified and contrast-checked, so it's ready when you want it.
 
@@ -56,7 +61,7 @@ MaterialApp(
 | `HapticFeedback.*`, `GestureDetector` for taps | Nothing for TP widgets (built in). Custom controls: `TPPressable(haptic: TPHaptic.select, …)` or `TPHaptics.select()`, `.join()`, `.reorder()`, `.success()`, `.warning()` |
 | Hand-built components | `TPButton`, `TPTripCoverCard`, `TPBraidDay`, `TPPollCard`, `TPExpenseRow`… (list in the README) |
 
-A traveler is a `TPMember` with a `TPMemberColor`. Assign colors in join order with `TPMemberColor.forJoinIndex(i)`; the trip creator gets `lagoon`.
+A traveler is a `TPMember` with a `TPMemberColor`. Assign colors with `TPMemberColor.forJoinIndex(i)` (i = join order; the trip creator gets `lagoon`). Its order keeps colors distinguishable for color-blind travelers, so don't pick member colors by hand.
 
 The Plan view is `TPBraidDay`: map your itinerary into `TPBraidMoment`s (a time plus the plans starting then) and `TPBraidEvent`s (who's in each plan). It handles the scaling rules, layout, copy and motion.
 
@@ -93,7 +98,10 @@ Claude Code reads a `CLAUDE.md` at the repo root at the start of every session, 
      spring only for people moments, at most once per screen; always respect `TPMotion.reduced`.
    - Haptics: TP widgets already play them; don't add more. Custom tappables use `TPPressable` with the
      matching `TPHaptic`. Haptics answer the user's own touch or a group success, never remote updates.
-   - Every text pairing must pass WCAG AA in light and dark.
+   - Every text pairing must pass WCAG AA in light and dark (7:1 in high contrast). Never use color alone.
+   - Accessibility (docs/06-accessibility.md): custom tappables go through `TPPressable` (focus, 48pt
+     targets); never fix a height around text; at `TPA11y.largeText(context)` stack instead of squeezing;
+     label state for screen readers by meaning.
    ```
 
 2. **Give the session access to the design-system repo.** When you start a session on the app repo, ask Claude to "add chrisfoisydev/TripamiDesignSystem to this session". Claude can then read the package source and docs and resolve the git dependency during `flutter pub get`.

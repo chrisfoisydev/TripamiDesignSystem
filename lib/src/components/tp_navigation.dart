@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../foundations/tp_a11y.dart';
 import '../foundations/tp_colors.dart';
 import '../foundations/tp_icons.dart';
 import '../foundations/tp_layout.dart';
@@ -52,19 +53,25 @@ class TPTabBar extends StatelessWidget {
       decoration: BoxDecoration(color: c.surface, border: Border(top: BorderSide(color: c.hairline))),
       child: SafeArea(
         top: false,
-        child: SizedBox(
-          height: 56,
-          child: Row(
+        // Grows with large text instead of clipping; labels cap at 130% (as iOS
+        // tab bars do), so five tabs still fit.
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: 56),
+          child: IntrinsicHeight(
+            child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               for (var i = 0; i < items.length; i++)
                 Expanded(
                   child: Semantics(
                     selected: i == currentIndex,
                     button: true,
-                    label: items[i].label,
+                    label: items[i].label +
+                        (items[i].hasActivity ? (items[i].urgent ? ', needs you' : ', new activity') : ''),
                     excludeSemantics: true,
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.opaque,
+                    child: TPPressable(
+                      pressedScale: 1,
+                      focusShape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(TPRadius.sm))),
                       onTap: () {
                         if (i != currentIndex) TPHaptics.select();
                         onTap(i);
@@ -74,6 +81,7 @@ class TPTabBar extends StatelessWidget {
                   ),
                 ),
             ],
+          ),
           ),
         ),
       ),
@@ -128,7 +136,13 @@ class _TabCell extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 3),
-              Text(item.label, style: TPType.caption.copyWith(color: color)),
+              Text(
+                item.label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                textScaler: TPA11y.capped(context, 1.3),
+                style: TPType.caption.copyWith(color: color),
+              ),
             ],
           ),
         ),
@@ -163,8 +177,9 @@ class TPUnderlineTabs extends StatelessWidget {
                 child: Semantics(
                   selected: i == currentIndex,
                   button: true,
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.opaque,
+                  child: TPPressable(
+                    pressedScale: 1,
+                    focusShape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(TPRadius.xs))),
                     onTap: () {
                       if (i != currentIndex) TPHaptics.select();
                       onChanged(i);
@@ -231,14 +246,16 @@ class TPFilterChip extends StatelessWidget {
     return Semantics(
       selected: selected,
       button: true,
+      label: count != null ? '$label, $count' : label,
+      excludeSemantics: true,
       child: TPPressable(
         onTap: onTap,
         haptic: TPHaptic.select,
-        behavior: HitTestBehavior.deferToChild,
+        expandTapTarget: true,
         child: AnimatedContainer(
           duration: TPMotion.snappyDuration,
           curve: TPMotion.snappyCurve,
-          height: TPSize.chip,
+          constraints: const BoxConstraints(minHeight: TPSize.chip),
           padding: EdgeInsets.only(left: count != null ? TPSpace.s1 + 2 : TPSpace.s3 + 2, right: TPSpace.s3 + 2),
           decoration: ShapeDecoration(
             color: selected ? c.accentSubtle : c.surface,
@@ -278,7 +295,7 @@ class TPFilterChip extends StatelessWidget {
                         )
                       : const SizedBox.shrink(),
                 ),
-              Text(label, style: TPType.buttonSmall.copyWith(color: fg)),
+              Flexible(child: Text(label, style: TPType.buttonSmall.copyWith(color: fg))),
               if (dropdown) ...[
                 const SizedBox(width: TPSpace.s1),
                 Icon(TPIcons.caretDown, size: 14, color: fg),

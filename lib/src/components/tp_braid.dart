@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../foundations/tp_a11y.dart';
 import '../foundations/tp_colors.dart';
 import '../foundations/tp_layout.dart';
 import '../foundations/tp_palette.dart';
@@ -371,14 +372,16 @@ class TPBraidMarker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = TPColors.of(context);
+    final timeText = Text(time, style: TPType.title3.tabular.copyWith(color: c.textPrimary));
+    final summaryText = Text(summary, style: TPType.footnote.copyWith(color: c.textSecondary));
+    // Large text: the summary wraps under the time instead of squeezing beside it.
+    if (TPA11y.largeText(context)) {
+      return Wrap(spacing: TPSpace.s2, crossAxisAlignment: WrapCrossAlignment.end, children: [timeText, summaryText]);
+    }
     return Row(
       crossAxisAlignment: CrossAxisAlignment.baseline,
       textBaseline: TextBaseline.alphabetic,
-      children: [
-        Text(time, style: TPType.title3.tabular.copyWith(color: c.textPrimary)),
-        const SizedBox(width: TPSpace.s2),
-        Flexible(child: Text(summary, style: TPType.footnote.copyWith(color: c.textSecondary))),
-      ],
+      children: [timeText, const SizedBox(width: TPSpace.s2), Flexible(child: summaryText)],
     );
   }
 }
@@ -825,6 +828,7 @@ class _BraidRow extends StatelessWidget {
             child: TPPressable(
               onTap: onTap == null ? null : () => onTap!(spec.event!),
               pressedScale: 0.99,
+              focusShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(TPRadius.md)),
               child: _eventCard(),
             ),
           ),

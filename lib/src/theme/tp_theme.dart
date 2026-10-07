@@ -12,7 +12,10 @@ import '../foundations/tp_type.dart';
 /// MaterialApp(
 ///   theme: TripamiTheme.light(),
 ///   darkTheme: TripamiTheme.dark(),
+///   highContrastTheme: TripamiTheme.highContrastLight(),
+///   highContrastDarkTheme: TripamiTheme.highContrastDark(),
 ///   themeMode: TripamiTheme.defaultMode, // light; pass a user setting to offer dark
+///   builder: TripamiTheme.builder, // OS Bold Text
 /// );
 /// ```
 ///
@@ -27,6 +30,15 @@ abstract final class TripamiTheme {
 
   static ThemeData light() => _build(Brightness.light, TPColors.light);
   static ThemeData dark() => _build(Brightness.dark, TPColors.dark);
+
+  /// Used automatically when the OS asks for more contrast (iOS Increase
+  /// Contrast, Android high-contrast text). Text reaches 7:1.
+  static ThemeData highContrastLight() => _build(Brightness.light, TPColors.lightHighContrast);
+  static ThemeData highContrastDark() => _build(Brightness.dark, TPColors.darkHighContrast);
+
+  /// Pass as `MaterialApp.builder`. Applies the OS Bold Text setting to Tripami's
+  /// variable fonts (Flutter's own handling can't move their weight axis).
+  static Widget builder(BuildContext context, Widget? child) => _TPBoldTextScope(child: child ?? const SizedBox.shrink());
 
   static ThemeData _build(Brightness brightness, TPColors c) {
     final scheme = ColorScheme(
@@ -274,5 +286,31 @@ abstract final class TripamiTheme {
         textStyle: TPType.footnote.copyWith(color: c.actionPrimaryText),
       ),
     );
+  }
+}
+
+class _TPBoldTextScope extends StatefulWidget {
+  const _TPBoldTextScope({required this.child});
+  final Widget child;
+
+  @override
+  State<_TPBoldTextScope> createState() => _TPBoldTextScopeState();
+}
+
+class _TPBoldTextScopeState extends State<_TPBoldTextScope> {
+  @override
+  Widget build(BuildContext context) {
+    final bold = MediaQuery.boldTextOf(context);
+    if (bold != TPType.boldText) {
+      TPType.boldText = bold;
+      // TPType styles are read at build time, so rebuild everything below once,
+      // keeping all state (no keys change).
+      void mark(Element e) {
+        e.markNeedsBuild();
+        e.visitChildren(mark);
+      }
+      (context as Element).visitChildren(mark);
+    }
+    return widget.child;
   }
 }

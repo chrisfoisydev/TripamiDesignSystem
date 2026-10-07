@@ -99,6 +99,14 @@ enum TPMemberColor {
   /// The braid strand color for this member (or group) in [brightness].
   Color strand(Brightness brightness) => brightness == Brightness.dark ? strandDark : color;
 
-  static TPMemberColor forJoinIndex(int index) =>
-      values[index % values.length];
+  /// The color for the [index]th traveler to join (0 = the trip creator).
+  ///
+  /// The order is chosen for color-vision deficiency: with protanopia,
+  /// deuteranopia or tritanopia simulated, the first k colors stay as far apart
+  /// as possible for every trip size (worst pair ΔE ≥ 3.7 up to 6 travelers,
+  /// against 2.0 in enum order). Color is still never the only cue: avatars
+  /// carry initials and the braid labels every plan with names.
+  static TPMemberColor forJoinIndex(int index) => joinOrder[index % joinOrder.length];
+
+  static const joinOrder = [lagoon, plum, fern, iris, olive, rose, sky, slate];
 }

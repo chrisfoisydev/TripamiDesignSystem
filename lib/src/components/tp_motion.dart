@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../foundations/tp_a11y.dart';
 import '../foundations/tp_colors.dart';
 import '../foundations/tp_layout.dart';
 import '../foundations/tp_type.dart';
@@ -80,6 +81,8 @@ class TPPressable extends StatefulWidget {
     this.haptic = TPHaptic.none,
     this.pressedScale = 0.98,
     this.behavior = HitTestBehavior.opaque,
+    this.expandTapTarget = false,
+    this.focusShape = const StadiumBorder(),
   });
 
   final Widget child;
@@ -89,6 +92,14 @@ class TPPressable extends StatefulWidget {
   final TPHaptic haptic;
   final double pressedScale;
   final HitTestBehavior behavior;
+
+  /// Grows the tappable area to [TPA11y.minTapTarget] around a smaller visual
+  /// (chips, reaction pills), centered, without changing how it looks.
+  final bool expandTapTarget;
+
+  /// Shape of the keyboard focus ring. Pills and circles use the default;
+  /// cards pass their rounded rectangle.
+  final OutlinedBorder focusShape;
 
   /// Wraps [child] in press-scale only and leaves the tap to the child
   /// (for Material buttons that handle their own taps and focus).
@@ -100,18 +111,44 @@ class TPPressable extends StatefulWidget {
 }
 
 class _TPPressableState extends State<TPPressable> {
+  bool _focused = false;
+
+  void _activate() {
+    widget.haptic.fire();
+    widget.onTap!();
+  }
+
   @override
   Widget build(BuildContext context) {
     final onTap = widget.onTap;
-    return GestureDetector(
-      behavior: widget.behavior,
-      onTap: onTap == null
-          ? null
-          : () {
-              widget.haptic.fire();
-              onTap();
-            },
-      child: _PressScale(enabled: onTap != null, pressedScale: widget.pressedScale, child: widget.child),
+    Widget child = _PressScale(enabled: onTap != null, pressedScale: widget.pressedScale, child: widget.child);
+    if (_focused) {
+      // Keyboard focus ring: 2pt text-primary, as on the web.
+      child = DecoratedBox(
+        position: DecorationPosition.foreground,
+        decoration: ShapeDecoration(
+          shape: widget.focusShape.copyWith(side: BorderSide(color: TPColors.of(context).textPrimary, width: 2)),
+        ),
+        child: child,
+      );
+    }
+    if (widget.expandTapTarget) {
+      child = ConstrainedBox(
+        constraints: const BoxConstraints(minWidth: TPA11y.minTapTarget, minHeight: TPA11y.minTapTarget),
+        child: Center(widthFactor: 1, heightFactor: 1, child: child),
+      );
+    }
+    // Keyboards (iPad, Android with a keyboard, web): Tab to focus, Enter or Space to activate.
+    return FocusableActionDetector(
+      enabled: onTap != null,
+      mouseCursor: onTap != null ? SystemMouseCursors.click : MouseCursor.defer,
+      onShowFocusHighlight: (v) => setState(() => _focused = v),
+      actions: {ActivateIntent: CallbackAction<ActivateIntent>(onInvoke: (_) => _activate())},
+      child: GestureDetector(
+        behavior: widget.expandTapTarget ? HitTestBehavior.opaque : widget.behavior,
+        onTap: onTap == null ? null : _activate,
+        child: child,
+      ),
     );
   }
 }

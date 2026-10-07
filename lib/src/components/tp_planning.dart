@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../foundations/tp_a11y.dart';
 import '../foundations/tp_colors.dart';
 import '../foundations/tp_icons.dart';
 import '../foundations/tp_layout.dart';
@@ -76,18 +77,20 @@ class _TPPollCardState extends State<TPPollCard> {
     final total = w.options.fold<int>(0, (sum, o) => sum + o.voters.length);
     final closed = w.decidedId != null;
     final everyone = !closed && w.waitingOn.isEmpty;
+    final large = TPA11y.largeText(context);
+    final deadline = w.deadline != null && !closed ? Text(w.deadline!, style: TPType.footnote.copyWith(color: c.accent)) : null;
+    final voteButton = !closed && w.onVote != null
+        ? TPButton.primary(label: w.myVoteId == null ? 'Vote' : 'Change vote', onPressed: w.onVote, small: true)
+        : null;
 
     return TPCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Expanded(child: TPEyebrow(w.eyebrow)),
-              if (w.deadline != null && !closed)
-                Text(w.deadline!, style: TPType.footnote.copyWith(color: c.accent)),
-            ],
-          ),
+          if (large)
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [TPEyebrow(w.eyebrow), ?deadline])
+          else
+            Row(children: [Expanded(child: TPEyebrow(w.eyebrow)), ?deadline]),
           const SizedBox(height: TPSpace.s2),
           Text(w.question, style: TPType.title3.copyWith(color: c.textPrimary)),
           const SizedBox(height: TPSpace.s4),
@@ -114,12 +117,10 @@ class _TPPollCardState extends State<TPPollCard> {
                   style: TPType.footnote.copyWith(color: c.textSecondary),
                 ),
               ),
-              if (!closed && w.onVote != null) ...[
-                const SizedBox(width: TPSpace.s3),
-                TPButton.primary(label: w.myVoteId == null ? 'Vote' : 'Change vote', onPressed: w.onVote, small: true),
-              ],
+              if (voteButton != null && !large) ...[const SizedBox(width: TPSpace.s3), voteButton],
             ],
           ),
+          if (voteButton != null && large) ...[const SizedBox(height: TPSpace.s3), voteButton],
         ],
       ),
     );
@@ -161,11 +162,40 @@ class _PollOptionRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = colors;
     final titleColor = dimmed ? c.textSecondary : c.textPrimary;
-    return Padding(
+    // Large text: voters move under the title and nothing truncates.
+    final large = TPA11y.largeText(context);
+    final n = option.voters.length;
+    final votes = Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        TPAvatarStack(option.voters, size: TPAvatarSize.xs, max: 3),
+        const SizedBox(width: TPSpace.s2),
+        ConstrainedBox(
+          constraints: const BoxConstraints(minWidth: 16),
+          child: Align(
+            alignment: Alignment.centerRight,
+            widthFactor: 1,
+            child: TPCountUp(value: n, format: (v) => '$v', style: TPType.subhead.copyWith(color: titleColor)),
+          ),
+        ),
+      ],
+    );
+    return Semantics(
+      container: true,
+      excludeSemantics: true,
+      label: [
+        option.title,
+        ?option.detail,
+        '$n ${n == 1 ? 'vote' : 'votes'}',
+        if (mine) 'your vote',
+        if (won) 'chosen',
+      ].join(', '),
+      child: Padding(
       padding: const EdgeInsets.only(bottom: TPSpace.s4),
       child: Column(
         children: [
           Row(
+            crossAxisAlignment: large ? CrossAxisAlignment.start : CrossAxisAlignment.center,
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(TPRadius.xs),
@@ -188,7 +218,7 @@ class _PollOptionRow extends StatelessWidget {
                       children: [
                         Flexible(
                           child: Text(option.title,
-                              overflow: TextOverflow.ellipsis,
+                              overflow: large ? null : TextOverflow.ellipsis,
                               style: TPType.body.withWeight(TPType.medium).copyWith(color: titleColor)),
                         ),
                         if (won) ...[
@@ -200,27 +230,15 @@ class _PollOptionRow extends StatelessWidget {
                     if (option.detail != null)
                       Text(
                         option.detail!,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                        maxLines: large ? null : 1,
+                        overflow: large ? null : TextOverflow.ellipsis,
                         style: TPType.footnote.copyWith(color: c.textSecondary),
                       ),
+                    if (large) ...[const SizedBox(height: TPSpace.s2), votes],
                   ],
                 ),
               ),
-              const SizedBox(width: TPSpace.s2),
-              TPAvatarStack(option.voters, size: TPAvatarSize.xs, max: 3),
-              const SizedBox(width: TPSpace.s2),
-              SizedBox(
-                width: 16,
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: TPCountUp(
-                    value: option.voters.length,
-                    format: (v) => '$v',
-                    style: TPType.subhead.copyWith(color: titleColor),
-                  ),
-                ),
-              ),
+              if (!large) ...[const SizedBox(width: TPSpace.s2), votes],
             ],
           ),
           const SizedBox(height: TPSpace.s2),
@@ -240,6 +258,7 @@ class _PollOptionRow extends StatelessWidget {
             ),
           ),
         ],
+      ),
       ),
     );
   }
@@ -390,9 +409,44 @@ class TPExpenseRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = TPColors.of(context);
+    // Large text stacks the amounts under the details instead of squeezing both.
+    final large = TPA11y.largeText(context);
+    final details = <Widget>[
+      Text(title, style: TPType.body.copyWith(color: c.textPrimary)),
+      const SizedBox(height: 2),
+      Row(
+        children: [
+          Container(
+            width: 8,
+            height: 8,
+            decoration: BoxDecoration(color: paidBy.color.color, shape: BoxShape.circle),
+          ),
+          const SizedBox(width: TPSpace.s1 + 2),
+          Flexible(
+            child: Text(
+              'Paid by ${paidBy.firstName} · split $splitWays ways',
+              overflow: large ? null : TextOverflow.ellipsis,
+              style: TPType.footnote.copyWith(color: c.textSecondary),
+            ),
+          ),
+        ],
+      ),
+    ];
+    final amounts = Column(
+      crossAxisAlignment: large ? CrossAxisAlignment.start : CrossAxisAlignment.end,
+      children: [
+        Text(amount, style: TPType.body.tabular.copyWith(color: c.textPrimary)),
+        const SizedBox(height: 2),
+        Text(
+          youOwe ? 'You owe $yourShare' : 'You get $yourShare',
+          style: TPType.footnote.tabular.copyWith(color: youOwe ? c.caution : c.positive),
+        ),
+      ],
+    );
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: TPSpace.margin, vertical: TPSpace.s3),
       child: Row(
+        crossAxisAlignment: large ? CrossAxisAlignment.start : CrossAxisAlignment.center,
         children: [
           Container(
             width: 40,
@@ -404,41 +458,10 @@ class TPExpenseRow extends StatelessWidget {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, style: TPType.body.copyWith(color: c.textPrimary)),
-                const SizedBox(height: 2),
-                Row(
-                  children: [
-                    Container(
-                      width: 8,
-                      height: 8,
-                      decoration: BoxDecoration(color: paidBy.color.color, shape: BoxShape.circle),
-                    ),
-                    const SizedBox(width: TPSpace.s1 + 2),
-                    Flexible(
-                      child: Text(
-                        'Paid by ${paidBy.firstName} · split $splitWays ways',
-                        overflow: TextOverflow.ellipsis,
-                        style: TPType.footnote.copyWith(color: c.textSecondary),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+              children: [...details, if (large) ...[const SizedBox(height: TPSpace.s2), amounts]],
             ),
           ),
-          const SizedBox(width: TPSpace.s3),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(amount, style: TPType.body.tabular.copyWith(color: c.textPrimary)),
-              const SizedBox(height: 2),
-              Text(
-                youOwe ? 'You owe $yourShare' : 'You get $yourShare',
-                style: TPType.footnote.tabular.copyWith(color: youOwe ? c.caution : c.positive),
-              ),
-            ],
-          ),
+          if (!large) ...[const SizedBox(width: TPSpace.s3), amounts],
         ],
       ),
     );

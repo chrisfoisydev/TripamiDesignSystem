@@ -281,11 +281,11 @@ class TPReactionBar extends StatelessWidget {
           onTap: onTap,
           haptic: haptic,
           pressedScale: 0.94,
-          behavior: HitTestBehavior.deferToChild,
+          expandTapTarget: onTap != null,
           child: AnimatedContainer(
             duration: TPMotion.snappyDuration,
             curve: TPMotion.snappyCurve,
-            height: 28,
+            constraints: const BoxConstraints(minHeight: 28),
             padding: const EdgeInsets.symmetric(horizontal: TPSpace.s2),
             decoration: ShapeDecoration(
               color: mine ? c.accentSubtle : c.sunken,
@@ -303,13 +303,19 @@ class TPReactionBar extends StatelessWidget {
           TPBump(
             key: ValueKey(r.emoji),
             value: (r.count, r.mine),
-            child: pill(
+            child: Semantics(
+              button: onReact != null,
+              toggled: onReact != null ? r.mine : null,
+              label: '${r.emoji} ${r.count}${r.mine ? ', including you' : ''}',
+              excludeSemantics: true,
+              child: pill(
               mine: r.mine,
               onTap: onReact == null ? null : () => onReact!(r),
               child: Text(
                 '${r.emoji} ${r.count}',
                 style: TPType.caption.tabular.copyWith(color: r.mine ? c.accent : c.textSecondary),
               ),
+            ),
             ),
           ),
         if (onAdd != null)

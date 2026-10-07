@@ -50,7 +50,7 @@ void main() {
   test('members are assigned in join order and cycle', () {
     expect(TPMemberColor.forJoinIndex(0), TPMemberColor.lagoon);
     expect(TPMemberColor.forJoinIndex(8), TPMemberColor.lagoon);
-    expect(TPMemberColor.forJoinIndex(9), TPMemberColor.sky);
+    expect(TPMemberColor.forJoinIndex(9), TPMemberColor.plum);
   });
 
   test('initials', () {

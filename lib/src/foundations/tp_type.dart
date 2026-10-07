@@ -22,6 +22,23 @@ abstract final class TPType {
   static const semibold = FontWeight.w600;
   static const heavy = FontWeight.w800; // display face only
 
+  /// Mirrors the OS "Bold Text" setting (iOS) / bold font (Android). Set by
+  /// `TripamiTheme.builder`; don't set it yourself. Every style steps up about
+  /// two weights while it's on. Our variable fonts pin their weight axis, so
+  /// Flutter's own bold-text handling can't reach them.
+  static bool boldText = false;
+
+  static final _cache = <(String, bool), TextStyle>{};
+  static TextStyle _cached(String name, TextStyle Function() build) => _cache.putIfAbsent((name, boldText), build);
+
+  /// The weight actually drawn for [weight] in [family], given [boldText].
+  static FontWeight effectiveWeight(FontWeight weight, {String family = ui}) {
+    if (!boldText) return weight;
+    final max = family == ui ? 900 : 800;
+    final stepped = (weight.value + 200).clamp(100, max);
+    return FontWeight.values.firstWhere((w) => w.value == stepped);
+  }
+
   static TextStyle _style(
     String family,
     double size,
@@ -30,6 +47,7 @@ abstract final class TPType {
     double tracking, {
     FontStyle style = FontStyle.normal,
   }) {
+    weight = effectiveWeight(weight, family: family);
     return TextStyle(
       fontFamily: family,
       package: package,
@@ -53,27 +71,27 @@ abstract final class TPType {
   }
 
   // Display (Bricolage Grotesque), heavy like the wordmark
-  static final display = _style(brand, 34, 38, heavy, -0.7);
-  static final diaryHeading = _style(brand, 24, 30, FontWeight.w700, -0.3);
+  static TextStyle get display => _cached('display', () => _style(brand, 34, 38, heavy, -0.7));
+  static TextStyle get diaryHeading => _cached('diaryHeading', () => _style(brand, 24, 30, FontWeight.w700, -0.3));
 
   // Diary voice (Newsreader)
-  static final diaryBody = _style(diary, 17, 26, regular, 0);
-  static final diaryQuote = _style(diary, 22, 30, regular, -0.1, style: FontStyle.italic);
+  static TextStyle get diaryBody => _cached('diaryBody', () => _style(diary, 17, 26, regular, 0));
+  static TextStyle get diaryQuote => _cached('diaryQuote', () => _style(diary, 22, 30, regular, -0.1, style: FontStyle.italic));
 
   // UI (Inter)
-  static final title1 = _style(ui, 28, 34, regular, -0.4);
-  static final title2 = _style(ui, 22, 28, medium, -0.2);
-  static final title3 = _style(ui, 18, 24, medium, -0.1);
-  static final body = _style(ui, 17, 24, regular, -0.2);
-  static final callout = _style(ui, 15, 20, regular, -0.1);
-  static final subhead = _style(ui, 14, 19, regular, -0.1);
-  static final footnote = _style(ui, 13, 18, regular, 0);
+  static TextStyle get title1 => _cached('title1', () => _style(ui, 28, 34, regular, -0.4));
+  static TextStyle get title2 => _cached('title2', () => _style(ui, 22, 28, medium, -0.2));
+  static TextStyle get title3 => _cached('title3', () => _style(ui, 18, 24, medium, -0.1));
+  static TextStyle get body => _cached('body', () => _style(ui, 17, 24, regular, -0.2));
+  static TextStyle get callout => _cached('callout', () => _style(ui, 15, 20, regular, -0.1));
+  static TextStyle get subhead => _cached('subhead', () => _style(ui, 14, 19, regular, -0.1));
+  static TextStyle get footnote => _cached('footnote', () => _style(ui, 13, 18, regular, 0));
 
   /// Always uppercase. Use `TPEyebrow`, which applies the transform.
-  static final eyebrow = _style(ui, 12, 16, semibold, 0.96);
-  static final caption = _style(ui, 11, 13, medium, 0.1);
-  static final button = _style(ui, 17, 22, medium, -0.2);
-  static final buttonSmall = _style(ui, 15, 20, medium, -0.1);
+  static TextStyle get eyebrow => _cached('eyebrow', () => _style(ui, 12, 16, semibold, 0.96));
+  static TextStyle get caption => _cached('caption', () => _style(ui, 11, 13, medium, 0.1));
+  static TextStyle get button => _cached('button', () => _style(ui, 17, 22, medium, -0.2));
+  static TextStyle get buttonSmall => _cached('buttonSmall', () => _style(ui, 15, 20, medium, -0.1));
 
   /// Tabular figures for money, times and counts.
   static const tabular = [FontFeature.tabularFigures()];
@@ -85,9 +103,9 @@ extension TPTextStyleX on TextStyle {
 
   /// Returns this style at another weight, keeping the variable axis in sync.
   TextStyle withWeight(FontWeight weight) => copyWith(
-        fontWeight: weight,
+        fontWeight: TPType.effectiveWeight(weight, family: fontFamily?.split('/').last ?? TPType.ui),
         fontVariations: [
-          FontVariation.weight(weight.value.toDouble()),
+          FontVariation.weight(TPType.effectiveWeight(weight, family: fontFamily?.split('/').last ?? TPType.ui).value.toDouble()),
           ...?fontVariations?.where((v) => v.axis != 'wght'),
         ],
       );
