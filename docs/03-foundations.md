@@ -72,6 +72,8 @@ Eight hues, assigned to travelers in join order (the trip creator gets `lagoon`)
 | `color.member.olive` | `#66692B` | 5.8:1 |
 | `color.member.slate` | `#4F5D75` | 6.6:1 |
 
+Each member color also has a **strand** value for the braid: the same hex in light mode, and a lighter version in dark mode (lagoon `#0F9083`, sky `#3683C0`, iris `#6C79D1`, plum `#966EBD`, rose `#BF5D81`, fern `#468B56`, olive `#7F8235`, slate `#6E809D`), each ≥ 4.5:1 on dark canvas. Avatar fills keep the base color in both themes.
+
 Used for: avatar fill (white initials) when there's no photo, a 2pt avatar ring when there is one, a voter's dot on a poll, the payer marker on an expense, the "added by" mark on an itinerary item, and a cursor/presence dot. **Never** for buttons, backgrounds, or text longer than a name. Groups larger than 8 cycle the palette and are told apart by initials.
 
 ### Semantic
@@ -155,6 +157,17 @@ Why not SF Pro and New York? Apple's license restricts them to Apple platforms, 
 - Hit targets: ≥ 44×44pt.
 
 ---
+
+## Braid metrics
+| Token | Value | Use |
+|---|---|---|
+| `braid.strand` | 3pt | Person strand; your strand is +1.5pt |
+| `braid.ribbonMax` | 12pt | Widest group ribbon (3pt + 0.6pt per person) |
+| `braid.gap` / `braid.bundleGap` | 4pt / 12pt | Inside a bundle / between bundles |
+| `braid.gutter` | ≥ 88pt | Strand gutter beside the cards |
+| `braid.turn` | 48pt | Height of the curve into each plan |
+| `braid.maxStrands` | 6 | Most strands on screen on big trips |
+| `braid.twoSidedMinWidth` | 600pt | Width at which other groups move to a right-hand gutter |
 
 ## Shape
 

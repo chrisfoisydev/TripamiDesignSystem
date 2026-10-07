@@ -140,6 +140,28 @@ Timeline layout: 56pt time column (`type.subhead` tabular, `text.secondary`) | 1
 - Booked: trailing `checkmark.seal` in `text.secondary` + confirmation code in tabular footnote.
 - Idea (not yet booked): dashed node, title in `text.secondary`.
 
+### Braid · `TPBraidDay`, `TPBraidEventCard`, `TPBraidMarker`
+The day as a braid: one strand per traveler running down the left, bundling into the plans people share and parting when they split. It is the Plan's main view and replaces the plain timeline rail.
+
+**Anatomy:** moment markers ("08:00 · All 5 together"), event cards, and a strand gutter (≥ 88pt) where strands curve over 48pt into each plan's bundle. Avatars sit where a bundle meets its card, with a dotted `border.strong` connector to the card.
+
+**Who gets a strand** (`resolveBraidStrands`)
+| Trip size | One strand is | Notes |
+|---|---|---|
+| 2–8 | a person | Their member color (`TPMemberColor.strand`) |
+| 9–20 | you + people you share plans with | Everyone else folds into a neutral `text.tertiary` ribbon labeled with its count |
+| 21+ | a group | Yours first, then by size; 3–12pt wide by headcount. Beyond 5 groups the rest fold into "+N more groups". Never more than 6 strands |
+
+**Rules**
+- Color means one thing per view: people *or* groups.
+- Your strand is 1.5pt wider and drawn on top.
+- Plain language everywhere: "All 5 together", "Splits into 3", "Back together", "You + Sandra", "Rome crew · 14".
+- More than 3 plans at once: yours first, then by size, then "Show N more".
+- Phones: strands on the left only. ≥ 600pt: strands for groups you're not with (when the group splits) move to a right-hand gutter.
+- Cards: a subgroup you're in gets a 1.5pt `accent` outline; plans with everyone don't. Loose plans ("No plans, just vibes") get dotted strands and a dashed card. The plan happening now gets `accent.subtle`.
+- Accessibility: avatars and names carry the same information as color. Each card reads as "Vatican Museums, 09:30–12:30, Viale Vaticano, with you and Sandra". Strands are static, so there's nothing to reduce.
+- Dark mode: strands use the lighter `strandDark` value of each member color (≥ 4.5:1 on dark canvas).
+
 ### Expense row · `TPExpenseRow`
 Leading 40pt category circle (`bg.sunken`, `TPIcons` glyph), title `type.body`, "Paid by Maya · split 6 ways" `type.footnote` with Maya's member dot, trailing amount `type.body` tabular, and below it your share in `type.footnote` (`status.caution` if you owe, `status.positive` if you're owed).
 Balance summary uses Bonvoy's **Summary of charges** layout: eyebrow, rows, hairline, **Total** row in `type.title3`.

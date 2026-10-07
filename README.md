@@ -30,6 +30,7 @@ Two versions, as supplied, both on transparent grounds with the orange `#FC6316`
 - **Color:** paper `canvas` (`#FAFAF7`), white `surface` and navy `text-primary` (`#02203A`, the logo's wordmark color). Navy ink and one accent, Tripami orange, both from the logo: `#FC6316` for the logo and brand moments, `#B8400F` (text-safe) for state in the UI. Eight `member-*` colors identify travelers.
 - **Type:** Bricolage Grotesque, set heavy to echo the wordmark, for trip names and day headings. Inter for UI (Regular titles, uppercase eyebrows). Newsreader for journal text.
 - **Shape:** pills to act, rounded cards to open, circles for people and tools, sheets for side tasks, dashed boxes for what the group hasn't filled yet.
+- **The braid:** the day drawn as one strand per traveler, bundling when people are together and parting when they split. It scales to 50+ by turning strands into group ribbons.
 - **Icons:** a curated Phosphor set, regular by default and fill for active states.
 - **Contrast:** every allowed text pairing passes WCAG AA in light and dark, enforced by `test/contrast_test.dart`.
 
@@ -69,7 +70,7 @@ Icon(TPIcons.mapPin);
 | `foundations/tp_layout.dart` | `TPSpace`, `TPRadius`, `TPSize`, `TPElevation`, `TPMotion` |
 | `foundations/tp_icons.dart` | `TPIcons` / `TPIconsFill` (Phosphor) |
 | `theme/tp_theme.dart` | `TripamiTheme.light()` / `.dark()`, which restyles standard Material widgets |
-| `components/` | `TPButton`, `TPGlassIconButton`, `TPQuickAction`, `TPFloatingPill`, `TPFilterChip`, `TPUnderlineTabs`, `TPEyebrow`, `TPSectionHeader`, `TPCard`, `TPGlassChip`, `TPTripCoverCard`, `TPTripStrip`, `TPListRow`, `TPSectionBand`, `TPStickyActionBar`, `showTPSheet`, `TPEmptyState`, `TPTabBar`, `TPAvatar`, `TPAvatarStack`, `TPAttribution`, `TPActivityDot`, `TPReactionBar`, `TPPollCard`, `TPItineraryItem`, `TPExpenseRow` |
+| `components/` | `TPButton`, `TPGlassIconButton`, `TPQuickAction`, `TPFloatingPill`, `TPFilterChip`, `TPUnderlineTabs`, `TPEyebrow`, `TPSectionHeader`, `TPCard`, `TPGlassChip`, `TPTripCoverCard`, `TPTripStrip`, `TPListRow`, `TPSectionBand`, `TPStickyActionBar`, `showTPSheet`, `TPEmptyState`, `TPTabBar`, `TPAvatar`, `TPAvatarStack`, `TPAttribution`, `TPActivityDot`, `TPReactionBar`, `TPPollCard`, `TPItineraryItem`, `TPExpenseRow`, `TPBraidDay`, `TPBraidEventCard`, `TPBraidMarker` |
 
 Fonts are bundled in `lib/fonts/`: Bricolage Grotesque, Inter and Newsreader (SIL OFL) and Phosphor Icons (MIT), with their licenses. Requires Flutter ≥ 3.32.
 

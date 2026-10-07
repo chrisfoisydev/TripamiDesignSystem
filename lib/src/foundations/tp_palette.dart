@@ -63,18 +63,25 @@ abstract final class TPPalette {
 /// Assigned in join order; the trip creator gets [lagoon]. None is close to the
 /// brand orange, so a member is never mistaken for the accent. White initials pass
 /// WCAG AA on every hue. Never use them for buttons or backgrounds.
+///
+/// [strandDark] is the same hue lightened for braid strands on dark grounds
+/// (≥4.5:1 on dark canvas). Avatar fills keep [color] in both themes.
 enum TPMemberColor {
-  lagoon(Color(0xFF0B6B61)),
-  sky(Color(0xFF2F73A8)),
-  iris(Color(0xFF5160C9)),
-  plum(Color(0xFF7F4FAE)),
-  rose(Color(0xFFB2466E)),
-  fern(Color(0xFF3F7D4E)),
-  olive(Color(0xFF66692B)),
-  slate(Color(0xFF4F5D75));
+  lagoon(Color(0xFF0B6B61), Color(0xFF0F9083)),
+  sky(Color(0xFF2F73A8), Color(0xFF3683C0)),
+  iris(Color(0xFF5160C9), Color(0xFF6C79D1)),
+  plum(Color(0xFF7F4FAE), Color(0xFF966EBD)),
+  rose(Color(0xFFB2466E), Color(0xFFBF5D81)),
+  fern(Color(0xFF3F7D4E), Color(0xFF468B56)),
+  olive(Color(0xFF66692B), Color(0xFF7F8235)),
+  slate(Color(0xFF4F5D75), Color(0xFF6E809D));
 
-  const TPMemberColor(this.color);
+  const TPMemberColor(this.color, this.strandDark);
   final Color color;
+  final Color strandDark;
+
+  /// The braid strand color for this member (or group) in [brightness].
+  Color strand(Brightness brightness) => brightness == Brightness.dark ? strandDark : color;
 
   static TPMemberColor forJoinIndex(int index) =>
       values[index % values.length];

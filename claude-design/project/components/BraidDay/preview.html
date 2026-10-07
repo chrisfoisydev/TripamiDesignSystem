@@ -1,0 +1,15 @@
+<!-- @dsCard group="Braid" height=760 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>BraidDay preview</title>
+<style>html,body{margin:0;background:var(--canvas);}</style></head>
+<body>
+<div id="root" class="tp-preview "></div>
+<script>
+  var T = window.Tripami, h = React.createElement;
+  var alex={name:'Alex Rivera',color:'lagoon',online:true}, maya={name:'Maya Chen',color:'plum',online:true}, leo={name:'Leo Okafor',color:'fern'}, jonah={name:'Jonah Weiss',color:'sky'}, priya={name:'Priya Nair',color:'iris'}, sam={name:'Sam Torres',color:'rose'};
+  var rome=[{id:'you',name:'Chris Foisy',color:'sky'},{id:'sandra',name:'Sandra Diaz',color:'fern'},{id:'leann',name:'LeAnn Moss',color:'plum'},{id:'shannon',name:'Shannon Lee',color:'lagoon'},{id:'christy',name:'Christy Park',color:'rose'}];var all=['you','sandra','leann','shannon','christy'];var day=[{time:'08:00',events:[{id:'b',title:'Breakfast together',start:'08:00',end:'09:00',place:'Roscioli Caffè',participantIds:all}]},{time:'09:30',events:[{id:'v',title:'Vatican Museums',start:'09:30',end:'12:30',place:'Viale Vaticano',participantIds:['you','sandra']},{id:'f',title:'Farmhouse breakfast',start:'09:30',end:'11:00',place:"Val d'Orcia",participantIds:['shannon','christy']},{id:'m',title:'Wandering Monti',start:'09:30',end:'12:30',place:'No plans, just vibes',participantIds:['leann'],loose:true}]},{time:'13:00',events:[{id:'l',title:'Lunch at Armando',start:'13:00',end:'14:30',place:'Pantheon',participantIds:all,now:true}]}];
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{style:{maxWidth:440}}, h(T.BraidDay,{members:rome,youId:'you',moments:day,width:420})));
+</script>
+</body>
+</html>

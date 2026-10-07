@@ -690,8 +690,8 @@
   },
   "lastChange": {
     "by": "Claude",
-    "at": "2026-10-06T22:57:05Z",
+    "at": "2026-10-07T00:25:16Z",
     "via": "Claude Code",
-    "note": "Display type switched to Bricolage Grotesque to echo the wordmark; reversed wordmark added; icons regenerated in navy."
+    "note": "Added the braid: BraidDay, BraidEventCard, BraidMarker, braid tokens and strand colors."
   }
 }

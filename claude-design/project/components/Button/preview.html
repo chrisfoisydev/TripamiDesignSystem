@@ -8,6 +8,7 @@
 <script>
   var T = window.Tripami, h = React.createElement;
   var alex={name:'Alex Rivera',color:'lagoon',online:true}, maya={name:'Maya Chen',color:'plum',online:true}, leo={name:'Leo Okafor',color:'fern'}, jonah={name:'Jonah Weiss',color:'sky'}, priya={name:'Priya Nair',color:'iris'}, sam={name:'Sam Torres',color:'rose'};
+  
   ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'tp-stack-v'}, h('div',{className:'tp-row-wrap'}, h(T.Button,null,'Create trip'), h(T.Button,{variant:'secondary'},'Join with code'), h(T.Button,{loading:true},'Saving')), h('div',{className:'tp-row-wrap'}, h(T.Button,{small:true},'Vote'), h(T.Button,{small:true,variant:'secondary'},'Later'), h(T.Button,{variant:'tertiary'},'See all'), h(T.Button,{variant:'destructive'},'Leave trip'), h(T.Button,{small:true,disabled:true},'Vote'))));
 </script>
 </body>

@@ -8,6 +8,7 @@
 <script>
   var T = window.Tripami, h = React.createElement;
   var alex={name:'Alex Rivera',color:'lagoon',online:true}, maya={name:'Maya Chen',color:'plum',online:true}, leo={name:'Leo Okafor',color:'fern'}, jonah={name:'Jonah Weiss',color:'sky'}, priya={name:'Priya Nair',color:'iris'}, sam={name:'Sam Torres',color:'rose'};
+  
   ReactDOM.createRoot(document.getElementById('root')).render(h('div',{style:{maxWidth:420}}, h(T.ItineraryItem,{time:'09:30',title:'Pastéis at Manteigaria',detail:'Chiado · 30 min',addedBy:leo,addedWhen:'2d',reactions:[{emoji:'👍',count:3,mine:true}]}), h(T.ItineraryItem,{time:'12:00',title:'Tram 28 to Graça',detail:'Martim Moniz · 40 min',state:'now',addedBy:priya,addedWhen:'1d'}), h(T.ItineraryItem,{time:'16:00',title:'Check in · Casa do Largo',detail:'Alfama · Conf. 94730172',state:'booked'}), h(T.ItineraryItem,{time:'20:30',title:'Dinner (voting)',detail:'3 options · closes 18:00',state:'idea',last:true})));
 </script>
 </body>

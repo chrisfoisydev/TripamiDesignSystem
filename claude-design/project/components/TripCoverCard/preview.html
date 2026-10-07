@@ -8,6 +8,7 @@
 <script>
   var T = window.Tripami, h = React.createElement;
   var alex={name:'Alex Rivera',color:'lagoon',online:true}, maya={name:'Maya Chen',color:'plum',online:true}, leo={name:'Leo Okafor',color:'fern'}, jonah={name:'Jonah Weiss',color:'sky'}, priya={name:'Priya Nair',color:'iris'}, sam={name:'Sam Torres',color:'rose'};
+  
   ReactDOM.createRoot(document.getElementById('root')).render(h('div',{style:{display:'grid',gridTemplateColumns:'repeat(2, minmax(0, 300px))',gap:16}}, h(T.TripCoverCard,{title:'Lisbon with the crew',subtitle:'12–17 Jun · Lisbon',status:'In 6 days',image:'/_blob/a32b8584f96aada01e927894c1c3621d',members:[alex,maya,leo,jonah,priya,sam]}), h(T.TripCoverCard,{title:'Kyoto in autumn',subtitle:'Dates not set · Kyoto',status:'Planning',members:[alex,leo,priya]})));
 </script>
 </body>

@@ -1,4 +1,4 @@
-/* @ds-bundle: {"format":4,"namespace":"Tripami","components":[{"name":"Icon"},{"name":"Button"},{"name":"GlassIconButton"},{"name":"QuickAction"},{"name":"FloatingPill"},{"name":"FilterChip"},{"name":"UnderlineTabs"},{"name":"TextField"},{"name":"Toggle"},{"name":"Eyebrow"},{"name":"SectionHeader"},{"name":"Card"},{"name":"GlassChip"},{"name":"TripCoverCard"},{"name":"TripStrip"},{"name":"ListRow"},{"name":"StickyActionBar"},{"name":"Sheet"},{"name":"EmptyState"},{"name":"Toast"},{"name":"TabBar"},{"name":"Avatar"},{"name":"AvatarStack"},{"name":"Attribution"},{"name":"ActivityDot"},{"name":"ReactionBar"},{"name":"PollCard"},{"name":"ItineraryItem"},{"name":"ExpenseRow"}]} */
+/* @ds-bundle: {"format":4,"namespace":"Tripami","components":[{"name":"Icon"},{"name":"Button"},{"name":"GlassIconButton"},{"name":"QuickAction"},{"name":"FloatingPill"},{"name":"FilterChip"},{"name":"UnderlineTabs"},{"name":"TextField"},{"name":"Toggle"},{"name":"Eyebrow"},{"name":"SectionHeader"},{"name":"Card"},{"name":"GlassChip"},{"name":"TripCoverCard"},{"name":"TripStrip"},{"name":"ListRow"},{"name":"StickyActionBar"},{"name":"Sheet"},{"name":"EmptyState"},{"name":"Toast"},{"name":"TabBar"},{"name":"Avatar"},{"name":"AvatarStack"},{"name":"Attribution"},{"name":"ActivityDot"},{"name":"ReactionBar"},{"name":"PollCard"},{"name":"ItineraryItem"},{"name":"ExpenseRow"},{"name":"BraidDay"},{"name":"BraidEventCard"},{"name":"BraidMarker"}]} */
 // Tripami components for the web. Hand-written from the Flutter package
 // (lib/src/components/*.dart in chrisfoisydev/TripamiDesignSystem); same props, same rules.
 (function () {
@@ -292,6 +292,226 @@
         h('div', { className: cx('footnote tp-num', p.youOwe ? 'tp-caution' : 'tp-positive') }, (p.youOwe ? 'You owe ' : 'You get ') + p.yourShare)));
   }
 
+
+  // ---------- Braid ----------
+  // One strand per traveler (or per group on big trips), bundling when people
+  // are together and parting when they split. Mirrors TPBraidDay in Flutter.
+  var BRAID = { strand: 3, ribbonMax: 12, youExtra: 1.5, gap: 4, bundleGap: 12, gutter: 88, turn: 48, knotY: 44, maxStrands: 6, twoSidedMinWidth: 600 };
+  function braidWidthFor(count) { return Math.min(BRAID.ribbonMax, Math.max(BRAID.strand, BRAID.strand + (count - 1) * 0.6)); }
+  function firstName(n) { return String(n).trim().split(/\s+/)[0]; }
+
+  function resolveBraidStrands(members, youId, groups, moments, maxStrands) {
+    groups = groups || []; moments = moments || []; maxStrands = maxStrands || BRAID.maxStrands;
+    function person(m) { return { id: m.id, label: m.id === youId ? 'You' : firstName(m.name), kind: 'person', memberIds: [m.id], color: m.color, isYou: m.id === youId }; }
+    if (members.length <= 8) return members.map(person);
+    var you = members.filter(function (m) { return m.id === youId; })[0] || members[0];
+    var order = {}; members.forEach(function (m, i) { order[m.id] = i; });
+    if (members.length <= 20) {
+      var shared = {};
+      moments.forEach(function (mo) { mo.events.forEach(function (e) {
+        if (e.participantIds.indexOf(you.id) < 0) return;
+        e.participantIds.forEach(function (id) { if (id !== you.id) shared[id] = (shared[id] || 0) + 1; });
+      }); });
+      var close = members.filter(function (m) { return m.id !== you.id && shared[m.id] > 0; })
+        .sort(function (a, b) { return (shared[b.id] - shared[a.id]) || (order[a.id] - order[b.id]); });
+      var kept = close.slice(0, maxStrands - 2);
+      var keptIds = [you.id].concat(kept.map(function (m) { return m.id; }));
+      var rest = members.filter(function (m) { return keptIds.indexOf(m.id) < 0; }).map(function (m) { return m.id; });
+      var out = [person(you)].concat(kept.map(person));
+      if (rest.length) out.push({ id: '_others', label: 'Everyone else', kind: 'others', memberIds: rest });
+      return out;
+    }
+    var assigned = {}; assigned[you.id] = true;
+    var ordered = groups.slice().sort(function (a, b) {
+      var am = a.memberIds.indexOf(you.id) >= 0 ? 0 : 1, bm = b.memberIds.indexOf(you.id) >= 0 ? 0 : 1;
+      return (am - bm) || (b.memberIds.length - a.memberIds.length);
+    });
+    var gs = [];
+    ordered.forEach(function (g) {
+      var ids = g.memberIds.filter(function (id) { return id in order && !assigned[id]; });
+      if (!ids.length) return;
+      ids.forEach(function (id) { assigned[id] = true; });
+      gs.push({ id: g.id, label: g.name, kind: 'group', memberIds: ids, color: g.color });
+    });
+    var un = members.map(function (m) { return m.id; }).filter(function (id) { return !assigned[id]; });
+    if (gs.length + (un.length ? 1 : 0) <= maxStrands - 1) {
+      var o = [person(you)].concat(gs);
+      if (un.length) o.push({ id: '_others', label: 'Everyone else', kind: 'others', memberIds: un });
+      return o;
+    }
+    var keep = gs.slice(0, maxStrands - 2), folded = gs.slice(maxStrands - 2);
+    var foldedIds = []; folded.forEach(function (s) { foldedIds = foldedIds.concat(s.memberIds); });
+    return [person(you)].concat(keep, [{ id: '_others', label: folded.length ? '+' + folded.length + ' more groups' : 'Everyone else', kind: 'others', memberIds: foldedIds.concat(un) }]);
+  }
+
+  function braidAssign(strands, moment) {
+    return strands.map(function (s) {
+      var best = null, bestN = 0;
+      moment.events.forEach(function (e, i) {
+        var n = s.memberIds.filter(function (id) { return e.participantIds.indexOf(id) >= 0; }).length;
+        if (n > bestN) { best = i; bestN = n; }
+      });
+      return best;
+    });
+  }
+
+  function braidEventLabel(e, members, youId, groups) {
+    var ids = members.filter(function (m) { return e.participantIds.indexOf(m.id) >= 0; });
+    if (ids.length === members.length) return 'All ' + ids.length + ' together';
+    for (var g = 0; g < (groups || []).length; g++) {
+      var inTrip = groups[g].memberIds.filter(function (id) { return members.some(function (m) { return m.id === id; }); });
+      if (inTrip.length > 2 && inTrip.length === ids.length && ids.every(function (m) { return inTrip.indexOf(m.id) >= 0; })) return groups[g].name + ' · ' + ids.length;
+    }
+    var names = (ids.some(function (m) { return m.id === youId; }) ? ['You'] : []).concat(ids.filter(function (m) { return m.id !== youId; }).map(function (m) { return firstName(m.name); }));
+    if (!names.length) return 'Nobody yet';
+    if (names.length === 1) return names[0];
+    if (names.length === 2) return names[0] + ' + ' + names[1];
+    if (names.length === 3) return names[0] + ', ' + names[1] + ' + ' + names[2];
+    return names[0] + ', ' + names[1] + ' + ' + (names.length - 2) + ' more';
+  }
+
+  function braidMomentSummary(moment, prev, tripSize) {
+    if (moment.events.length > 1) return 'Splits into ' + moment.events.length;
+    var n = moment.events.length ? moment.events[0].participantIds.length : 0;
+    if (n >= tripSize) return prev && prev.events.length > 1 ? 'Back together' : 'All ' + tripSize + ' together';
+    return n + ' going';
+  }
+
+  function BraidEventCard(p) {
+    return h('div', { className: cx('tp-braid-card', p.mine && 'is-mine', p.loose && 'is-loose', p.now && 'is-now') },
+      h('div', { className: cx('footnote tp-braid-label', p.mine ? 'tp-accent' : 'tp-muted') }, p.label),
+      h('div', { className: 'title3 tp-ink' }, p.title),
+      p.detail ? h('div', { className: 'footnote tp-muted tp-num' }, p.detail) : null,
+      p.footer || null);
+  }
+
+  function BraidMarker(p) {
+    return h('div', { className: 'tp-braid-marker' },
+      h('span', { className: 'title3 tp-ink tp-num' }, p.time),
+      h('span', { className: 'footnote tp-muted' }, p.summary));
+  }
+
+  function BraidDay(p) {
+    var rootRef = React.useRef(null);
+    var wst = useState(p.width || 390), width = p.width || wst[0];
+    var exp = useState({}), expanded = exp[0];
+    React.useLayoutEffect(function () {
+      if (p.width || !rootRef.current || !window.ResizeObserver) return;
+      var ro = new ResizeObserver(function (en) { wst[1](en[0].contentRect.width); });
+      ro.observe(rootRef.current);
+      return function () { ro.disconnect(); };
+    }, []);
+    var members = p.members, youId = p.youId, groups = p.groups || [], moments = p.moments, maxVisible = p.maxVisibleEvents || 3;
+    var strands = resolveBraidStrands(members, youId, groups, moments);
+    var byId = {}; strands.forEach(function (s) { s.width = braidWidthFor(s.memberIds.length) + (s.isYou ? BRAID.youExtra : 0); byId[s.id] = s; });
+    var you = strands.filter(function (s) { return s.isYou; })[0] || strands[0];
+    var left = {}; left[you.id] = true;
+    moments.filter(function (m) { return m.events.length > 1; }).forEach(function (m) {
+      var a = braidAssign(strands, m), ye = a[strands.indexOf(you)];
+      if (ye == null) return;
+      strands.forEach(function (s, i) { if (a[i] === ye) left[s.id] = true; });
+    });
+    var rightIds = strands.filter(function (s) { return !left[s.id]; }).map(function (s) { return s.id; });
+    var twoSided = width >= BRAID.twoSidedMinWidth && rightIds.length > 0;
+    function sideOf(id) { return twoSided && rightIds.indexOf(id) >= 0 ? 1 : 0; }
+    var needed = [0, 0];
+
+    function layoutFor(moment, focus) {
+      var assign = braidAssign(strands, moment), lanes = [{}, {}];
+      [0, 1].forEach(function (side) {
+        var order = [focus]; moment.events.forEach(function (_, i) { if (i !== focus) order.push(i); }); order.push(null);
+        var x = 6;
+        order.forEach(function (bundle) {
+          var bs = strands.filter(function (s, i) { return assign[i] === bundle && sideOf(s.id) === side; })
+            .sort(function (a, b) { return (a.isYou ? 0 : 1) - (b.isYou ? 0 : 1); });
+          if (!bs.length) return;
+          bs.forEach(function (s) {
+            x += s.width / 2;
+            lanes[side][s.id] = { x: x, loose: bundle == null || !!moment.events[bundle].loose };
+            x += s.width / 2 + BRAID.gap;
+          });
+          x += BRAID.bundleGap - BRAID.gap;
+        });
+        needed[side] = Math.max(needed[side], x);
+      });
+      return lanes;
+    }
+
+    var rows = [], prev = null;
+    moments.forEach(function (moment, mi) {
+      var events = moment.events.map(function (e, i) { return { e: e, i: i }; }).sort(function (a, b) {
+        var am = a.e.participantIds.indexOf(youId) >= 0 ? 0 : 1, bm = b.e.participantIds.indexOf(youId) >= 0 ? 0 : 1;
+        return (am - bm) || (b.e.participantIds.length - a.e.participantIds.length);
+      });
+      var first = layoutFor(moment, events.length ? events[0].i : null);
+      if (!prev) prev = first;
+      rows.push({ kind: 'marker', entry: prev, lanes: prev, time: moment.time, summary: braidMomentSummary(moment, moments[mi - 1], members.length) });
+      var showAll = expanded[mi] || events.length <= maxVisible;
+      var visible = showAll ? events : events.slice(0, maxVisible);
+      var assign = braidAssign(strands, moment);
+      visible.forEach(function (ev) {
+        var lanes = layoutFor(moment, ev.i);
+        var inEvent = strands.filter(function (s, i) { return assign[i] === ev.i; });
+        var side = !inEvent.length || inEvent.some(function (s) { return sideOf(s.id) === 0; }) ? 0 : 1;
+        rows.push({ kind: 'event', entry: prev, lanes: lanes, event: ev.e, inEvent: inEvent, side: side });
+        prev = lanes;
+      });
+      if (!showAll) rows.push({ kind: 'more', entry: prev, lanes: prev, label: 'Show ' + (events.length - visible.length) + ' more', mi: mi });
+    });
+    var gw = [Math.min(140, Math.max(BRAID.gutter, needed[0])), twoSided ? Math.min(140, Math.max(BRAID.gutter, needed[1])) : 0];
+
+    function gutter(row, side) {
+      var w = gw[side];
+      function X(x) { return side === 1 ? w - x : x; }
+      var knotY = row.kind === 'event' ? BRAID.knotY : 0;
+      var paths = [];
+      var ordered = strands.slice().sort(function (a, b) { return (a.isYou ? 1 : 0) - (b.isYou ? 1 : 0); });
+      ordered.forEach(function (s) {
+        var lane = row.lanes[side][s.id]; if (!lane) return;
+        var ent = row.entry[side][s.id] || lane;
+        var x0 = X(ent.x), x1 = X(lane.x), t = Math.min(knotY, BRAID.turn);
+        var d = 'M' + x0 + ' 0 ' + (t > 0 && Math.abs(x0 - x1) > 0.5 ? 'C' + x0 + ' ' + t / 2 + ' ' + x1 + ' ' + t / 2 + ' ' + x1 + ' ' + t : 'L' + x1 + ' ' + t) + ' L' + x1 + ' 4000';
+        var color = s.color ? 'var(--strand-' + s.color + ')' : 'var(--text-tertiary)';
+        paths.push(h('path', { key: s.id, d: d, fill: 'none', stroke: color, strokeWidth: s.width, strokeLinecap: lane.loose ? 'round' : 'butt', strokeDasharray: lane.loose ? '0.01 6' : undefined }));
+      });
+      var knot = null, connector = null;
+      if (row.kind === 'event') {
+        var xs = row.inEvent.map(function (s) { return row.lanes[side][s.id]; }).filter(Boolean).map(function (l) { return X(l.x); });
+        if (xs.length) {
+          var lo = Math.min.apply(null, xs), hi = Math.max.apply(null, xs);
+          if (row.side === side) {
+            var people = members.filter(function (m) { return row.event.participantIds.indexOf(m.id) >= 0; })
+              .sort(function (a, b) { return (a.id === youId ? 0 : 1) - (b.id === youId ? 0 : 1); });
+            var shown = people.length > 3 ? 4 : people.length, stackW = 28 + (shown - 1) * 20;
+            var left0 = Math.max(0, Math.min(w - stackW, (lo + hi) / 2 - stackW / 2));
+            knot = h('div', { className: 'tp-braid-knot', style: { left: left0, top: knotY - 14 } }, h(AvatarStack, { members: people, size: 24, max: 3 }));
+            connector = side === 0 ? [left0 + stackW + 4, w] : [0, left0 - 4];
+          } else {
+            connector = side === 0 ? [hi + 6, w] : [0, lo - 6];
+          }
+        }
+      }
+      return h('div', { className: 'tp-braid-gutter', style: { width: w } },
+        h('svg', { className: 'tp-braid-svg', width: w, height: 4000, 'aria-hidden': true },
+          connector && connector[1] > connector[0] ? h('line', { x1: connector[0], x2: connector[1], y1: knotY, y2: knotY, className: 'tp-braid-connector' }) : null,
+          paths),
+        knot);
+    }
+
+    return h('div', { ref: rootRef, className: 'tp-braid' }, rows.map(function (row, ri) {
+      var body;
+      if (row.kind === 'marker') body = h(BraidMarker, { time: row.time, summary: row.summary });
+      else if (row.kind === 'more') body = h('div', { className: 'tp-braid-more' }, h(Button, { variant: 'tertiary', onClick: function () { var n = Object.assign({}, expanded); n[row.mi] = true; exp[1](n); } }, row.label));
+      else {
+        var e = row.event, everyone = members.every(function (m) { return e.participantIds.indexOf(m.id) >= 0; });
+        var detail = [e.start ? (e.end ? e.start + '–' + e.end : e.start) : null, e.place].filter(Boolean).join(' · ');
+        body = h(BraidEventCard, { label: braidEventLabel(e, members, youId, groups), title: e.title, detail: detail || null, mine: e.participantIds.indexOf(youId) >= 0 && !everyone, loose: e.loose, now: e.now });
+      }
+      return h('div', { key: ri, className: 'tp-braid-row is-' + row.kind },
+        gutter(row, 0), h('div', { className: 'tp-braid-body' }, body), twoSided ? gutter(row, 1) : null);
+    }));
+  }
+
   window.Tripami = Object.assign(window.Tripami || {}, {
     Icon: Icon, Button: Button, GlassIconButton: GlassIconButton, QuickAction: QuickAction, FloatingPill: FloatingPill,
     FilterChip: FilterChip, UnderlineTabs: UnderlineTabs, TextField: TextField, Toggle: Toggle,
@@ -299,6 +519,7 @@
     TripStrip: TripStrip, ListRow: ListRow, StickyActionBar: StickyActionBar, Sheet: Sheet, EmptyState: EmptyState,
     Toast: Toast, TabBar: TabBar, Avatar: Avatar, AvatarStack: AvatarStack, Attribution: Attribution,
     ActivityDot: ActivityDot, ReactionBar: ReactionBar, PollCard: PollCard, ItineraryItem: ItineraryItem, ExpenseRow: ExpenseRow,
+    BraidDay: BraidDay, BraidEventCard: BraidEventCard, BraidMarker: BraidMarker, resolveBraidStrands: resolveBraidStrands,
     iconNames: Object.keys(ICONS),
   });
 })();

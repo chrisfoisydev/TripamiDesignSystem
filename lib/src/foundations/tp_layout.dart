@@ -69,6 +69,41 @@ abstract final class TPElevation {
   }
 }
 
+/// The braid: one strand per traveler (or per group on big trips) running
+/// down the day, bundling when people are together and parting when they split.
+abstract final class TPBraidMetrics {
+  /// Width of a person strand. Group ribbons scale from here to [ribbonMax].
+  static const strand = 3.0;
+  static const ribbonMax = 12.0;
+
+  /// Extra width on your own strand, which is also drawn on top.
+  static const youExtra = 1.5;
+
+  /// Gap between strands in one bundle, and between bundles.
+  static const gap = 4.0;
+  static const bundleGap = 12.0;
+
+  /// Minimum width of the strand gutter beside the cards.
+  static const gutter = 88.0;
+
+  /// Height over which strands move to their new bundle at each event.
+  static const turn = 48.0;
+
+  /// Dots for a loose strand (no plans).
+  static const looseDash = 2.0;
+  static const looseGap = 4.0;
+
+  /// Most strands shown at once; the rest fold into a "+N more" ribbon.
+  static const maxStrands = 6;
+
+  /// Phones show strands on the left only; at this width and up, strands of
+  /// groups you're not in move to a right-hand gutter.
+  static const twoSidedMinWidth = 600.0;
+
+  /// Ribbon width for a strand that stands for [count] people.
+  static double widthFor(int count) => (strand + (count - 1) * 0.6).clamp(strand, ribbonMax);
+}
+
 abstract final class TPMotion {
   static const instant = Duration(milliseconds: 120);
   static const quick = Duration(milliseconds: 200);

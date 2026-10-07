@@ -45,6 +45,15 @@ Tripami is a collaborative group-travel app. Its product UI pairs a hotel concie
 - Scale: `display` 34/38 · `title1` 28/34 · `diary-heading` 24/30 · `title2` 22/28 · `title3` 18/24 · `body` 17/24 · `callout` 15/20 · `subhead` 14/19 · `footnote` 13/18 · `eyebrow` 12/16 caps · `caption` 11/13.
 - All three families are variable fonts with an optical-size axis. Keep `font-optical-sizing: auto` so display sizes tighten and small text opens up.
 
+## The braid
+
+The Plan view draws the day as a braid (`BraidDay`): one strand per traveler, bundling into shared plans and parting when the group splits.
+- Strands use `strand-*` (the member colors, lightened in dark mode). Color means people *or* groups in a view, never both.
+- Use `braid-*` tokens for widths, gaps and the 48px turn. Your strand is 1.5px wider and on top.
+- Scale by changing what a strand is: a person up to 8 travelers; you plus close people plus "Everyone else" up to 20; groups beyond that, at most 6 strands.
+- Write markers and labels in plain language: "All 5 together", "Splits into 3", "Back together", "You + Sandra".
+- Phones keep strands on the left. From 600px, groups you're not with move to a right-hand gutter.
+
 ## Space, shape, depth
 
 - **Spacing:** 4px grid. The screen side margin is `space-6` (24px). Eyebrow to content is `space-3`; section title to content is `space-5`; related sections are `space-8` apart and unrelated ones `space-10`.

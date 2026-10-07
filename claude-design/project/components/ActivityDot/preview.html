@@ -8,6 +8,7 @@
 <script>
   var T = window.Tripami, h = React.createElement;
   var alex={name:'Alex Rivera',color:'lagoon',online:true}, maya={name:'Maya Chen',color:'plum',online:true}, leo={name:'Leo Okafor',color:'fern'}, jonah={name:'Jonah Weiss',color:'sky'}, priya={name:'Priya Nair',color:'iris'}, sam={name:'Sam Torres',color:'rose'};
+  
   ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'tp-row-wrap'}, h(T.ActivityDot,null), h('span',{className:'footnote tp-muted'},'New'), h('span',{style:{width:16}}), h(T.ActivityDot,{urgent:true}), h('span',{className:'footnote tp-muted'},'Needs you')));
 </script>
 </body>

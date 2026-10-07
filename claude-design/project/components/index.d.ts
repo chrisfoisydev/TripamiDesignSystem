@@ -37,4 +37,10 @@ export interface ReactionBarProps { reactions: Reaction[]; onAdd?: false | (() =
 export interface PollOption { id: string; title: string; detail?: string; image?: string; voters: Member[] }
 export interface PollCardProps { eyebrow: string; question: string; options: PollOption[]; myVoteId?: string; waitingOn?: string[]; deadline?: string; decidedId?: string; onVote?: false | (() => void) }
 export interface ItineraryItemProps { time: string; title: string; detail?: string; state?: 'planned' | 'now' | 'booked' | 'idea'; addedBy?: Member; addedWhen?: string; reactions?: Reaction[]; footer?: ReactNode; last?: boolean }
+export interface BraidGroup { id: string; name: string; color: MemberColor; memberIds: string[] }
+export interface BraidEvent { id: string; title: string; participantIds: string[]; start?: string; end?: string; place?: string; loose?: boolean; now?: boolean }
+export interface BraidMoment { time: string; events: BraidEvent[] }
+export interface BraidDayProps { members: (Member & { id: string })[]; youId: string; moments: BraidMoment[]; groups?: BraidGroup[]; maxVisibleEvents?: number; width?: number }
+export interface BraidEventCardProps { label: string; title: string; detail?: string; mine?: boolean; loose?: boolean; now?: boolean; footer?: ReactNode }
+export interface BraidMarkerProps { time: string; summary: string }
 export interface ExpenseRowProps { icon?: IconName; title: string; paidBy: Member; splitWays: number; amount: string; yourShare: string; youOwe: boolean }

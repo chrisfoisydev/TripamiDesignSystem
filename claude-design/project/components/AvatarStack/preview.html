@@ -8,6 +8,7 @@
 <script>
   var T = window.Tripami, h = React.createElement;
   var alex={name:'Alex Rivera',color:'lagoon',online:true}, maya={name:'Maya Chen',color:'plum',online:true}, leo={name:'Leo Okafor',color:'fern'}, jonah={name:'Jonah Weiss',color:'sky'}, priya={name:'Priya Nair',color:'iris'}, sam={name:'Sam Torres',color:'rose'};
+  
   ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'tp-row-wrap',style:{gap:24}}, h(T.AvatarStack,{members:[alex,maya,leo,jonah,priya,sam],size:32}), h(T.AvatarStack,{members:[maya,leo,alex],size:24})));
 </script>
 </body>
