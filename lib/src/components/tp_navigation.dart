@@ -295,7 +295,11 @@ class TPFilterChip extends StatelessWidget {
                         )
                       : const SizedBox.shrink(),
                 ),
-              Flexible(child: Text(label, style: TPType.buttonSmall.copyWith(color: fg))),
+              // One line, hugging the label. Only a chip wider than its row
+              // (very large text) ellipsizes; the chip's label is in Semantics.
+              Flexible(
+                child: Text(label, maxLines: 1, softWrap: false, overflow: TextOverflow.ellipsis, style: TPType.buttonSmall.copyWith(color: fg)),
+              ),
               if (dropdown) ...[
                 const SizedBox(width: TPSpace.s1),
                 Icon(TPIcons.caretDown, size: 14, color: fg),

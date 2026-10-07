@@ -52,6 +52,7 @@ For chat composer, comments and notes: `bg.sunken`, `radius.sm`, 12/16 padding, 
 
 ### Filter chip · `TPFilterChip`
 Height 36, `radius.pill`, 1pt `border.strong`, `type.buttonSmall`, optional trailing `chevron.down`.
+The chip hugs its label on one line ("Wed 18", never two lines). A row of chips scrolls sideways instead of squeezing; only a chip wider than the screen (very large text) ellipsizes.
 Selected: `accent.subtle` fill, `accent.default` border and text, leading `checkmark`. With a count, a 20pt ink circle holding white `type.caption` numerals sits on the leading edge.
 *Bonvoy ref:* "Room Type", "Points", "Standard Rates" chips. *Change:* selection uses the accent, not grey.
 
