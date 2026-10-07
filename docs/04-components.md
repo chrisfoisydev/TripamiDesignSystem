@@ -92,11 +92,17 @@ A clock icon and one `type.footnote` line under the next plan.
 
 Changes are announced politely to screen readers. Updates every 30 seconds; pass `now` to pin it.
 
+## Backgrounds · `TPBackdrop.photo / .braid / .route`
+Paints the top `size.backdrop` (280pt) of a screen behind its content and fades into `canvas`. Photo wash for screens inside a trip, braid for people moments, route for screens with no trip yet. One per screen; decorative and silent to screen readers. Rules: Backgrounds in [07 · Imagery](./07-imagery.md).
+
 ## Containers
 
 ### Trip cover card · `TPTripCoverCard`
 4:5 photo, `radius.lg`, `elevation.1`. Bottom-left on scrim: trip name in **`display`** (Bricolage Grotesque 800) (or `diaryHeading` in carousels), then `type.subhead` "12–17 Jun · Lisbon". Top-left: glass chip with status ("In 6 days", "Planning", "Now"). Bottom-right: avatar stack (max 4 + "+2").
 *Bonvoy ref:* Recommended / Destinations cards. *Change:* serif trip name, faces of travelers.
+
+### Connect card · `TPConnectCard`
+Connect a service that brings plans in: a `TPCard` (20pt padding) with a 48pt `sunken` icon disc, `type.title3` title, `type.subhead` message, an optional row of what it finds as 20pt icons in `text.secondary`, and the primary button full width. It holds the screen's one primary action; list the other ways to do the same job under it with `TPListRow`.
 
 ### Content card · `TPCard`
 `bg.surface`, `radius.md`, `elevation.1`, 16pt padding. Optional top media (16:9) with `radius.md` on top corners only. Title `type.title3`, metadata `type.subhead` `text.secondary`.
@@ -144,6 +150,15 @@ Ink capsule-rectangle (`radius.md`), inverse text, 16pt above the tab bar, optio
 ### Avatar · `TPAvatar`, `TPMember`
 Sizes 24 / 32 / 40 / 56 / 88 (`TPAvatarSize`). Below 32pt only the first initial is shown. A photo has a 2pt member-color ring with a 2pt `bg.surface` gap. Without a photo it's a member-color fill with white initials (`type.caption` at 24/32, `type.subhead` Medium at 40+).
 Presence: a 10pt dot at the bottom-right in `status.positive` for online/at the trip. Nothing shown when away.
+
+### Invited avatar · `TPAvatar(invited: true)`
+Someone asked to join who hasn't yet: a dashed 1.5pt `border.strong` ring, initials in `text.secondary`, no fill (the dashed shape means "not filled yet"). Screen readers hear "Sarah Johnson, invited".
+
+### Role tag · `TPRoleTag.neutral / .pending`
+A pill label for a role or status: `type.caption` 600. **Neutral** (`sunken`, `text.secondary`) for roles like "Organizer". **Pending** (amber tone) for something waiting on that person, like "Invited". Never navy or orange fills.
+
+### Group row · `TPGroupRow`
+A row about a group: their faces (24pt, up to 3 and "+N") in a fixed 72pt slot so titles line up, what they're doing, who ("You and Sandra"; defaults to first names), and an optional time ("until 12:30"). At large text the faces move above the words. Use it for "Right now" on Crew and anywhere plans are listed by who.
 
 ### Avatar stack · `TPAvatarStack`
 Overlap −8pt, 2pt `bg.surface` stroke between avatars, max 4 shown, then a "+N" circle in `bg.sunken` with `text.secondary`. Tapping it opens the Travelers sheet.

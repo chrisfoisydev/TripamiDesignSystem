@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 
+import '../foundations/tp_a11y.dart';
 import '../foundations/tp_colors.dart';
+import '../foundations/tp_format.dart';
 import '../foundations/tp_icons.dart';
 import '../foundations/tp_layout.dart';
 import '../foundations/tp_palette.dart';
+import '../foundations/tp_ramp.dart';
+import '../foundations/tp_ramps.dart';
 import '../foundations/tp_type.dart';
+import 'tp_containers.dart';
 import 'tp_motion.dart';
 
 /// A traveler on a trip.
@@ -47,12 +52,17 @@ enum TPAvatarSize {
 
 /// Avatar. With a photo: 2pt member-color ring and a 2pt surface gap.
 /// Without one: member-color fill with white initials.
+///
+/// [invited]: someone asked to join who hasn't yet. A dashed `border.strong`
+/// ring around initials in `text.secondary`, no fill: the system's dashed
+/// shape for "a space the group hasn't filled yet".
 class TPAvatar extends StatelessWidget {
-  const TPAvatar(this.member, {super.key, this.size = TPAvatarSize.md, this.showPresence = false});
+  const TPAvatar(this.member, {super.key, this.size = TPAvatarSize.md, this.showPresence = false, this.invited = false});
 
   final TPMember member;
   final TPAvatarSize size;
   final bool showPresence;
+  final bool invited;
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +71,20 @@ class TPAvatar extends StatelessWidget {
     final initialsStyle = (d >= 40 ? TPType.subhead.withWeight(TPType.medium) : TPType.caption)
         .copyWith(color: Colors.white, fontSize: d >= 56 ? d * 0.36 : null, height: 1);
 
-    final Widget face = member.photo != null
+    final Widget face = invited
+        ? CustomPaint(
+            painter: _DashedCirclePainter(color: c.borderStrong),
+            child: Container(
+              width: d,
+              height: d,
+              alignment: Alignment.center,
+              child: Text(
+                d < 32 ? member.initials.characters.first : member.initials,
+                style: initialsStyle.copyWith(color: c.textSecondary),
+              ),
+            ),
+          )
+        : member.photo != null
         ? Container(
             width: d,
             height: d,
@@ -83,7 +106,11 @@ class TPAvatar extends StatelessWidget {
           );
 
     return Semantics(
-      label: member.online && showPresence ? '${member.name}, online' : member.name,
+      label: invited
+          ? '${member.name}, invited'
+          : member.online && showPresence
+              ? '${member.name}, online'
+              : member.name,
       excludeSemantics: true,
       child: SizedBox.square(
         dimension: d,
@@ -329,6 +356,132 @@ class TPReactionBar extends StatelessWidget {
             ),
           ),
       ],
+    );
+  }
+}
+
+
+class _DashedCirclePainter extends CustomPainter {
+  _DashedCirclePainter({required this.color});
+  final Color color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    const stroke = 1.5;
+    final r = size.shortestSide / 2 - stroke / 2;
+    final paint = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = stroke;
+    // About 4pt dashes with equal gaps, a whole number around the circle.
+    final dashes = (2 * 3.14159265 * r / 8).floor().clamp(8, 64);
+    final sweep = 2 * 3.14159265 / dashes;
+    final rect = Rect.fromCircle(center: size.center(Offset.zero), radius: r);
+    for (var i = 0; i < dashes; i++) {
+      canvas.drawArc(rect, i * sweep, sweep / 2, false, paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(_DashedCirclePainter old) => old.color != color;
+}
+
+/// A small label for someone's role or status on a trip: "Organizer",
+/// "Invited". Caption weight 600 in a pill.
+///
+/// [TPRoleTag.neutral] (`sunken`, `text.secondary`) for roles.
+/// [TPRoleTag.pending] (amber tone) for something waiting on that person.
+/// Never navy or orange fills: those mean "action" and "you, now".
+class TPRoleTag extends StatelessWidget {
+  const TPRoleTag.neutral(this.label, {super.key}) : pending = false;
+  const TPRoleTag.pending(this.label, {super.key}) : pending = true;
+
+  final String label;
+  final bool pending;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = TPColors.of(context);
+    final tone = TPTone.of(context, TPRamps.amber);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: TPSpace.s2, vertical: 2),
+      decoration: BoxDecoration(
+        color: pending ? tone.subtle : c.sunken,
+        borderRadius: BorderRadius.circular(TPRadius.pill),
+      ),
+      child: Text(
+        label,
+        style: TPType.caption.withWeight(TPType.semibold).copyWith(color: pending ? tone.text : c.textSecondary),
+      ),
+    );
+  }
+}
+
+/// A row about a group of people: their faces, what they're doing, who, and
+/// an optional time. "Vatican Museums · You and Sandra · until 12:30".
+/// The faces sit in a fixed-width slot so titles line up down a list.
+class TPGroupRow extends StatelessWidget {
+  const TPGroupRow({
+    super.key,
+    required this.members,
+    required this.title,
+    this.detail,
+    this.value,
+    this.onTap,
+    this.showDivider = true,
+  });
+
+  final List<TPMember> members;
+  final String title;
+
+  /// Usually who: "You and Sandra". Defaults to their first names.
+  final String? detail;
+
+  /// "until 12:30".
+  final String? value;
+  final VoidCallback? onTap;
+  final bool showDivider;
+
+  static const _slot = 72.0;
+
+  @override
+  Widget build(BuildContext context) {
+    final who = detail ?? TPFormat.names([for (final m in members) m.firstName]);
+    if (TPA11y.largeText(context)) {
+      // Large text: faces on top, then the words full width, time last.
+      final c = TPColors.of(context);
+      return Semantics(
+        button: onTap != null,
+        child: InkWell(
+          onTap: onTap,
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: TPSpace.margin, vertical: TPSpace.s3),
+            decoration: showDivider ? BoxDecoration(border: Border(bottom: BorderSide(color: c.hairline))) : null,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TPAvatarStack(members, size: TPAvatarSize.xs, max: 3),
+                const SizedBox(height: TPSpace.s2),
+                Text(title, style: TPType.body.copyWith(color: c.textPrimary)),
+                Text(who, style: TPType.footnote.copyWith(color: c.textSecondary)),
+                if (value != null) Text(value!, style: TPType.footnote.tabular.copyWith(color: c.textSecondary)),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+    return TPListRow(
+      label: title,
+      detail: who,
+      value: value,
+      onTap: onTap,
+      showDivider: showDivider,
+      leading: SizedBox(
+        width: _slot,
+        child: Align(alignment: Alignment.centerLeft, child: TPAvatarStack(members, size: TPAvatarSize.xs, max: 3)),
+      ),
     );
   }
 }

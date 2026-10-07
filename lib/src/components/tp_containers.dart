@@ -7,6 +7,7 @@ import '../foundations/tp_colors.dart';
 import '../foundations/tp_icons.dart';
 import '../foundations/tp_layout.dart';
 import '../foundations/tp_type.dart';
+import 'tp_actions.dart';
 import 'tp_motion.dart';
 import 'tp_people.dart';
 import 'tp_text.dart';
@@ -305,6 +306,85 @@ class TPListRow extends StatelessWidget {
             if (showDivider) Divider(indent: indent, endIndent: 0, height: 1),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Connect a service that brings plans in for you: "Find your plans in
+/// Gmail". A `TPCard` with a 48pt `sunken` icon disc, a `title3` title, a
+/// `subhead` message, an optional row of what it finds ([kinds], as icons in
+/// `text.secondary`), and the primary action.
+///
+/// It holds the screen's one primary button, so use one per screen and put
+/// other ways to do the same job in a list under it.
+class TPConnectCard extends StatelessWidget {
+  const TPConnectCard({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.message,
+    required this.actionLabel,
+    required this.onConnect,
+    this.kinds = const [],
+    this.loading = false,
+  });
+
+  final IconData icon;
+  final String title;
+  final String message;
+
+  /// What it finds: airplane, bed, train… Decorative; [message] says it in words.
+  final List<IconData> kinds;
+  final String actionLabel;
+  final VoidCallback? onConnect;
+  final bool loading;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = TPColors.of(context);
+    return TPCard(
+      padding: const EdgeInsets.all(TPSpace.s5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ExcludeSemantics(
+                child: Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(color: c.sunken, shape: BoxShape.circle),
+                  child: Icon(icon, size: 24, color: c.textPrimary),
+                ),
+              ),
+              const SizedBox(width: TPSpace.s4),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Semantics(header: true, child: Text(title, style: TPType.title3.copyWith(color: c.textPrimary))),
+                    const SizedBox(height: TPSpace.s1),
+                    Text(message, style: TPType.subhead.copyWith(color: c.textSecondary)),
+                    if (kinds.isNotEmpty) ...[
+                      const SizedBox(height: TPSpace.s3),
+                      ExcludeSemantics(
+                        child: Wrap(
+                          spacing: TPSpace.s4,
+                          runSpacing: TPSpace.s2,
+                          children: [for (final k in kinds) Icon(k, size: 20, color: c.textSecondary)],
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: TPSpace.s4),
+          TPButton.primary(label: actionLabel, onPressed: onConnect, expand: true, loading: loading),
+        ],
       ),
     );
   }

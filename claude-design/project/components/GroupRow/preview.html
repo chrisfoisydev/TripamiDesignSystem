@@ -1,0 +1,16 @@
+<!-- @dsCard group="People" height=220 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>GroupRow preview</title>
+<style>html,body{margin:0;background:var(--canvas);}</style></head>
+<body>
+<div id="root" class="tp-preview flush on-surface"></div>
+<script>
+  var T = window.Tripami, h = React.createElement;
+  var alex={name:'Alex Rivera',color:'lagoon',online:true}, maya={name:'Maya Chen',color:'plum',online:true}, leo={name:'Leo Okafor',color:'fern'}, jonah={name:'Jonah Weiss',color:'sky'}, priya={name:'Priya Nair',color:'iris'}, sam={name:'Sam Torres',color:'rose'};
+  
+  function Replay(props){var st=React.useState(0);return h('div',{className:'tp-stack-v',style:{gap:16}},h('div',null,h(T.Button,{variant:'secondary',small:true,onClick:function(){st[1](st[0]+1);}},'Replay')),h('div',{key:st[0]},props.render(st[0])));}
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{style:{maxWidth:420}}, h(T.GroupRow,{members:[alex,maya],title:'Vatican Museums',detail:'You and Maya',value:'until 12:30',onClick:function(){}}), h(T.GroupRow,{members:[leo,jonah],title:'Colosseum underground',onClick:function(){}}), h(T.GroupRow,{members:[priya,sam,alex,maya],title:'Wine tasting in Tuscany',onClick:function(){},divider:false})));
+</script>
+</body>
+</html>

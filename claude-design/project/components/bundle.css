@@ -293,3 +293,31 @@ button.tp-row { cursor: pointer; }
 .tp-leave.is-soon { color: var(--accent); font-weight: 600; }
 .tp-leave.is-due { color: var(--caution); font-weight: 600; }
 @media (prefers-reduced-motion: reduce) { .tp-progress-fill, .tp-leave { transition: none; } }
+
+/* People pieces and backgrounds */
+.tp-avatar.is-invited .tp-avatar-face { background: none; color: var(--text-secondary); border: 1.5px dashed var(--border-strong); box-sizing: border-box; }
+.tp-role { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: var(--radius-pill); background: var(--sunken); color: var(--text-secondary); font-weight: 600; white-space: nowrap; }
+.tp-role.is-pending { background: var(--amber-50); color: var(--amber-700); }
+[data-theme="dark"] .tp-role.is-pending { background: var(--amber-950); color: var(--amber-200); }
+.tp-group-faces { width: 72px; flex-shrink: 0; display: flex; }
+.tp-group-row.tp-row { cursor: pointer; }
+.tp-connect { display: flex; flex-direction: column; gap: var(--space-4); padding: var(--space-5); }
+.tp-connect-head { display: flex; align-items: flex-start; gap: var(--space-4); }
+.tp-connect-disc { width: 48px; height: 48px; flex-shrink: 0; border-radius: 50%; background: var(--sunken); display: grid; place-items: center; color: var(--text-primary); }
+.tp-connect-kinds { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); margin-top: var(--space-2); color: var(--text-secondary); }
+.tp-backdrop { position: relative; }
+.tp-backdrop-layer { position: absolute; top: 0; left: 0; right: 0; overflow: hidden; pointer-events: none; }
+.tp-backdrop-content { position: relative; }
+.tp-backdrop-fade { position: absolute; inset: 0; }
+.tp-backdrop.is-photo .tp-backdrop-fade { background: linear-gradient(180deg, color-mix(in srgb, var(--canvas) 35%, transparent) 0%, color-mix(in srgb, var(--canvas) 35%, transparent) 30%, var(--canvas) 100%); }
+.tp-backdrop.is-braid .tp-backdrop-fade { background: linear-gradient(180deg, transparent 55%, var(--canvas) 100%); }
+.tp-backdrop.is-route .tp-backdrop-fade { background: linear-gradient(180deg, transparent 60%, var(--canvas) 100%); }
+.tp-backdrop-photo { position: absolute; inset: -40px; }
+.tp-backdrop-photo img { width: 100%; height: 100%; object-fit: cover; filter: blur(16px); }
+.tp-backdrop-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.tp-backdrop-strand { fill: none; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; animation: tp-strand-draw 600ms cubic-bezier(0.2, 0, 0, 1) forwards; }
+@keyframes tp-strand-draw { to { stroke-dashoffset: 0; } }
+.tp-route-line { fill: none; stroke: var(--text-primary); stroke-opacity: 0.24; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 0 8; }
+.tp-route-pin { fill: var(--canvas); stroke: var(--text-primary); stroke-opacity: 0.24; stroke-width: 1.5; }
+.tp-route-end { fill: var(--brand-orange); }
+@media (prefers-reduced-motion: reduce) { .tp-backdrop-strand { animation: none; stroke-dashoffset: 0; } }

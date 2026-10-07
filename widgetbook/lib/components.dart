@@ -230,6 +230,7 @@ final _containers = WidgetbookFolder(name: 'Containers', children: [
 ]);
 
 final _people = WidgetbookFolder(name: 'People', children: [
+  ..._peopleExtras,
   _c('TPAvatar', [
     _u('Sizes', (context) => _frame(Wrap(spacing: 12, crossAxisAlignment: WrapCrossAlignment.center, children: [
           for (final (i, s) in TPAvatarSize.values.indexed) TPAvatar(crew[i], size: s, showPresence: true),
@@ -495,4 +496,155 @@ final _today = WidgetbookFolder(name: 'Today', children: [
   ]),
 ]);
 
-WidgetbookCategory components() => WidgetbookCategory(name: 'Components', children: [_today, _actions, _navigation, _containers, _people, _planning, _braid, _text]);
+Widget _crewScreen(BuildContext context, {required String background}) {
+  final c = TPColors.of(context);
+  final content = Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+    Padding(
+      padding: const EdgeInsets.fromLTRB(TPSpace.s2, TPSpace.s2, TPSpace.s4, 0),
+      child: Row(children: [
+        const TPGlassIconButton(icon: TPIcons.arrowLeft, onPressed: _noop, semanticLabel: 'Back to trips'),
+        const Spacer(),
+        TPButton.tertiary(label: 'Edit', onPressed: _noop),
+      ]),
+    ),
+    const SizedBox(height: 96),
+    Padding(
+      padding: TPSpace.screen,
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        const TPEyebrow('Italy with Friends · 14–27 Nov'),
+        const SizedBox(height: TPSpace.s1),
+        Text('Crew', style: TPType.display.copyWith(color: c.textPrimary)),
+        Text('8 travelers · 1 still invited', style: TPType.callout.copyWith(color: c.textSecondary)),
+        const SizedBox(height: TPSpace.s5),
+        const TPButton.primary(label: 'Add people', onPressed: _noop, expand: true),
+      ]),
+    ),
+    const SizedBox(height: TPSpace.s8),
+    const Padding(padding: TPSpace.screen, child: TPEyebrow('Right now')),
+    const SizedBox(height: TPSpace.s2),
+    TPGroupRow(members: [alex, maya], title: 'Vatican Museums', detail: 'You and Maya', value: 'until 12:30', onTap: _noop),
+    TPGroupRow(members: [leo, jonah], title: 'Colosseum underground', onTap: _noop),
+    TPGroupRow(members: [priya], title: 'Wandering Monti', detail: 'Priya, on her own', onTap: _noop, showDivider: false),
+    const SizedBox(height: TPSpace.s8),
+    const Padding(padding: TPSpace.screen, child: TPEyebrow('Everyone')),
+    TPListRow(label: 'You', leading: TPAvatar(alex), trailing: const TPRoleTag.neutral('Organizer'), showChevron: false),
+    TPListRow(label: 'Maya', leading: TPAvatar(maya), showChevron: false),
+    const TPListRow(
+      label: 'Sarah Johnson',
+      detail: 'Text sent to +1 602 555 0182',
+      leading: TPAvatar(TPMember(id: 'sarah', name: 'Sarah Johnson', color: TPMemberColor.slate), invited: true),
+      trailing: TPRoleTag.pending('Invited'),
+      showDivider: false,
+    ),
+    const SizedBox(height: TPSpace.s16),
+  ]);
+  final Widget screen = switch (background) {
+    'Photo wash' => TPBackdrop.photo(image: _rome, child: content),
+    'Braid' => TPBackdrop.braid(members: crew, child: content),
+    'Route' => TPBackdrop.route(child: content),
+    _ => content,
+  };
+  return Center(
+    child: ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 390),
+      child: ColoredBox(color: c.canvas, child: ListView(children: [screen])),
+    ),
+  );
+}
+
+final _backgrounds = WidgetbookFolder(name: 'Backgrounds', children: [
+  _c('TPBackdrop', [
+    _u('Braid', (context) => _crewScreen(context, background: 'Braid')),
+    _u('Photo wash', (context) => _crewScreen(context, background: 'Photo wash')),
+    _u('Route', (context) => _crewScreen(context, background: 'Route')),
+    _u('Compare', (context) => _crewScreen(
+          context,
+          background: context.knobs.object.dropdown<String>(label: 'Background', options: const ['Braid', 'Photo wash', 'Route', 'None'], initialOption: 'Braid'),
+        )),
+  ]),
+  _c('Bring in a trip screen', [
+    _u('Route', (context) {
+      final c = TPColors.of(context);
+      return Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 390),
+          child: ColoredBox(
+            color: c.canvas,
+            child: ListView(children: [
+              TPBackdrop.route(
+                child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(TPSpace.s2, TPSpace.s2, 0, 0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: TPGlassIconButton(icon: TPIcons.arrowLeft, onPressed: _noop, semanticLabel: 'Back to trips'),
+                    ),
+                  ),
+                  const SizedBox(height: 120),
+                  Padding(
+                    padding: TPSpace.screen,
+                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      Text('Bring in a trip', style: TPType.display.copyWith(color: c.textPrimary)),
+                      const SizedBox(height: TPSpace.s2),
+                      Text('Planned it somewhere else? Bring it here and the whole crew sees the plan.',
+                          style: TPType.callout.copyWith(color: c.textSecondary)),
+                    ]),
+                  ),
+                  const SizedBox(height: TPSpace.s6),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: TPSpace.s4),
+                    child: TPConnectCard(
+                      icon: TPIcons.envelopeSimple,
+                      title: 'Find your plans in Gmail',
+                      message: 'Flights, hotels, trains, activities and reservations, pulled from your confirmation emails.',
+                      kinds: [TPIcons.airplane, TPIcons.bed, TPIcons.train, TPIcons.ticket, TPIcons.forkKnife],
+                      actionLabel: 'Connect Gmail',
+                      onConnect: _noop,
+                    ),
+                  ),
+                  const SizedBox(height: TPSpace.s8),
+                  const Padding(padding: TPSpace.screen, child: TPEyebrow('Or add it another way')),
+                  const TPListRow(icon: TPIcons.clipboardText, label: 'Paste an itinerary', detail: 'From ChatGPT, Claude, Notes or an email', onTap: _noop),
+                  const TPListRow(icon: TPIcons.fileText, label: 'Upload a document', detail: 'PDF tickets and confirmations', onTap: _noop),
+                  const TPListRow(icon: TPIcons.images, label: 'Add from screenshots', detail: 'Booking screenshots and photos', onTap: _noop),
+                  const TPListRow(icon: TPIcons.pencilSimple, label: 'Start from scratch', detail: 'Add stops and people yourself', onTap: _noop, showDivider: false),
+                  const SizedBox(height: TPSpace.s10),
+                ]),
+              ),
+            ]),
+          ),
+        ),
+      );
+    }),
+  ]),
+]);
+
+final _peopleExtras = [
+  _c('TPRoleTag', [
+    _u('Neutral and pending', (context) => _frame(const Wrap(spacing: 8, children: [TPRoleTag.neutral('Organizer'), TPRoleTag.pending('Invited')]))),
+  ]),
+  _c('TPGroupRow', [
+    _u('Right now', (context) => _frame(Column(children: [
+          TPGroupRow(members: [alex, maya], title: 'Vatican Museums', detail: 'You and Maya', value: 'until 12:30', onTap: _noop),
+          TPGroupRow(members: [leo, jonah, priya, crew[5]], title: 'Wine tasting in Tuscany', onTap: _noop, showDivider: false),
+        ]))),
+  ]),
+  _c('TPAvatar (invited)', [
+    _u('Sizes', (context) => _frame(Wrap(spacing: 12, children: [
+          for (final s in TPAvatarSize.values)
+            TPAvatar(const TPMember(id: 'sarah', name: 'Sarah Johnson', color: TPMemberColor.slate), size: s, invited: true),
+        ]))),
+  ]),
+  _c('TPConnectCard', [
+    _u('Gmail', (context) => _frame(const TPConnectCard(
+          icon: TPIcons.envelopeSimple,
+          title: 'Find your plans in Gmail',
+          message: 'Flights, hotels, trains, activities and reservations, pulled from your confirmation emails.',
+          kinds: [TPIcons.airplane, TPIcons.bed, TPIcons.train, TPIcons.ticket, TPIcons.forkKnife],
+          actionLabel: 'Connect Gmail',
+          onConnect: _noop,
+        ))),
+  ]),
+];
+
+WidgetbookCategory components() => WidgetbookCategory(name: 'Components', children: [_today, _backgrounds, _actions, _navigation, _containers, _people, _planning, _braid, _text]);

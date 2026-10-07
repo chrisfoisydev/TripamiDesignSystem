@@ -28,7 +28,7 @@ export interface EmptyStateProps { title: string; message: string; action?: Reac
 export interface ToastProps { actionLabel?: string; onAction?: () => void; children: ReactNode }
 export interface TabBarItem { label: string; icon: IconName; activity?: 'new' | 'urgent' }
 export interface TabBarProps { items: TabBarItem[]; value?: number }
-export interface AvatarProps { member: Member; size?: 24 | 32 | 40 | 56 | 88; presence?: boolean; className?: string }
+export interface AvatarProps { member: Member; size?: 24 | 32 | 40 | 56 | 88; presence?: boolean; invited?: boolean; className?: string }
 export interface AvatarStackProps { members: Member[]; size?: number; max?: number; onImage?: boolean }
 export interface AttributionProps { member: Member; action: string; time?: string }
 export interface ActivityDotProps { urgent?: boolean }
@@ -51,6 +51,10 @@ export interface CountUpProps { value: number; from?: number; format?: (value: n
 export type HapticKind = 'select' | 'join' | 'reorder' | 'success' | 'warning';
 /** Tripami.haptic(kind): plays a haptic where the browser supports vibration. Tripami.hapticsEnabled = false mutes it. */
 export type Haptic = (kind: HapticKind) => void;
+export interface RoleTagProps { pending?: boolean; children: ReactNode }
+export interface GroupRowProps { members: Member[]; title: string; detail?: string; value?: string; onClick?: () => void; chevron?: boolean; divider?: boolean }
+export interface ConnectCardProps { icon: IconName; title: string; message: string; kinds?: IconName[]; actionLabel: string; onConnect?: () => void; loading?: boolean }
+export interface BackdropProps { kind: 'photo' | 'braid' | 'route'; image?: string; members?: Member[]; height?: number; children?: ReactNode }
 export interface PlaceHeaderProps { title: string; image?: string; imageLabel: string; eyebrow?: string; subtitle?: string; credit?: string; leading?: ReactNode; trailing?: ReactNode | ReactNode[]; minHeight?: number; sheetBelow?: boolean }
 export interface OverlapSheetProps { children?: ReactNode }
 export interface ProgressBarProps { value: number; label: string; color?: string }

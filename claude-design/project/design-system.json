@@ -3,7 +3,7 @@
   "layout": "files",
   "createdOnFiles": {
     "v": 1,
-    "at": "2026-10-07T21:30:00Z"
+    "at": "2026-10-07T22:00:00Z"
   },
   "title": "Tripami",
   "namespace": "Tripami",
@@ -762,8 +762,8 @@
   },
   "lastChange": {
     "by": "Claude",
-    "at": "2026-10-07T21:30:00Z",
+    "at": "2026-10-07T22:00:00Z",
     "via": "Claude Code",
-    "note": "Trip-day pieces from the Italy redesign: PlaceHeader, OverlapSheet, NowCard, ProgressBar, LeaveByHint; scrim-top and header size tokens; a Places set of real, licensed photos; chips hug one-line labels."
+    "note": "Backgrounds (photo wash, braid, route), ConnectCard, GroupRow, RoleTag and the invited Avatar, from the Crew and Bring-in-a-trip redesigns; envelope, clipboard, document and train icons."
   }
 }

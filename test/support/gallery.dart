@@ -106,6 +106,37 @@ final Map<String, Widget> gallery = {
         now: DateTime(2026, 11, 18, 12, m),
       ),
   ]),
+  'TPRoleTag': const Wrap(spacing: 8, children: [TPRoleTag.neutral('Organizer'), TPRoleTag.pending('Invited')]),
+  'TPAvatar (invited)': const Row(children: [
+    TPAvatar(TPMember(id: 'sarah', name: 'Sarah Johnson', color: TPMemberColor.slate), invited: true),
+    SizedBox(width: 8),
+    TPAvatar(TPMember(id: 'sarah', name: 'Sarah Johnson', color: TPMemberColor.slate), size: TPAvatarSize.xs, invited: true),
+  ]),
+  'TPGroupRow': const Column(children: [
+    TPGroupRow(members: [alex, maya], title: 'Vatican Museums', detail: 'You and Maya', value: 'until 12:30', onTap: _noop),
+    TPGroupRow(members: [leo, jonah, priya, maya], title: 'Wine tasting in Tuscany', onTap: _noop, showDivider: false),
+  ]),
+  'TPConnectCard': const TPConnectCard(
+    icon: TPIcons.envelopeSimple,
+    title: 'Find your plans in Gmail',
+    message: 'Flights, hotels, trains, activities and reservations, pulled from your confirmation emails.',
+    kinds: [TPIcons.airplane, TPIcons.bed, TPIcons.train, TPIcons.ticket, TPIcons.forkKnife],
+    actionLabel: 'Connect Gmail',
+    onConnect: _noop,
+  ),
+  'TPBackdrop.braid': const TPBackdrop.braid(
+    members: crew,
+    child: Padding(
+      padding: EdgeInsets.fromLTRB(24, 200, 24, 24),
+      child: Text('Crew', style: TextStyle(fontSize: 34)),
+    ),
+  ),
+  'TPBackdrop.route': const TPBackdrop.route(
+    child: Padding(
+      padding: EdgeInsets.fromLTRB(24, 200, 24, 24),
+      child: TPButton.primary(label: 'Connect Gmail', onPressed: _noop),
+    ),
+  ),
   'TPTripStrip': const TPTripStrip(facts: [
     TPTripFact(label: 'Arrive', value: 'Thu 12 Jun', detail: '14:05 TP1351'),
     TPTripFact(label: 'Nights', value: '5'),

@@ -1,0 +1,16 @@
+<!-- @dsCard group="Backgrounds" height=640 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Backdrop preview</title>
+<style>html,body{margin:0;background:var(--canvas);}</style></head>
+<body>
+<div id="root" class="tp-preview flush"></div>
+<script>
+  var T = window.Tripami, h = React.createElement;
+  var alex={name:'Alex Rivera',color:'lagoon',online:true}, maya={name:'Maya Chen',color:'plum',online:true}, leo={name:'Leo Okafor',color:'fern'}, jonah={name:'Jonah Weiss',color:'sky'}, priya={name:'Priya Nair',color:'iris'}, sam={name:'Sam Torres',color:'rose'};
+  
+  function Replay(props){var st=React.useState(0);return h('div',{className:'tp-stack-v',style:{gap:16}},h('div',null,h(T.Button,{variant:'secondary',small:true,onClick:function(){st[1](st[0]+1);}},'Replay')),h('div',{key:st[0]},props.render(st[0])));}
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{style:{display:'grid',gridTemplateColumns:'repeat(3, minmax(0, 300px))',gap:16}}, [['braid','Crew','People moments'],['photo','Money','Inside a trip'],['route','Bring in a trip','No trip yet']].map(function(k){return h('div',{key:k[0],style:{border:'1px solid var(--hairline)',borderRadius:24,overflow:'hidden',background:'var(--canvas)',height:600}}, h(T.Backdrop,{kind:k[0],image:'/_blob/4b92fba2dee933b9758c1de6f9356938',members:[alex,maya,leo,jonah,priya,sam]}, h('div',{style:{padding:'176px 24px 24px'}}, h(T.Eyebrow,null,k[2]), h('div',{className:'display tp-ink'},k[1]), h('div',{className:'callout tp-muted',style:{marginTop:6}},'Italy with Friends · 14–27 Nov'), h('div',{style:{marginTop:20}},h(T.Button,{variant:'primary',expand:true},k[0]==='route'?'Connect Gmail':k[0]==='braid'?'Add people':'Add expense')))));})));
+</script>
+</body>
+</html>

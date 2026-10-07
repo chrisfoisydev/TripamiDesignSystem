@@ -8,6 +8,7 @@
 library;
 
 export 'src/components/tp_actions.dart';
+export 'src/components/tp_backdrop.dart';
 export 'src/components/tp_braid.dart';
 export 'src/components/tp_containers.dart';
 export 'src/components/tp_motion.dart';

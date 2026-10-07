@@ -113,6 +113,7 @@ The Plan view draws the day as a braid (`BraidDay`): one strand per traveler, bu
 - Crop for the zones: sky or quiet texture behind the top controls (on `scrim-top`), the landmark in the middle, an even tone under the bottom-left title (on `scrim-end`). Never a face or landmark under text, never a color block over a photo.
 - `imageLabel` describes what the photo shows, for screen readers.
 - Without a photo: a `sunken` card with the name in `display` (cards) or brand navy (headers).
+- **Backgrounds** for screens without a photo header (`Backdrop`): **photo** (the trip's cover, blurred into the top: Crew, Money, Map list), **braid** (the crew's strands in their member colors: people moments), **route** (a dotted route ending in the brand-orange dot: screens with no trip yet). One per screen, decorative, faded into `canvas` over `size-backdrop`. No other patterns: no gradient washes, blobs or illustration.
 - The `Placeholders` group holds generated stand-ins for older previews only. Don't design or ship with them.
 
 ## Platform

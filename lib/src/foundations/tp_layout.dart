@@ -51,6 +51,9 @@ abstract final class TPSize {
 
   /// How far a content sheet rises over the photo above it ([TPOverlapSheet]).
   static const sheetOverlap = 24.0;
+
+  /// How far a [TPBackdrop] reaches down the screen before it has faded out.
+  static const backdrop = 280.0;
 }
 
 /// Soft, wide, ink-tinted shadows. In dark mode use surface lightness and a

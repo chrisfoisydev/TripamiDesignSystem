@@ -81,6 +81,21 @@ ListView(children: [
 
 ---
 
+## Backgrounds
+
+Screens without a photo header still need to feel like *this* trip and *these* people. `TPBackdrop` paints the top of the screen, `size.backdrop` (280pt) deep, and fades into `canvas`, so everything below it reads as normal. Each one takes its color from places or people, never from decoration.
+
+| Background | What it shows | Use it for | In code |
+|---|---|---|---|
+| **Photo wash** | The trip's cover photo, blurred and washed 35% toward the canvas | Screens inside a trip other than the day: Crew, Money, the Map list | `TPBackdrop.photo(image: cover)` |
+| **Braid** | The crew's strands in their member colors, bundled, parting, crossing and parting again. They draw in once (600ms) | People moments: Crew, invites, joining, an empty state about people | `TPBackdrop.braid(members: crew)` |
+| **Route** | A faint dotted route between two pins, ending in the brand-orange dot | Screens with no trip yet: bringing in a trip, starting one, onboarding | `TPBackdrop.route()` |
+
+- **One per screen**, at the top, never with a `TPPlaceHeader` (that screen already has its photo).
+- **Text over a background sits on the faded part** or on the photo wash, which is washed enough for `text.primary`. Never put text across braid strands or route pins: keep the top 40% of a braid for the back button and avatars.
+- **Decorative only.** Screen readers skip them, they never carry information, and under Reduce Motion the braid appears drawn.
+- **Never invent other patterns:** no gradient washes, confetti, blobs or illustration. If a screen needs more feeling, give it a real photo.
+
 ## Accessibility
 
 - **Describe what the photo shows** in `imageLabel`, written for someone who can't see it: "The Tiber and Ponte Sant'Angelo leading to St Peter's dome", not "Rome photo".
