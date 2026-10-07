@@ -1,0 +1,33 @@
+{
+  "name": "tripami-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server for the Tripami design system: tokens, tints and shades, components, guidelines, contrast checks and code review.",
+  "type": "module",
+  "bin": {
+    "tripami-mcp-server": "dist/src/index.js"
+  },
+  "main": "dist/src/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc && node scripts/build-data.mjs",
+    "start": "node dist/src/index.js",
+    "start:http": "node dist/src/index.js --http",
+    "test": "npm run build && node --test \"dist/test/*.test.js\"",
+    "inspect": "npx @modelcontextprotocol/inspector node dist/src/index.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "typescript": "^7.0.2"
+  }
+}

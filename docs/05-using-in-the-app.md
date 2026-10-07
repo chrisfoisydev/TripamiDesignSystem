@@ -95,7 +95,15 @@ Claude Code reads a `CLAUDE.md` at the repo root at the start of every session, 
 
 2. **Give the session access to the design-system repo.** When you start a session on the app repo, ask Claude to "add chrisfoisydev/TripamiDesignSystem to this session". Claude can then read the package source and docs and resolve the git dependency during `flutter pub get`.
 
-3. **Use it from the mobile app.** In a session on the app repo, ask for work in product terms, for example:
+3. **Connect the Tripami MCP server** (recommended). It gives Claude tools to look up tokens and components, check contrast, and review its own code against the rules before it hands work back. With this repo checked out beside the app, run this in the app repo:
+
+   ```bash
+   claude mcp add tripami --scope project -- node ../TripamiDesignSystem/mcp/run.mjs
+   ```
+
+   Then add this line to the app's `CLAUDE.md` block: *"Use the tripami MCP tools: look up components and tokens before writing UI, and run `tripami_review_code` on UI changes."* Hosting and other clients: [mcp/README.md](../mcp/README.md).
+
+4. **Use it from the mobile app.** In a session on the app repo, ask for work in product terms, for example:
    - "Adopt the Tripami design system: add the package, wrap the app in TripamiTheme, and replace hard-coded colors and text styles with tokens. Start with the Trips tab."
    - "Rebuild the Plan screen with TPBraidDay using our itinerary model."
    - "Add the needs-you dot to the Chat tab and the success check when everyone has voted."

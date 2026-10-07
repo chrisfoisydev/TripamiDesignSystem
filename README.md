@@ -41,6 +41,10 @@ See **[Using the design system in the app](docs/05-using-in-the-app.md)**: how t
 - **Icons:** a curated Phosphor set, regular by default and fill for active states.
 - **Contrast:** every allowed text pairing passes WCAG AA in light and dark, enforced by `test/contrast_test.dart`.
 
+## MCP server
+
+`mcp/` is an MCP server that lets Claude, Cursor and other agents query the system: tokens, tints and shades, components with their Flutter APIs, guidelines, contrast checks, and a reviewer that lints UI code against the rules. Claude Code connects to it automatically in this repo through `.mcp.json`. See [mcp/README.md](mcp/README.md) to use it from the app repo or host it.
+
 ## Claude Design
 
 The artifact is a Claude Design System. Use it by naming it when you ask Claude for a design, slides or a prototype ("use the Tripami design system"), or by pasting its link. Claude reads its `README.md`, `tokens.json` and component cards and builds with them.

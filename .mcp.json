@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "tripami": {
+      "command": "node",
+      "args": ["mcp/run.mjs"]
+    }
+  }
+}
