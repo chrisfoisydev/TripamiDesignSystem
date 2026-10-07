@@ -8,7 +8,7 @@ Each component lists its **anatomy**, the **tokens** it uses, its **states**, an
 
 ## Actions
 
-Motion, haptics and accessibility (screen-reader labels, 48pt tap targets, keyboard focus, large-text layouts; see [06 · Accessibility](./06-accessibility.md)) are built into every component; the full table is in [03 · Foundations › Motion](./03-foundations.md#what-each-component-does). For a custom tappable, wrap it in `TPPressable` and pick its `TPHaptic`.
+See every component live, with knobs, in the catalog (`widgetbook/`, hosted at https://claude.ai/artifact/5cTgxzo2e5qdQdfe9wNMZp). Motion, haptics and accessibility (screen-reader labels, 48pt tap targets, keyboard focus, large-text layouts; see [06 · Accessibility](./06-accessibility.md)) are built into every component; the full table is in [03 · Foundations › Motion](./03-foundations.md#what-each-component-does). For a custom tappable, wrap it in `TPPressable` and pick its `TPHaptic`.
 
 ### Button · `TPButton.primary / .secondary / .tertiary / .destructive`, `TPGlassIconButton`
 | Variant | Look | When |

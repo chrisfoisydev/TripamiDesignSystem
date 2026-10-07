@@ -42,6 +42,10 @@ See **[Using the design system in the app](docs/05-using-in-the-app.md)**: how t
 - **Icons:** a curated Phosphor set, regular by default and fill for active states.
 - **Accessibility:** WCAG AA in light and dark, AAA in the high-contrast themes; 48pt tap targets; layouts that reflow to 310% text; Bold Text, Reduce Motion, keyboard focus and screen-reader labels throughout; member colors ordered for color blindness. A test sweep checks every component (`test/a11y_test.dart`).
 
+## Catalog
+
+`widgetbook/` is a live catalog of every component and foundation, with switches for theme (including high contrast), text size up to 310%, Bold Text, Reduce Motion, device, and screen-reader view. It's hosted at https://claude.ai/artifact/5cTgxzo2e5qdQdfe9wNMZp; run it on a phone with `cd widgetbook && flutter run` to feel the haptics. See [widgetbook/README.md](widgetbook/README.md).
+
 ## MCP server
 
 `mcp/` is an MCP server that lets Claude, Cursor and other agents query the system: tokens, tints and shades, components with their Flutter APIs, guidelines, contrast checks, and a reviewer that lints UI code against the rules. Claude Code connects to it automatically in this repo through `.mcp.json`. See [mcp/README.md](mcp/README.md) to use it from the app repo or host it.

@@ -87,11 +87,12 @@ Eight mid-tone hues can't all stay distinct for every reader. We simulated prota
 
 ## Testing a screen
 
-1. **Automated:** add the component to `test/support/gallery.dart`. The sweep checks tap targets, labels and contrast in four themes, and layout at 200% and 310% text.
-2. **VoiceOver / TalkBack:** swipe through the screen once. Every stop should make sense read aloud, in order.
-3. **Largest text size:** nothing overlaps, cuts off mid-word, or hides an action.
-4. **Bold Text and Increase Contrast** on together: still on-brand, still readable.
-5. **Keyboard:** Tab through it on an iPad or simulator; every action is reachable and visibly focused.
-6. **Grayscale** (Settings › Accessibility › Color Filters): every state is still understandable.
+1. **Catalog:** open the component in the catalog (`widgetbook/`) and step through the Theme, Text scale and Phone settings panels; the Accessibility checker flags problems as you go.
+2. **Automated:** add the component to `test/support/gallery.dart`. The sweep checks tap targets, labels and contrast in four themes, and layout at 200% and 310% text.
+3. **VoiceOver / TalkBack:** swipe through the screen once. Every stop should make sense read aloud, in order.
+4. **Largest text size:** nothing overlaps, cuts off mid-word, or hides an action.
+5. **Bold Text and Increase Contrast** on together: still on-brand, still readable.
+6. **Keyboard:** Tab through it on an iPad or simulator; every action is reachable and visibly focused.
+7. **Grayscale** (Settings › Accessibility › Color Filters): every state is still understandable.
 
 Next: [01 · Bonvoy study](./01-bonvoy-study.md) · back to [README](../README.md)
