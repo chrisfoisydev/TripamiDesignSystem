@@ -33,6 +33,7 @@ See **[Using the design system in the app](docs/05-using-in-the-app.md)**: how t
 ## The system in one minute
 
 - **Color:** paper `canvas` (`#FAFAF7`), white `surface` and navy `text-primary` (`#02203A`, the logo's wordmark color). Navy ink and one accent, Tripami orange, both from the logo: `#FC6316` for the logo and brand moments, `#B8400F` (text-safe) for state in the UI. Eight `member-*` colors identify travelers.
+- **Tints and shades:** 14 ramps (50–950) built in OKLCH from those colors (`TPRamps.orange[100]`). A step's grade fixes its luminance, so contrast follows from the grade gap alone: a gap of 500 or more is always ≥ 4.5:1, in any pair of hues. `TPTone` gives theme-aware roles (subtle, text, solid…) that are safe by construction.
 - **Type:** Bricolage Grotesque, set heavy to echo the wordmark, for trip names and day headings. Inter for UI (Regular titles, uppercase eyebrows). Newsreader for journal text.
 - **Shape:** pills to act, rounded cards to open, circles for people and tools, sheets for side tasks, dashed boxes for what the group hasn't filled yet.
 - **The braid:** the day drawn as one strand per traveler, bundling when people are together and parting when they split. It scales to 50+ by turning strands into group ribbons.
@@ -71,6 +72,7 @@ Icon(TPIcons.mapPin);
 | | |
 |---|---|
 | `foundations/tp_palette.dart` | Raw colors and `TPMemberColor` |
+| `foundations/tp_ramp.dart`, `tp_ramps.dart` | `TPRamp`, `TPTone` and the generated `TPRamps` (from `tool/ramps/generate.py`) |
 | `foundations/tp_colors.dart` | `TPColors` `ThemeExtension`, light and dark |
 | `foundations/tp_type.dart` | `TPType` scale (Bricolage Grotesque + Inter + Newsreader) and `.tabular` |
 | `foundations/tp_layout.dart` | `TPSpace`, `TPRadius`, `TPSize`, `TPElevation`, `TPMotion` |

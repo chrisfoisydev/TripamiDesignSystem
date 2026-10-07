@@ -19,5 +19,7 @@ export 'src/foundations/tp_colors.dart';
 export 'src/foundations/tp_icons.dart';
 export 'src/foundations/tp_layout.dart';
 export 'src/foundations/tp_palette.dart';
+export 'src/foundations/tp_ramp.dart';
+export 'src/foundations/tp_ramps.dart';
 export 'src/foundations/tp_type.dart';
 export 'src/theme/tp_theme.dart';

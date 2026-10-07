@@ -83,6 +83,80 @@ Used for: avatar fill (white initials) when there's no photo, a 2pt avatar ring 
 | `color.status.caution` | `#7A5A00` | `#E8C054` | Unpaid, deadline soon |
 | `color.status.critical` | `#B3133F` | `#FF6B8A` | Errors and destructive actions only. Shifted toward crimson so it never reads as the orange accent |
 
+### Tints and shades
+Fourteen ramps of 11 steps each, from **50** (lightest) to **950** (darkest), generated in OKLCH from Tripami's own colors: `neutral` (paper to ink), `navy`, `orange`, `red`, `green`, `amber`, and one for each member color. In Flutter: `TPRamps.orange[100]`; on the web: `var(--orange-100)`.
+
+**Grade is luminance.** Unlike most palettes, where "500" means something different in every hue, a Tripami grade fixes the color's luminance. So the contrast between two colors depends only on the gap between their grades, whatever the hues. You never need a contrast checker:
+
+| Grade gap | Contrast | Safe for |
+|---|---|---|
+| ≥ 400 | ≥ 3:1 | Large text (≥ 18pt, or 14pt bold), icons, borders that carry meaning |
+| ≥ 500 | ≥ 4.5:1 | All text (WCAG AA) |
+| ≥ 650 | ≥ 7:1 | WCAG AAA |
+
+White is grade 0 and black 1000, so **white text works on any step from 500**, and **950 text works on any step to 450**. It holds across ramps too: `orange-100` behind `navy-700` text is a 600 gap, so ≥ 4.5:1. The tests check every pair of the 154 colors.
+
+How they're made (`tool/ramps/generate.py`):
+- Each step's luminance comes from its grade, the same in every ramp.
+- Hue and chroma come from **anchors**, the colors Tripami already uses: the accent and brand orange anchor `orange`; canvas, borders and the dark surfaces anchor `neutral`; each member color and its strand anchor its ramp. Between anchors, hue and chroma are interpolated in OKLCH, so steps look evenly spaced to the eye.
+- Light steps fade toward white and dark steps toward black without going muddy. Colors are pulled into sRGB by lowering chroma, never by shifting hue.
+- To change a ramp, edit its anchors and rerun the script, which also writes `tp_ramps.dart` and `tokens.json`. It refuses to write a palette that breaks the contrast rules.
+
+| Ramp | 50 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | 950 |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| `neutral` | `#EFEEE9` | `#E0DDD6` | `#C0BFBC` | `#A2A5A7` | `#868D95` | `#6D7784` | `#576272` | `#424E63` | `#2E3B52` | `#1C2536` | `#101726` |
+| `navy` | `#E6EFF9` | `#D2DFED` | `#AFC1D6` | `#91A6C0` | `#768EAB` | `#5D7898` | `#466385` | `#305073` | `#1A3C60` | `#062643` | `#02182D` |
+| `orange` | `#FFEADE` | `#FFD5C1` | `#FFAB87` | `#FF8048` | `#EF5C15` | `#CD4B11` | `#AC3B0D` | `#89310D` | `#622A11` | `#3A1D10` | `#261209` |
+| `red` | `#FFE8EB` | `#FFD2D8` | `#FFA7B4` | `#FF7A93` | `#EC5877` | `#D33E5E` | `#BB2046` | `#9C0B35` | `#780527` | `#4F0418` | `#35040E` |
+| `green` | `#CFF7DD` | `#AFEBC5` | `#76D29B` | `#5BB681` | `#479C6A` | `#348455` | `#256E44` | `#1A5935` | `#114327` | `#092B18` | `#061B0E` |
+| `amber` | `#FFECBE` | `#F7DB93` | `#E2BB50` | `#C69F3C` | `#AB8729` | `#937117` | `#7C5C02` | `#644900` | `#4C3700` | `#312300` | `#201601` |
+| `lagoon` | `#D7F4EF` | `#BCE6DF` | `#8DCBC1` | `#62B2A7` | `#349B8F` | `#0D8478` | `#0B6D63` | `#02584F` | `#00423C` | `#022A26` | `#021B18` |
+| `sky` | `#DFF0FF` | `#C2E1FE` | `#96C4ED` | `#70AADC` | `#4D91CA` | `#327BB3` | `#276596` | `#1B517A` | `#123D5E` | `#0A273D` | `#061928` |
+| `iris` | `#E9EDFF` | `#D4DCFF` | `#B0BDF8` | `#93A0E9` | `#7986D9` | `#606ECD` | `#4A58BB` | `#3A4699` | `#2B3476` | `#1A214E` | `#101534` |
+| `plum` | `#F4EAFF` | `#E8D7FC` | `#CEB5EA` | `#B797D8` | `#A17CC7` | `#8D63B7` | `#7A4BA7` | `#633B89` | `#4B2B69` | `#301B45` | `#1F112E` |
+| `rose` | `#FFE8EF` | `#FFD2DF` | `#F0ADC2` | `#DD8DA8` | `#CB6F90` | `#BA5379` | `#A23E63` | `#842F4F` | `#66223C` | `#431526` | `#2C0D18` |
+| `fern` | `#DFF3E2` | `#C7E5CC` | `#9FCAA6` | `#7CB185` | `#5B9A68` | `#428351` | `#346D42` | `#275733` | `#1C4225` | `#102A17` | `#0A1B0E` |
+| `olive` | `#EEF0D9` | `#DDE0C0` | `#BFC394` | `#A5A86E` | `#8D904B` | `#777A32` | `#626528` | `#4E511D` | `#3B3D14` | `#25270B` | `#181906` |
+| `slate` | `#E8EEF8` | `#D5DEEC` | `#B4C0D4` | `#96A5BD` | `#7C8DA8` | `#667792` | `#53627B` | `#424E63` | `#313B4B` | `#1F2531` | `#13181F` |
+
+**Tone roles.** Don't pick steps by hand for common jobs. `TPTone.of(context, TPRamps.green)` gives theme-aware roles whose pairings are safe by construction:
+
+| Role | Light | Dark | Use |
+|---|---|---|---|
+| `subtle` | 50 | 950 | Tinted background: a banner, a "you're owed" row, a member's highlight |
+| `muted` | 100 | 900 | Hover, pressed or selected tinted background |
+| `border` | 200 | 800 | Decorative outline on a tinted area |
+| `text` | 700 | 200 | Tinted text and icons on `subtle`, `muted`, canvas or surface (≥ 7:1 on `subtle`) |
+| `solid` | 600 | 400 | Filled badge or strong banner |
+| `solidPressed` | 700 | 300 | Pressed fill |
+| `onSolid` | white | 950 | Text and icons on `solid` |
+
+**Where the semantic colors sit.** The semantic tokens stay exactly as they are; they're anchors on the ramps. Their grades let you check any pairing with the gap rule: `accent` (565) on `canvas` (15) is a 550 gap, so ≥ 4.5:1.
+
+| Token | Light grade | Dark grade |
+|---|---|---|
+| `canvas` | 15 | 965 |
+| `surface` | 0 | 942 |
+| `sunken` | 41 | 980 |
+| `hairline` | 79 | 852 |
+| `border-strong` | 133 | 772 |
+| `text-primary` | 924 | 41 |
+| `text-secondary` | 625 | 261 |
+| `text-tertiary` | 531 | 365 |
+| `accent` | 565 | 314 |
+| `accent-subtle` | 33 | 901 |
+| `brand-orange` | 365 | — |
+| `positive` | 533 | 212 |
+| `caution` | 611 | 182 |
+| `critical` | 632 | 330 |
+
+**Rules**
+- **Semantic tokens first.** Use `TPColors` for everything they cover (text, surfaces, the accent, status). Ramps are for what they don't: tinted banners, illustration, charts, a member's highlight row, empty-state art.
+- **The accent rules still apply to `orange`:** orange steps mark state or brand moments only, never a button fill, at most about 5% of a screen.
+- **Member ramps mean "this person"**: tint a row or card with its member's `subtle` to show whose it is. Never use them as decoration.
+- **`red`, `green` and `amber` keep their status meanings.** Always pair them with a word or icon.
+- **Dark mode flips the grade:** a light-mode role at grade *g* uses about *1000 − g* in dark. `TPTone` does this for you.
+
 ### Imagery overlays
 | Token | Value | Use |
 |---|---|---|

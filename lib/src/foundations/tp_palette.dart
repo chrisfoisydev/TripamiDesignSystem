@@ -1,5 +1,8 @@
 import 'dart:ui';
 
+import 'tp_ramp.dart';
+import 'tp_ramps.dart';
+
 /// Raw Tripami color values. Mirrors `tokens/tokens.json`.
 ///
 /// Widgets should read colors through `TPColors.of(context)` so that light and
@@ -79,6 +82,19 @@ enum TPMemberColor {
   const TPMemberColor(this.color, this.strandDark);
   final Color color;
   final Color strandDark;
+
+  /// This member's full set of tints and shades, for example a tinted
+  /// background behind their name (`TPTone(member.color.ramp, brightness).subtle`).
+  TPRamp get ramp => switch (this) {
+        lagoon => TPRamps.lagoon,
+        sky => TPRamps.sky,
+        iris => TPRamps.iris,
+        plum => TPRamps.plum,
+        rose => TPRamps.rose,
+        fern => TPRamps.fern,
+        olive => TPRamps.olive,
+        slate => TPRamps.slate,
+      };
 
   /// The braid strand color for this member (or group) in [brightness].
   Color strand(Brightness brightness) => brightness == Brightness.dark ? strandDark : color;

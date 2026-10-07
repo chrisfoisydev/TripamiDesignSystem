@@ -46,6 +46,7 @@ MaterialApp(
 | Instead of | Use |
 |---|---|
 | `Colors.*`, `Color(0x…)` | `TPColors.of(context).textPrimary`, `.accent`, `.surface`… |
+| Hand-mixed tints for banners, charts, highlights | `TPTone.of(context, TPRamps.green).subtle` / `.text` / `.solid`, or a step like `TPRamps.navy[100]` |
 | `TextStyle(fontSize: …)` | `TPType.title1`, `TPType.body`, `TPType.display`… (`.tabular` for numbers) |
 | Magic numbers for padding and radius | `TPSpace.s4`, `TPSpace.screen`, `TPRadius.md`, `TPSize.hitTarget` |
 | `Icons.*` | `TPIcons.*` (outline), `TPIconsFill.*` (active or toggled) |
@@ -75,6 +76,8 @@ Claude Code reads a `CLAUDE.md` at the repo root at the start of every session, 
      `TPRadius`, `TPSize`, `TPMotion`.
    - Use `TP*` widgets before building new ones. If a screen needs something the system doesn't
      have, build it from tokens and flag it as a candidate for the design system.
+   - Tints and shades: `TPRamps` / `TPTone`, only where a semantic token doesn't fit. Two steps are
+     safe for text when their grades are ≥ 500 apart. Never hand-mix a tint.
    - Icons: `TPIcons` (outline) and `TPIconsFill` (active/toggled only). No Material `Icons`, no emoji as icons.
    - Primary actions are ink pills (`TPButton.primary`), one per screen. The orange `accent` marks
      state (you / now / selected / needs you), never a button fill, at most 5% of a screen.

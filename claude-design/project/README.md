@@ -37,6 +37,14 @@ Tripami is a collaborative group-travel app. Its product UI pairs a hotel concie
 - **Status:** `positive` (settled, confirmed), `caution` (you owe), `critical` (errors and destructive actions only; crimson, so it never reads as the accent). Always pair status color with a word.
 - **On photos:** put text bottom-left in `text-on-image` over the scrim (transparent at 40% to `scrim-end`). Put metadata in glass chips (`glass` with a 16px backdrop blur). Never place a colored block over a photo.
 
+
+### Tints and shades
+
+- **14 ramps, 50–950**, built in OKLCH from Tripami's own colors: `neutral` (paper to ink), `navy`, `orange`, `red`, `green`, `amber`, and one per member color. Tokens `orange-100`, `navy-700`…; see the **Tints & shades** card.
+- **Grade is luminance**, the same in every ramp, so contrast follows from the grade gap alone, in any pair of hues: **≥ 400 → 3:1** (large text, icons), **≥ 500 → 4.5:1** (all text), **≥ 650 → 7:1**. White text passes on every step from 500.
+- **Use semantic tokens first.** Ramps are for what they don't cover: tinted banners, a member's highlight row, charts, illustration. For tinted UI use the **Tones** roles: `subtle` 50/950, `muted` 100/900, `border` 200/800, `text` 700/200, `solid` 600/400 with white/950 on it (light/dark).
+- `orange` keeps the accent rules (state and brand only, never a button fill). `red`, `green` and `amber` keep their status meanings. A member's ramp means "this person".
+
 ## Type
 
 - **Bricolage Grotesque** (`--font-display`) is the display voice, chosen to echo the wordmark's heavy, warm letterforms: `display` (800) for trip names and `diary-heading` (700) for day headings. Use it only at those two styles, at most once or twice per view, and never for UI text. It is a close match, not the logo's own typeface: never use it to re-typeset the logo.
