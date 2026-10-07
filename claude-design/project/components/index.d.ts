@@ -51,4 +51,10 @@ export interface CountUpProps { value: number; from?: number; format?: (value: n
 export type HapticKind = 'select' | 'join' | 'reorder' | 'success' | 'warning';
 /** Tripami.haptic(kind): plays a haptic where the browser supports vibration. Tripami.hapticsEnabled = false mutes it. */
 export type Haptic = (kind: HapticKind) => void;
+export interface PlaceHeaderProps { title: string; image?: string; imageLabel: string; eyebrow?: string; subtitle?: string; credit?: string; leading?: ReactNode; trailing?: ReactNode | ReactNode[]; minHeight?: number; sheetBelow?: boolean }
+export interface OverlapSheetProps { children?: ReactNode }
+export interface ProgressBarProps { value: number; label: string; color?: string }
+/** start, end and now are "HH:MM" on one day. Leave now out to follow the real time. */
+export interface NowCardProps { title: string; place?: string; start: string; end: string; companions?: Member[]; now?: string; onClick?: () => void }
+export interface LeaveByHintProps { leaveBy: string; travel: string; now?: string; soonWindow?: number }
 export interface ExpenseRowProps { icon?: IconName; title: string; paidBy: Member; splitWays: number; amount: string; yourShare: string; youOwe: boolean }

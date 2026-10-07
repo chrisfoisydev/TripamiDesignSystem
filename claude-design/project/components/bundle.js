@@ -1,4 +1,4 @@
-/* @ds-bundle: {"format":4,"namespace":"Tripami","components":[{"name":"Icon"},{"name":"Button"},{"name":"GlassIconButton"},{"name":"QuickAction"},{"name":"FloatingPill"},{"name":"FilterChip"},{"name":"UnderlineTabs"},{"name":"TextField"},{"name":"Toggle"},{"name":"Eyebrow"},{"name":"SectionHeader"},{"name":"Card"},{"name":"GlassChip"},{"name":"TripCoverCard"},{"name":"TripStrip"},{"name":"ListRow"},{"name":"StickyActionBar"},{"name":"Sheet"},{"name":"EmptyState"},{"name":"Toast"},{"name":"TabBar"},{"name":"Avatar"},{"name":"AvatarStack"},{"name":"Attribution"},{"name":"ActivityDot"},{"name":"ReactionBar"},{"name":"PollCard"},{"name":"ItineraryItem"},{"name":"ExpenseRow"},{"name":"BraidDay"},{"name":"BraidEventCard"},{"name":"BraidMarker"},{"name":"Pop"},{"name":"Rise"},{"name":"BrandDot"},{"name":"SuccessCheck"},{"name":"CountUp"}]} */
+/* @ds-bundle: {"format":4,"namespace":"Tripami","components":[{"name":"Icon"},{"name":"Button"},{"name":"GlassIconButton"},{"name":"QuickAction"},{"name":"FloatingPill"},{"name":"FilterChip"},{"name":"UnderlineTabs"},{"name":"TextField"},{"name":"Toggle"},{"name":"Eyebrow"},{"name":"SectionHeader"},{"name":"Card"},{"name":"GlassChip"},{"name":"TripCoverCard"},{"name":"TripStrip"},{"name":"ListRow"},{"name":"StickyActionBar"},{"name":"Sheet"},{"name":"EmptyState"},{"name":"Toast"},{"name":"PlaceHeader"},{"name":"OverlapSheet"},{"name":"NowCard"},{"name":"ProgressBar"},{"name":"LeaveByHint"},{"name":"TabBar"},{"name":"Avatar"},{"name":"AvatarStack"},{"name":"Attribution"},{"name":"ActivityDot"},{"name":"ReactionBar"},{"name":"PollCard"},{"name":"ItineraryItem"},{"name":"ExpenseRow"},{"name":"BraidDay"},{"name":"BraidEventCard"},{"name":"BraidMarker"},{"name":"Pop"},{"name":"Rise"},{"name":"BrandDot"},{"name":"SuccessCheck"},{"name":"CountUp"}]} */
 // Tripami components for the web. Hand-written from the Flutter package
 // (lib/src/components/*.dart in chrisfoisydev/TripamiDesignSystem); same props, same rules.
 (function () {
@@ -622,6 +622,94 @@
     return h('span', { className: cx('tp-num', p.className) }, fmt(shown));
   }
 
+  // ---------- Today ----------
+  // Photo header, overlapping sheet, Now card, progress bar and Leave-by hint,
+  // from the Italy trip-day redesign. Mirrors lib/src/components/tp_place.dart
+  // and tp_today.dart. Times are "HH:MM" strings on one day.
+  function minutesOf(t) {
+    if (t instanceof Date) return t.getHours() * 60 + t.getMinutes() + t.getSeconds() / 60;
+    var m = /^(\d{1,2}):(\d{2})$/.exec(String(t)); return m ? +m[1] * 60 + +m[2] : 0;
+  }
+  function fmtDuration(min) {
+    var total = Math.max(0, Math.ceil(min - 1e-9)), hh = Math.floor(total / 60), mm = total % 60;
+    return hh === 0 ? mm + ' min' : mm === 0 ? hh + ' h' : hh + ' h ' + mm + ' min';
+  }
+  function fmtTime(min) { var t = Math.round(min); return ('0' + Math.floor(t / 60)).slice(-2) + ':' + ('0' + (t % 60)).slice(-2); }
+  function fmtNames(names, max) {
+    max = max || 3;
+    if (!names.length) return '';
+    if (names.length === 1) return names[0];
+    if (names.length <= max) return names.slice(0, -1).join(', ') + ' and ' + names[names.length - 1];
+    return names.slice(0, max - 1).join(', ') + ' and ' + (names.length - (max - 1)) + ' others';
+  }
+  // The current time, ticking every 30s, unless `now` pins it.
+  function useNow(pinned) {
+    var st = useState(function () { return new Date(); });
+    React.useEffect(function () {
+      if (pinned != null) return;
+      var id = setInterval(function () { st[1](new Date()); }, 30000);
+      return function () { clearInterval(id); };
+    }, [pinned == null]);
+    return pinned != null ? minutesOf(pinned) : minutesOf(st[0]);
+  }
+
+  function PlaceHeader(p) {
+    var trailing = p.trailing == null ? [] : [].concat(p.trailing);
+    return h('header', { className: cx('tp-place', p.sheetBelow !== false && 'has-sheet', !p.image && 'no-image'), style: p.minHeight ? { minHeight: p.minHeight } : undefined },
+      p.image ? h('img', { className: 'tp-place-img', src: p.image, alt: p.imageLabel || '', onError: function (e) { e.currentTarget.style.display = 'none'; } }) : null,
+      h('div', { className: 'tp-place-scrim' }),
+      (p.leading || trailing.length) ? h('div', { className: 'tp-place-controls' }, p.leading || h('span'), h('span', { className: 'tp-grow' }),
+        trailing.map(function (t, i) { return h(React.Fragment, { key: i }, t); })) : null,
+      h('div', { className: 'tp-place-text' },
+        p.eyebrow ? h('div', { className: 'eyebrow tp-place-eyebrow' }, p.eyebrow) : null,
+        h('h1', { className: 'display tp-place-title' }, p.title),
+        p.subtitle ? h('div', { className: 'subhead' }, p.subtitle) : null,
+        p.credit ? h('div', { className: 'caption tp-place-credit' }, p.credit) : null));
+  }
+
+  function OverlapSheet(p) {
+    return h('div', { className: cx('tp-overlap-sheet', p.className) }, p.children);
+  }
+
+  function ProgressBar(p) {
+    var v = Math.max(0, Math.min(1, +p.value || 0));
+    return h('div', { className: 'tp-progress', role: 'progressbar', 'aria-label': p.label, 'aria-valuemin': 0, 'aria-valuemax': 100, 'aria-valuenow': Math.round(v * 100) },
+      h('div', { className: 'tp-progress-fill', style: { width: v * 100 + '%', background: p.color || undefined } }));
+  }
+
+  function NowCard(p) {
+    var now = useNow(p.now), s = minutesOf(p.start), e = minutesOf(p.end);
+    var progress = e > s ? (now - s) / (e - s) : 1;
+    var left = now < s ? 'Starts in ' + fmtDuration(s - now) : now < e ? fmtDuration(e - now) + ' left' : 'Over by ' + fmtDuration(now - e);
+    var companions = p.companions || [];
+    var who = companions.length ? 'With ' + fmtNames(companions.map(function (m) { return firstName(m.name); })) : 'Just you';
+    var eyebrow = 'Now · until ' + fmtTime(e);
+    return h('div', { className: cx('tp-card tp-now', p.onClick && 'is-tappable'), onClick: p.onClick, role: p.onClick ? 'button' : undefined, tabIndex: p.onClick ? 0 : undefined,
+      'aria-label': eyebrow + '. ' + p.title + (p.place ? ', ' + p.place : '') + '. ' + left + '. ' + who + '.' },
+      h('div', { className: 'eyebrow tp-now-eyebrow', 'aria-hidden': true }, h('span', { className: 'tp-now-dot' }), eyebrow),
+      h('div', { 'aria-hidden': true },
+        h('div', { className: 'title2 tp-ink' }, p.title),
+        p.place ? h('div', { className: 'subhead tp-muted' }, p.place) : null),
+      h('div', { className: 'tp-now-progress', 'aria-hidden': true },
+        h(ProgressBar, { value: progress, label: p.title + ' progress' }),
+        h('div', { className: 'footnote tp-muted tp-num tp-now-times' }, h('span', null, fmtTime(s)), h('span', null, left), h('span', null, fmtTime(e)))),
+      h('div', { className: 'tp-now-who', 'aria-hidden': true },
+        companions.length ? h(AvatarStack, { members: companions, size: 24 }) : null,
+        h('span', { className: 'subhead tp-ink' }, who)));
+  }
+
+  function LeaveByHint(p) {
+    var now = useNow(p.now), by = minutesOf(p.leaveBy), win = p.soonWindow != null ? p.soonWindow : 30;
+    var state = now >= by ? 'due' : by - now <= win ? 'soon' : 'calm';
+    var label = state === 'calm' ? 'Leave by ' + fmtTime(by) + ' · ' + p.travel
+      : state === 'soon' ? 'Leave in ' + fmtDuration(by - now) + ' · ' + p.travel
+      : now - by < 1 ? 'Leave now · ' + p.travel : 'Leave now · ' + fmtDuration(now - by) + ' behind';
+    var prev = usePrev(state);
+    React.useEffect(function () { if (prev && prev !== state && state === 'due') haptic('warning'); }, [state]);
+    return h('div', { className: 'tp-leave footnote is-' + state, role: 'status', 'aria-live': 'polite' },
+      h(Icon, { name: state === 'due' ? 'warning' : 'clock', size: 16 }), h('span', null, label));
+  }
+
   window.Tripami = Object.assign(window.Tripami || {}, {
     Icon: Icon, Button: Button, GlassIconButton: GlassIconButton, QuickAction: QuickAction, FloatingPill: FloatingPill,
     FilterChip: FilterChip, UnderlineTabs: UnderlineTabs, TextField: TextField, Toggle: Toggle,
@@ -630,6 +718,8 @@
     Toast: Toast, TabBar: TabBar, Avatar: Avatar, AvatarStack: AvatarStack, Attribution: Attribution,
     ActivityDot: ActivityDot, ReactionBar: ReactionBar, PollCard: PollCard, ItineraryItem: ItineraryItem, ExpenseRow: ExpenseRow,
     BraidDay: BraidDay, BraidEventCard: BraidEventCard, BraidMarker: BraidMarker, resolveBraidStrands: resolveBraidStrands,
+    PlaceHeader: PlaceHeader, OverlapSheet: OverlapSheet, NowCard: NowCard, ProgressBar: ProgressBar, LeaveByHint: LeaveByHint,
+    format: { duration: fmtDuration, names: fmtNames },
     Pop: Pop, Rise: Rise, BrandDot: BrandDot, SuccessCheck: SuccessCheck, CountUp: CountUp,
     haptic: haptic, hapticsEnabled: true,
     iconNames: Object.keys(ICONS),

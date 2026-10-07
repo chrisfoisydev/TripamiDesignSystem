@@ -20,7 +20,7 @@ void main() {
 
   test('the catalog covers foundations and every component group', () {
     expect(all.length, greaterThan(35));
-    for (final group in ['actions', 'navigation', 'containers', 'people', 'planning', 'braid', 'text']) {
+    for (final group in ['today', 'actions', 'navigation', 'containers', 'people', 'planning', 'braid', 'text']) {
       expect(all.any((p) => p.startsWith('components/$group/')), isTrue, reason: group);
     }
   });

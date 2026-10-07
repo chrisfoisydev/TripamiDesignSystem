@@ -1,0 +1,16 @@
+<!-- @dsCard group="Today" height=470 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>PlaceHeader preview</title>
+<style>html,body{margin:0;background:var(--canvas);}</style></head>
+<body>
+<div id="root" class="tp-preview flush"></div>
+<script>
+  var T = window.Tripami, h = React.createElement;
+  var alex={name:'Alex Rivera',color:'lagoon',online:true}, maya={name:'Maya Chen',color:'plum',online:true}, leo={name:'Leo Okafor',color:'fern'}, jonah={name:'Jonah Weiss',color:'sky'}, priya={name:'Priya Nair',color:'iris'}, sam={name:'Sam Torres',color:'rose'};
+  
+  function Replay(props){var st=React.useState(0);return h('div',{className:'tp-stack-v',style:{gap:16}},h('div',null,h(T.Button,{variant:'secondary',small:true,onClick:function(){st[1](st[0]+1);}},'Replay')),h('div',{key:st[0]},props.render(st[0])));}
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{style:{maxWidth:390}}, h(T.PlaceHeader,{title:'Rome',eyebrow:'Today · Day 5 of 14',subtitle:'Wednesday 18 November · Italy with Friends',image:'/_blob/4b92fba2dee933b9758c1de6f9356938',imageLabel:"The Tiber and Ponte Sant'Angelo leading to St Peter's dome",leading:h(T.GlassIconButton,{icon:'arrowLeft',label:'Back to trips'}),trailing:[h(T.AvatarStack,{members:[alex,maya,leo,jonah,priya,sam],size:28,onImage:true}),h(T.GlassIconButton,{icon:'dotsThree',label:'Trip options'})]}), h(T.OverlapSheet,null,h(T.ListRow,{icon:'bed',label:'Rome Airbnb',detail:"Where you're staying",onClick:function(){},divider:false}))));
+</script>
+</body>
+</html>

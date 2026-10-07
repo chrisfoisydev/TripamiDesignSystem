@@ -1,3 +1,3 @@
 # Placeholders
 
-Generated stand-in photos for component previews only (a Lisbon rooftop dusk and three restaurant thumbnails). Don't ship them. In product, trip covers and place photos are the group's own pictures.
+Generated stand-in images for older component previews only (a Lisbon rooftop dusk and three restaurant thumbnails). Don't use them in designs or ship them: use real photos from Places, or the group's own pictures.

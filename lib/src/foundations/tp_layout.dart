@@ -45,6 +45,12 @@ abstract final class TPSize {
   static const rowMin = 56.0;
   static const rowTwoLine = 72.0;
   static const sectionBand = 8.0;
+
+  /// Minimum height of a photo header ([TPPlaceHeader]). It grows with large text.
+  static const placeHeader = 340.0;
+
+  /// How far a content sheet rises over the photo above it ([TPOverlapSheet]).
+  static const sheetOverlap = 24.0;
 }
 
 /// Soft, wide, ink-tinted shadows. In dark mode use surface lightness and a

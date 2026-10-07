@@ -70,6 +70,28 @@ Full-screen sheet with a sticky ink header ("TRAVEL DATES" eyebrow + "Thu, 12 Ju
 
 ---
 
+## Today (from the Italy trip-day redesign)
+
+### Photo header · `TPPlaceHeader`
+Full-bleed photo, at least `size.placeHeader` (340pt), growing with large text. `TPColors.headerScrim` over it. Top row: `leading` (back) and `trailing` (on-image `TPAvatarStack`, options) as glass controls. Bottom-left, 24pt inset: eyebrow (`type.eyebrow`, white 90%), title (`type.display`, white, a heading for screen readers), subtitle (`type.subhead`), optional license `credit` (`type.caption`). `imageLabel` describes the photo. No photo or a failed load: brand navy. Rules: [07 · Imagery](./07-imagery.md).
+
+### Overlapping sheet · `TPOverlapSheet`
+The `canvas` surface that rises `size.sheetOverlap` (24pt) over a `TPPlaceHeader`, with `radius.sheet` top corners. Holds the rest of the screen: tabs, day strip, stay, Now card.
+
+### Now card · `TPNowCard`
+What you're doing right now. `TPCard` holding: an 8pt accent dot + "NOW · UNTIL 12:30" (`type.eyebrow`, accent); title (`type.title2`); place (`type.subhead`, `text.secondary`); a `TPProgressBar`; start, time left and end (`type.footnote` tabular), stacked at large text; a hairline; then the companions' avatars and "With Sandra" ("Just you" when alone). Time left reads "Starts in 20 min" before and "Over by 15 min" after. Updates every 30 seconds; pass `now` to pin it. The accent marks the state only: never fill the card.
+
+### Progress bar · `TPProgressBar`
+4pt pill track in `sunken`, accent fill, easing on the gentle spring (instant under Reduce Motion). Screen readers hear its label and percentage.
+
+### Leave-by hint · `TPLeaveByHint`
+A clock icon and one `type.footnote` line under the next plan.
+- **Calm** (more than 30 min before): "Leave by 12:55 · 5 min walk from the Vatican", `text.secondary`.
+- **Soon** (inside 30 min): "Leave in 8 min · …", accent, semibold.
+- **Due** (time to go or later): "Leave now · …", then "Leave now · 4 min behind", in `caution` with a warning icon. Turning due plays the warning haptic once, never on first show.
+
+Changes are announced politely to screen readers. Updates every 30 seconds; pass `now` to pin it.
+
 ## Containers
 
 ### Trip cover card · `TPTripCoverCard`

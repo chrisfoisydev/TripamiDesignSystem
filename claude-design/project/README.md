@@ -15,7 +15,7 @@ Tripami is a collaborative group-travel app. Its product UI pairs a hotel concie
 - **Names over numbers:** "Waiting on Jonah and Priya", not "2 pending". "Maya added" on everything a person contributed.
 - **Sentence case** for buttons and titles: "Create trip", "Needs your vote". Verb first on buttons.
 - **Examples:** "Where's the group headed?" · "Lisbon in 6 days. Here's where things stand." · "Booked. Everyone can see it in the plan." · "Nothing saved yet. Add a place and the group can vote on it." · "Couldn't save the expense. Check your connection and try again."
-- **Numbers:** money, times and counts use tabular figures (`font-variant-numeric: tabular-nums`). Dates are written "Thu 12 Jun", ranges "12–17 Jun", times in 24h ("20:30").
+- **Numbers:** money, times and counts use tabular figures (`font-variant-numeric: tabular-nums`). Dates are written "Thu 12 Jun", ranges "12–17 Jun", times in 24h ("20:30"). Day chips read "Wed 18"; day titles "Wednesday 18 November". Durations read "1 h 50 min", "45 min" (`Tripami.format.duration`). Several people: "Shannon, Christy and Sarah", past three "Maya, Leo and 3 others" (`Tripami.format.names`), by first name.
 
 ## Logo
 
@@ -107,8 +107,13 @@ The Plan view draws the day as a braid (`BraidDay`): one strand per traveler, bu
 
 ## Imagery
 
-- Trip covers are the group's own photos: 4:5 on cards, full-bleed on a hero. Without a photo, use a `sunken` card with the trip name in `display`; never stock illustration.
-- The `Placeholders` asset group holds generated stand-in photos for previews only. Don't ship them.
+- **Real photos only:** the group's own pictures, or licensed photos of the actual place. Never illustrations, AI images or drawn stand-ins, in product or in designs.
+- The **`Places`** asset group holds real, licensed place photos to design with (its README lists photographer, license and whether credit is needed). Photos under CC BY or CC BY-SA need a visible credit: `PlaceHeader`'s `credit`.
+- Trip covers: the group's photo at 4:5 on cards. A day or a place opens on a full-bleed **`PlaceHeader`** (at least `size-place-header`, 340px) with the rest of the screen in an **`OverlapSheet`** rising `size-sheet-overlap` (24px) over it with `radius-sheet` corners.
+- Crop for the zones: sky or quiet texture behind the top controls (on `scrim-top`), the landmark in the middle, an even tone under the bottom-left title (on `scrim-end`). Never a face or landmark under text, never a color block over a photo.
+- `imageLabel` describes what the photo shows, for screen readers.
+- Without a photo: a `sunken` card with the name in `display` (cards) or brand navy (headers).
+- The `Placeholders` group holds generated stand-ins for older previews only. Don't design or ship with them.
 
 ## Platform
 

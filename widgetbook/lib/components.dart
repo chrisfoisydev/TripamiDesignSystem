@@ -329,4 +329,170 @@ final _text = WidgetbookFolder(name: 'Text', children: [
   _c('TPEyebrow', [_u('Label', (context) => _frame(TPEyebrow(context.knobs.string(label: 'Text', initialValue: 'Arrive'))))]),
 ]);
 
-WidgetbookCategory components() => WidgetbookCategory(name: 'Components', children: [_actions, _navigation, _containers, _people, _planning, _braid, _text]);
+const _rome = AssetImage('assets/places/rome-tiber-st-peters.jpg');
+const _romeLabel = "The Tiber and Ponte Sant'Angelo leading to St Peter's dome";
+DateTime _at(int h, int m) => DateTime(2026, 11, 18, h, m);
+
+final _today = WidgetbookFolder(name: 'Today', children: [
+  _c('Trip day screen', [
+    _u('Rome · Wed 18', (context) {
+      final k = context.knobs;
+      final minutes = k.int.slider(label: 'Minutes since 09:30', initialValue: 70, min: 0, max: 240);
+      final now = _at(9, 30).add(Duration(minutes: minutes));
+      final c = TPColors.of(context);
+      return Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 390),
+          child: ColoredBox(
+            color: c.canvas,
+            child: ListView(children: [
+              TPPlaceHeader(
+                title: 'Rome',
+                eyebrow: 'Today · Day 5 of 14',
+                subtitle: 'Wednesday 18 November · Italy with Friends',
+                image: k.boolean(label: 'Photo', initialValue: true) ? _rome : null,
+                imageLabel: _romeLabel,
+                leading: const TPGlassIconButton(icon: TPIcons.arrowLeft, onPressed: _noop, semanticLabel: 'Back to trips'),
+                trailing: [
+                  TPAvatarStack(crew, onImage: true),
+                  const TPGlassIconButton(icon: TPIcons.dotsThree, onPressed: _noop, semanticLabel: 'Trip options'),
+                ],
+              ),
+              TPOverlapSheet(
+                child: _Live<int>(
+                  initial: 4,
+                  builder: (context, day, set) => Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                    Padding(
+                      padding: TPSpace.screen,
+                      child: TPUnderlineTabs(labels: const ['Days', 'Whole trip'], currentIndex: 0, onChanged: (_) {}),
+                    ),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.fromLTRB(TPSpace.s6, TPSpace.s4, TPSpace.s6, TPSpace.s1),
+                      child: Row(children: [
+                        for (var i = 0; i < 7; i++)
+                          Padding(
+                            padding: const EdgeInsets.only(right: TPSpace.s2),
+                            child: TPFilterChip(
+                              label: TPFormat.dayShort(DateTime(2026, 11, 14 + i)),
+                              selected: i == day,
+                              onTap: () => set(i),
+                            ),
+                          ),
+                      ]),
+                    ),
+                    const TPListRow(
+                      icon: TPIcons.bed,
+                      label: 'Rome Airbnb',
+                      detail: "Where you're staying",
+                      onTap: _noop,
+                      showDivider: false,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: TPSpace.s4),
+                      child: TPNowCard(
+                        title: 'Vatican Museums',
+                        place: 'Viale Vaticano',
+                        start: _at(9, 30),
+                        end: _at(12, 30),
+                        now: now,
+                        companions: [maya],
+                      ),
+                    ),
+                    const SizedBox(height: TPSpace.s8),
+                    const Padding(padding: TPSpace.screen, child: TPEyebrow('Next · 13:00')),
+                    const SizedBox(height: TPSpace.s2),
+                    Padding(
+                      padding: TPSpace.screen,
+                      child: Text('Pizza al taglio', style: TPType.title3.copyWith(color: c.textPrimary)),
+                    ),
+                    Padding(
+                      padding: TPSpace.screen,
+                      child: Text('Pizzarium · the crew rejoins here', style: TPType.subhead.copyWith(color: c.textSecondary)),
+                    ),
+                    const SizedBox(height: TPSpace.s2),
+                    Padding(
+                      padding: TPSpace.screen,
+                      child: TPLeaveByHint(leaveBy: _at(12, 55), travel: '5 min walk from the Vatican', now: now),
+                    ),
+                    const SizedBox(height: TPSpace.s16),
+                  ]),
+                ),
+              ),
+            ]),
+          ),
+        ),
+      );
+    }),
+  ]),
+  _c('TPPlaceHeader', [
+    _u('Playground', (context) {
+      final k = context.knobs;
+      return Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 390),
+          child: SingleChildScrollView(
+            child: Column(children: [
+              TPPlaceHeader(
+                title: k.string(label: 'Title', initialValue: 'Rome'),
+                eyebrow: k.stringOrNull(label: 'Eyebrow', initialValue: 'Today · Day 5 of 14'),
+                subtitle: k.stringOrNull(label: 'Subtitle', initialValue: 'Wednesday 18 November · Italy with Friends'),
+                credit: k.stringOrNull(label: 'Credit', initialValue: null),
+                image: k.boolean(label: 'Photo', initialValue: true) ? _rome : null,
+                imageLabel: _romeLabel,
+                leading: const TPGlassIconButton(icon: TPIcons.arrowLeft, onPressed: _noop, semanticLabel: 'Back to trips'),
+                trailing: [
+                  TPAvatarStack(crew, onImage: true),
+                  const TPGlassIconButton(icon: TPIcons.dotsThree, onPressed: _noop, semanticLabel: 'Trip options'),
+                ],
+              ),
+              const TPOverlapSheet(
+                child: TPListRow(icon: TPIcons.bed, label: 'Rome Airbnb', detail: "Where you're staying", onTap: _noop, showDivider: false),
+              ),
+            ]),
+          ),
+        ),
+      );
+    }),
+  ]),
+  _c('TPNowCard', [
+    _u('Playground', (context) {
+      final k = context.knobs;
+      final minutes = k.int.slider(label: 'Minutes since 09:30', initialValue: 70, min: -30, max: 210);
+      final people = k.int.slider(label: 'With', initialValue: 1, min: 0, max: 4);
+      return _frame(TPNowCard(
+        title: 'Vatican Museums',
+        place: 'Viale Vaticano',
+        start: _at(9, 30),
+        end: _at(12, 30),
+        now: _at(9, 30).add(Duration(minutes: minutes)),
+        companions: crew.skip(1).take(people).toList(),
+        onTap: _noop,
+      ));
+    }),
+  ]),
+  _c('TPLeaveByHint', [
+    _u('Playground', (context) {
+      final before = context.knobs.int.slider(label: 'Minutes before 12:55', initialValue: 135, min: -10, max: 180);
+      return _frame(TPLeaveByHint(
+        leaveBy: _at(12, 55),
+        travel: '5 min walk from the Vatican',
+        now: _at(12, 55).subtract(Duration(minutes: before)),
+      ));
+    }),
+    _u('All states', (context) => _frame(Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          for (final m in [40, 47, 55, 59]) ...[
+            TPLeaveByHint(leaveBy: _at(12, 55), travel: '5 min walk from the Vatican', now: _at(m == 40 ? 10 : 12, m)),
+            const SizedBox(height: TPSpace.s3),
+          ],
+        ]))),
+  ]),
+  _c('TPProgressBar', [
+    _u('Playground', (context) => _frame(TPProgressBar(
+          value: context.knobs.double.slider(label: 'Value', initialValue: 0.39, min: 0, max: 1),
+          semanticLabel: 'Visit progress',
+        ))),
+  ]),
+]);
+
+WidgetbookCategory components() => WidgetbookCategory(name: 'Components', children: [_today, _actions, _navigation, _containers, _people, _planning, _braid, _text]);

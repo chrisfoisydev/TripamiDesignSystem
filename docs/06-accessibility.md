@@ -95,4 +95,4 @@ Eight mid-tone hues can't all stay distinct for every reader. We simulated prota
 6. **Keyboard:** Tab through it on an iPad or simulator; every action is reachable and visibly focused.
 7. **Grayscale** (Settings › Accessibility › Color Filters): every state is still understandable.
 
-Next: [01 · Bonvoy study](./01-bonvoy-study.md) · back to [README](../README.md)
+Next: [07 · Imagery](./07-imagery.md)

@@ -60,6 +60,7 @@ abstract final class TPPalette {
   static const dim = Color(0x5C02203A); // 36% navy behind sheets
   static const scrimStart = Color(0x0002101E);
   static const scrimEnd = Color(0x9E02101E); // 62%
+  static const scrimTop = Color(0x4702101E); // 28%, under controls at the top of a photo
 }
 
 /// Member colors identify a traveler: avatar, votes, expenses, "added by".

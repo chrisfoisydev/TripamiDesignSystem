@@ -79,6 +79,15 @@ class TPColors extends ThemeExtension<TPColors> {
         colors: [TPPalette.scrimStart, TPPalette.scrimEnd],
       );
 
+  /// Full-bleed photo headers: a light wash at the top for glass controls,
+  /// clear through the middle, and [scrim]'s dark foot for the title.
+  LinearGradient get headerScrim => const LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        stops: [0, 0.3, 0.45, 1],
+        colors: [TPPalette.scrimTop, TPPalette.scrimStart, TPPalette.scrimStart, TPPalette.scrimEnd],
+      );
+
   static const light = TPColors(
     canvas: TPPalette.canvasLight,
     surface: TPPalette.surfaceLight,

@@ -30,6 +30,7 @@ See **[Using the design system in the app](docs/05-using-in-the-app.md)**: how t
 4. **[Components](docs/04-components.md):** anatomy, tokens and states for every component.
 5. **[Using it in the app](docs/05-using-in-the-app.md):** adding the package, the theme, and setting up Claude Code in the app repo.
 6. **[Accessibility](docs/06-accessibility.md):** the platform settings we honor (VoiceOver, Larger Text to 310%, Bold Text, Increase Contrast, Reduce Motion, keyboards, color blindness), the rules, and how to test a screen.
+7. **[Imagery](docs/07-imagery.md):** real photos only, where they come from and how to credit them, crop zones, overlays, and the photo-header pattern.
 
 ## The system in one minute
 

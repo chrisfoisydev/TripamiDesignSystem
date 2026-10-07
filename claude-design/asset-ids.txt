@@ -88,3 +88,4 @@ Icons warning-fill.svg a84d88fc0cf10149a723711552f5f9d8 397
 Icons warning.svg 4f087adc5ce3374eb6b970aa6dadc06a 567
 Icons x-fill.svg 77c5f829e2cb75a01f9b51c8b3cf4f17 403
 Icons x.svg 0c7ad3166421b0582a68d7f7957e9fee 308
+Places rome-tiber-st-peters.jpg 4b92fba2dee933b9758c1de6f9356938 254395 image/jpeg

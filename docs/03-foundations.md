@@ -165,6 +165,7 @@ How they're made (`tool/ramps/generate.py`):
 | Token | Value | Use |
 |---|---|---|
 | `color.overlay.scrim` | `linear-gradient(180deg, rgba(2,16,30,0) 40%, rgba(2,16,30,.62) 100%)` | Text on photos (always bottom-aligned) |
+| `color.overlay.scrimTop` | `linear-gradient(180deg, rgba(2,16,30,.28) 0%, rgba(2,16,30,0) 30%)` | Under glass controls at the top of a photo header. `TPColors.headerScrim` combines both |
 | `color.overlay.glass` | `rgba(2,32,58,.48)` + `blur(16px)` | Chips and icon buttons on photos |
 | `color.overlay.dim` | `rgba(2,32,58,.36)` | Behind sheets |
 
@@ -255,7 +256,7 @@ Why not SF Pro and New York? Apple's license restricts them to Apple platforms, 
 | `radius.sm` | 10 | Glass chips on photos, input wells, tooltips |
 | `radius.md` | 16 | Cards, list containers |
 | `radius.lg` | 24 | Hero feature cards, trip cover cards |
-| `radius.sheet` | 28 | Sheet top corners |
+| `radius.sheet` | 28 | Sheet top corners, and the `TPOverlapSheet` rising over a photo header |
 | `radius.pill` | 999 | Buttons, search, chips, floating buttons |
 | `radius.circle` | 50% | Avatars, quick actions, date selection |
 
@@ -298,11 +299,24 @@ Core set: `house` · `suitcase` (Trips) · `calendarBlank` (Plan) · `chatsCircl
 ---
 
 ## Imagery
-- Trip covers: one photo per trip, chosen by the group, shown 4:5 on cards and full-bleed 3:4 on the trip hero.
-- Text on photos: white, bottom-left, 24pt inset, always on `overlay.scrim`.
+Full rules: **[07 · Imagery](./07-imagery.md)** (real photos only, sources and credits, crop zones, the photo header pattern).
+- Trip covers: one photo per trip, chosen by the group, shown 4:5 on cards. A day or place opens on a full-bleed `TPPlaceHeader` (at least `size.placeHeader`, 340pt) with a `TPOverlapSheet` rising `size.sheetOverlap` (24pt) over it.
+- Text on photos: white, bottom-left, 24pt inset, always on `overlay.scrim`. Controls at the top sit on `overlay.scrimTop`.
 - Metadata on photos: **glass chips** (`overlay.glass`, `radius.sm`, `type.footnote`, white).
 - Never put a colored block over a photo; let the photo carry the emotion.
-- Fallback when there's no photo: a `bg.sunken` card with the destination name in `display`. No stock illustration.
+- Fallback when there's no photo: a `bg.sunken` card with the destination name in `display` (cards), or brand navy (photo headers). No illustration, no AI image.
+
+## Writing time, days and people
+`TPFormat` writes these the same way everywhere:
+
+| What | Format | Example |
+|---|---|---|
+| Time | 24-hour | `13:00`, `09:30` |
+| Duration | `h` and `min`, rounded up | `1 h 50 min`, `2 h`, `45 min` |
+| Day on a chip | Short weekday + date | `Wed 18` |
+| Day in a title | Full weekday, date, month | `Wednesday 18 November` |
+| Several people | Commas and "and"; past 3, "and N others" | `Shannon, Christy and Sarah`, `Maya, Leo and 3 others` |
+| A person | First name | `Sarah`, not `Sarah Johnson` |
 
 ---
 

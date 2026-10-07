@@ -3,7 +3,7 @@
   "layout": "files",
   "createdOnFiles": {
     "v": 1,
-    "at": "2026-10-06T21:56:54Z"
+    "at": "2026-10-07T21:00:00Z"
   },
   "title": "Tripami",
   "namespace": "Tripami",
@@ -25,6 +25,7 @@
   "groups": [
     "Logos",
     "Icons",
+    "Places",
     "Placeholders"
   ],
   "assetGroups": {
@@ -646,6 +647,21 @@
         }
       }
     },
+    "Places": {
+      "name": "Places",
+      "tile": "l",
+      "order": [
+        "rome-tiber-st-peters.jpg"
+      ],
+      "files": {
+        "rome-tiber-st-peters.jpg": {
+          "name": "rome-tiber-st-peters.jpg",
+          "blob": "4b92fba2dee933b9758c1de6f9356938",
+          "size": 254395,
+          "type": "image/jpeg"
+        }
+      }
+    },
     "Placeholders": {
       "name": "Placeholders",
       "tile": "m",
@@ -690,8 +706,8 @@
   },
   "lastChange": {
     "by": "Claude",
-    "at": "2026-10-07T19:24:46Z",
+    "at": "2026-10-07T21:00:00Z",
     "via": "Claude Code",
-    "note": "Accessibility: brand-book section, focus rings and 48px tap areas on the web, member colors in color-blind-safe join order."
+    "note": "Trip-day pieces from the Italy redesign: PlaceHeader, OverlapSheet, NowCard, ProgressBar, LeaveByHint; scrim-top and header size tokens; a Places set of real, licensed photos; chips hug one-line labels."
   }
 }

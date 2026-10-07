@@ -72,6 +72,40 @@ final Map<String, Widget> gallery = {
     width: 300,
     child: TPTripCoverCard(title: 'Lisbon with the crew', subtitle: '12–17 Jun · Lisbon', status: 'In 6 days', image: null, members: crew, onTap: _noop),
   ),
+  'TPPlaceHeader': const Column(children: [
+    TPPlaceHeader(
+      title: 'Rome',
+      eyebrow: 'Today · Day 5 of 14',
+      subtitle: 'Wednesday 18 November · Italy with Friends',
+      credit: 'Photo: Emiliano Carchia, CC0',
+      image: null,
+      imageLabel: "The Tiber leading to St Peter's dome",
+      leading: TPGlassIconButton(icon: TPIcons.arrowLeft, onPressed: _noop, semanticLabel: 'Back to trips'),
+      trailing: [
+        TPAvatarStack(crew, onImage: true),
+        TPGlassIconButton(icon: TPIcons.dotsThree, onPressed: _noop, semanticLabel: 'Trip options'),
+      ],
+    ),
+    TPOverlapSheet(child: TPListRow(label: 'Rome Airbnb', detail: "Where you're staying", icon: TPIcons.bed, onTap: _noop)),
+  ]),
+  'TPProgressBar': const TPProgressBar(value: 0.39, semanticLabel: 'Vatican Museums progress'),
+  'TPNowCard': TPNowCard(
+    title: 'Vatican Museums',
+    place: 'Viale Vaticano',
+    start: DateTime(2026, 11, 18, 9, 30),
+    end: DateTime(2026, 11, 18, 12, 30),
+    now: DateTime(2026, 11, 18, 10, 40),
+    companions: const [maya],
+    onTap: _noop,
+  ),
+  'TPLeaveByHint': Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+    for (final m in [40, 50, 57])
+      TPLeaveByHint(
+        leaveBy: DateTime(2026, 11, 18, 12, 55),
+        travel: '5 min walk from the Vatican',
+        now: DateTime(2026, 11, 18, 12, m),
+      ),
+  ]),
   'TPTripStrip': const TPTripStrip(facts: [
     TPTripFact(label: 'Arrive', value: 'Thu 12 Jun', detail: '14:05 TP1351'),
     TPTripFact(label: 'Nights', value: '5'),
