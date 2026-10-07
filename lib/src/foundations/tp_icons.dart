@@ -20,6 +20,10 @@ abstract final class TPIcons {
   static const plus = IconData(0xe3d4, fontFamily: 'PhosphorRegular', fontPackage: _pkg);
   static const receipt = IconData(0xe3ec, fontFamily: 'PhosphorRegular', fontPackage: _pkg);
   static const images = IconData(0xe836, fontFamily: 'PhosphorRegular', fontPackage: _pkg);
+  static const envelopeSimple = IconData(0xe218, fontFamily: 'PhosphorRegular', fontPackage: _pkg);
+  static const clipboardText = IconData(0xe198, fontFamily: 'PhosphorRegular', fontPackage: _pkg);
+  static const fileText = IconData(0xe23a, fontFamily: 'PhosphorRegular', fontPackage: _pkg);
+  static const train = IconData(0xe496, fontFamily: 'PhosphorRegular', fontPackage: _pkg);
   static const camera = IconData(0xe10e, fontFamily: 'PhosphorRegular', fontPackage: _pkg);
   static const heart = IconData(0xe2a8, fontFamily: 'PhosphorRegular', fontPackage: _pkg);
   static const export = IconData(0xeaf0, fontFamily: 'PhosphorRegular', fontPackage: _pkg);
@@ -66,6 +70,10 @@ abstract final class TPIconsFill {
   static const plus = IconData(0xe3d4, fontFamily: 'PhosphorFill', fontPackage: _pkg);
   static const receipt = IconData(0xe3ec, fontFamily: 'PhosphorFill', fontPackage: _pkg);
   static const images = IconData(0xe836, fontFamily: 'PhosphorFill', fontPackage: _pkg);
+  static const envelopeSimple = IconData(0xe218, fontFamily: 'PhosphorFill', fontPackage: _pkg);
+  static const clipboardText = IconData(0xe198, fontFamily: 'PhosphorFill', fontPackage: _pkg);
+  static const fileText = IconData(0xe23a, fontFamily: 'PhosphorFill', fontPackage: _pkg);
+  static const train = IconData(0xe496, fontFamily: 'PhosphorFill', fontPackage: _pkg);
   static const camera = IconData(0xe10e, fontFamily: 'PhosphorFill', fontPackage: _pkg);
   static const heart = IconData(0xe2a8, fontFamily: 'PhosphorFill', fontPackage: _pkg);
   static const export = IconData(0xeaf0, fontFamily: 'PhosphorFill', fontPackage: _pkg);

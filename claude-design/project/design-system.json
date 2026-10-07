@@ -3,7 +3,7 @@
   "layout": "files",
   "createdOnFiles": {
     "v": 1,
-    "at": "2026-10-07T21:00:00Z"
+    "at": "2026-10-07T21:30:00Z"
   },
   "title": "Tripami",
   "namespace": "Tripami",
@@ -81,12 +81,18 @@
         "check-fill.svg",
         "circle.svg",
         "circle-fill.svg",
+        "clipboard-text.svg",
+        "clipboard-text-fill.svg",
         "clock.svg",
         "clock-fill.svg",
         "dots-three.svg",
         "dots-three-fill.svg",
+        "envelope-simple.svg",
+        "envelope-simple-fill.svg",
         "export.svg",
         "export-fill.svg",
+        "file-text.svg",
+        "file-text-fill.svg",
         "fork-knife.svg",
         "fork-knife-fill.svg",
         "gear-six.svg",
@@ -125,6 +131,8 @@
         "suitcase-fill.svg",
         "ticket.svg",
         "ticket-fill.svg",
+        "train.svg",
+        "train-fill.svg",
         "trash.svg",
         "trash-fill.svg",
         "user-circle.svg",
@@ -297,6 +305,18 @@
           "size": 182,
           "type": "image/svg+xml"
         },
+        "clipboard-text.svg": {
+          "name": "clipboard-text.svg",
+          "blob": "05c81cfbb737474fed40109c094d9408",
+          "size": 495,
+          "type": "image/svg+xml"
+        },
+        "clipboard-text-fill.svg": {
+          "name": "clipboard-text-fill.svg",
+          "blob": "d5b150ff16b4fb01870add0af6b075cc",
+          "size": 385,
+          "type": "image/svg+xml"
+        },
         "clock.svg": {
           "name": "clock.svg",
           "blob": "291c9503f56c2d4d0935e62b5a436973",
@@ -321,6 +341,18 @@
           "size": 351,
           "type": "image/svg+xml"
         },
+        "envelope-simple.svg": {
+          "name": "envelope-simple.svg",
+          "blob": "7594b9fc2d358079c9ff10f807f8b4c4",
+          "size": 306,
+          "type": "image/svg+xml"
+        },
+        "envelope-simple-fill.svg": {
+          "name": "envelope-simple-fill.svg",
+          "blob": "27070ab516c05a3b7983dd644a1c8c59",
+          "size": 274,
+          "type": "image/svg+xml"
+        },
         "export.svg": {
           "name": "export.svg",
           "blob": "6d08cc98fe93ae3b7bbe943439cddcc8",
@@ -331,6 +363,18 @@
           "name": "export-fill.svg",
           "blob": "18297d63b2987cc1380d3b0a6b0063c2",
           "size": 359,
+          "type": "image/svg+xml"
+        },
+        "file-text.svg": {
+          "name": "file-text.svg",
+          "blob": "13958da1542ab268ef6790f646f9d522",
+          "size": 440,
+          "type": "image/svg+xml"
+        },
+        "file-text-fill.svg": {
+          "name": "file-text-fill.svg",
+          "blob": "98c43627cd3d1f807f5e8ce2f6f18e43",
+          "size": 356,
           "type": "image/svg+xml"
         },
         "fork-knife.svg": {
@@ -561,6 +605,18 @@
           "size": 357,
           "type": "image/svg+xml"
         },
+        "train.svg": {
+          "name": "train.svg",
+          "blob": "b2f2347f4dc2b98e7e6cd932300428b4",
+          "size": 536,
+          "type": "image/svg+xml"
+        },
+        "train-fill.svg": {
+          "name": "train-fill.svg",
+          "blob": "a910dbfa539af66f6639715a0e00a123",
+          "size": 420,
+          "type": "image/svg+xml"
+        },
         "trash.svg": {
           "name": "trash.svg",
           "blob": "e08e10f43be4efab2292c9974f6b6efb",
@@ -706,7 +762,7 @@
   },
   "lastChange": {
     "by": "Claude",
-    "at": "2026-10-07T21:00:00Z",
+    "at": "2026-10-07T21:30:00Z",
     "via": "Claude Code",
     "note": "Trip-day pieces from the Italy redesign: PlaceHeader, OverlapSheet, NowCard, ProgressBar, LeaveByHint; scrim-top and header size tokens; a Places set of real, licensed photos; chips hug one-line labels."
   }

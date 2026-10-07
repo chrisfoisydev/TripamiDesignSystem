@@ -89,3 +89,11 @@ Icons warning.svg 4f087adc5ce3374eb6b970aa6dadc06a 567
 Icons x-fill.svg 77c5f829e2cb75a01f9b51c8b3cf4f17 403
 Icons x.svg 0c7ad3166421b0582a68d7f7957e9fee 308
 Places rome-tiber-st-peters.jpg 4b92fba2dee933b9758c1de6f9356938 254395 image/jpeg
+Icons envelope-simple.svg 7594b9fc2d358079c9ff10f807f8b4c4 306
+Icons envelope-simple-fill.svg 27070ab516c05a3b7983dd644a1c8c59 274
+Icons clipboard-text.svg 05c81cfbb737474fed40109c094d9408 495
+Icons clipboard-text-fill.svg d5b150ff16b4fb01870add0af6b075cc 385
+Icons file-text.svg 13958da1542ab268ef6790f646f9d522 440
+Icons file-text-fill.svg 98c43627cd3d1f807f5e8ce2f6f18e43 356
+Icons train.svg b2f2347f4dc2b98e7e6cd932300428b4 536
+Icons train-fill.svg a910dbfa539af66f6639715a0e00a123 420
