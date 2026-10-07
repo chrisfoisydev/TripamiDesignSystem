@@ -5,6 +5,7 @@ import '../foundations/tp_layout.dart';
 import '../foundations/tp_palette.dart';
 import '../foundations/tp_type.dart';
 import 'tp_actions.dart';
+import 'tp_motion.dart';
 import 'tp_people.dart';
 
 // ---------------------------------------------------------------------------
@@ -423,12 +424,74 @@ class _Lane {
 
 typedef _Lanes = Map<String, _Lane>;
 
-class _TPBraidDayState extends State<TPBraidDay> {
+class _TPBraidDayState extends State<TPBraidDay> with TickerProviderStateMixin {
   final _expanded = <int>{};
+
+  // Draw-in: strands draw top to bottom and cards rise beside them, once per open.
+  late final AnimationController _draw = AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
+
+  // Reroute: when plans change, strands glide from where they were to where
+  // they now go, so you can see who moved.
+  late final AnimationController _reroute = AnimationController(vsync: this, duration: TPMotion.gentleDuration, value: 1);
+  Map<String, List<_Lanes>> _displayed = {};
+  Map<String, List<_Lanes>> _from = {};
+  bool _started = false;
+  bool _settledOnce = false; // knots only pop for changes after the first draw
+
+  static const _cardRise = 300; // ms each card takes to fade and rise
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_started) {
+      _started = true;
+      if (TPMotion.reduced(context)) {
+        _draw.value = 1;
+        WidgetsBinding.instance.addPostFrameCallback((_) => _settledOnce = true);
+      } else {
+        _draw.forward().whenComplete(() => _settledOnce = true);
+      }
+    }
+  }
+
+  @override
+  void didUpdateWidget(TPBraidDay old) {
+    super.didUpdateWidget(old);
+    if (!identical(old.moments, widget.moments) || old.youId != widget.youId || old.members.length != widget.members.length) {
+      _from = Map.of(_displayed);
+      if (TPMotion.reduced(context)) {
+        _reroute.value = 1;
+      } else {
+        _reroute.forward(from: 0);
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _draw.dispose();
+    _reroute.dispose();
+    super.dispose();
+  }
+
+  /// Strands draw as one continuous line, top to bottom: row [row] of
+  /// [rows] fills its share of the eased sweep.
+  double _strandRevealFor(int row, int rows) =>
+      (TPMotion.ease.transform(_draw.value) * rows - row).clamp(0.0, 1.0);
+
+  /// Cards fade and rise as the line reaches them.
+  double _cardRevealFor(int row, int rows) {
+    final total = _draw.duration!.inMilliseconds - _cardRise;
+    final ms = _draw.value * _draw.duration!.inMilliseconds;
+    final start = rows <= 1 ? 0 : total * row / (rows - 1);
+    return TPMotion.ease.transform(((ms - start) / _cardRise).clamp(0.0, 1.0));
+  }
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
+    return AnimatedBuilder(
+      animation: Listenable.merge([_draw, _reroute]),
+      builder: (context, _) => LayoutBuilder(builder: (context, constraints) {
       final strands = resolveBraidStrands(
         members: widget.members,
         youId: widget.youId,
@@ -454,6 +517,7 @@ class _TPBraidDayState extends State<TPBraidDay> {
 
       // Lay out every row first, so we know the gutter widths.
       final rows = <_RowSpec>[];
+      final keys = <String>[];
       final needed = [0.0, 0.0];
       List<_Lanes> prev = [{}, {}];
 
@@ -492,6 +556,7 @@ class _TPBraidDayState extends State<TPBraidDay> {
           });
         final firstLanes = layoutFor(moment, events.isEmpty ? null : events.first.key);
         if (mi == 0) prev = firstLanes;
+        keys.add('m$mi');
         rows.add(_RowSpec.marker(
           entry: prev,
           lanes: prev,
@@ -505,14 +570,43 @@ class _TPBraidDayState extends State<TPBraidDay> {
           final assign = braidAssignments(strands, moment);
           final inEvent = [for (var i = 0; i < strands.length; i++) if (assign[i] == e.key) strands[i]];
           final side = inEvent.any((s) => sideOf[s.id] == 0) || inEvent.isEmpty ? 0 : 1;
+          keys.add('e$mi:${e.value.id}');
           rows.add(_RowSpec.event(entry: prev, lanes: lanes, event: e.value, eventStrands: inEvent, side: side));
           prev = lanes;
         }
         if (!showAll) {
           final hidden = events.length - visible.length;
+          keys.add('x$mi');
           rows.add(_RowSpec.more(entry: prev, lanes: prev, label: 'Show $hidden more', momentIndex: mi));
         }
       }
+
+      // Glide strands from where they were drawn last to where they go now.
+      final t = TPMotion.gentleCurve.transform(_reroute.value);
+      final shown = <String, List<_Lanes>>{};
+      List<_Lanes>? before;
+      for (var i = 0; i < rows.length; i++) {
+        final target = rows[i].lanes;
+        final from = _from[keys[i]];
+        final lanes = from == null || _reroute.value >= 1
+            ? target
+            : [
+                for (var side = 0; side < 2; side++)
+                  {
+                    for (final e in target[side].entries)
+                      e.key: _Lane(
+                        (from[side][e.key]?.x ?? e.value.x) + (e.value.x - (from[side][e.key]?.x ?? e.value.x)) * t,
+                        e.value.loose,
+                      ),
+                  },
+              ];
+        rows[i]
+          ..entry = before ?? lanes
+          ..lanes = lanes;
+        before = lanes;
+        shown[keys[i]] = lanes;
+      }
+      _displayed = shown;
 
       final leftGutter = needed[0].clamp(TPBraidMetrics.gutter, 140.0);
       final rightGutter = twoSided ? needed[1].clamp(TPBraidMetrics.gutter, 140.0) : 0.0;
@@ -520,21 +614,25 @@ class _TPBraidDayState extends State<TPBraidDay> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          for (final row in rows)
+          for (var i = 0; i < rows.length; i++)
             _BraidRow(
-              spec: row,
+              spec: rows[i],
+              reveal: _strandRevealFor(i, rows.length),
+              contentReveal: _cardRevealFor(i, rows.length),
+              popKnots: _settledOnce,
               strands: byId,
               members: widget.members,
               youId: widget.youId,
               groups: widget.groups,
               leftGutter: leftGutter,
               rightGutter: rightGutter,
-              onMore: row.momentIndex == null ? null : () => setState(() => _expanded.add(row.momentIndex!)),
+              onMore: rows[i].momentIndex == null ? null : () => setState(() => _expanded.add(rows[i].momentIndex!)),
               onTap: widget.onEventTap,
             ),
         ],
       );
-    });
+    }),
+    );
   }
 }
 
@@ -563,8 +661,8 @@ class _RowSpec {
         side = 0;
 
   final _RowKind kind;
-  final List<_Lanes> entry;
-  final List<_Lanes> lanes;
+  List<_Lanes> entry;
+  List<_Lanes> lanes;
   final String? time;
   final String? summary;
   final TPBraidEvent? event;
@@ -577,6 +675,9 @@ class _RowSpec {
 class _BraidRow extends StatelessWidget {
   const _BraidRow({
     required this.spec,
+    required this.reveal,
+    required this.contentReveal,
+    required this.popKnots,
     required this.strands,
     required this.members,
     required this.youId,
@@ -596,6 +697,15 @@ class _BraidRow extends StatelessWidget {
   final double rightGutter;
   final VoidCallback? onMore;
   final ValueChanged<TPBraidEvent>? onTap;
+
+  /// 0→1 draw-in progress of this row's strands.
+  final double reveal;
+
+  /// 0→1 fade-and-rise progress of this row's card, avatars and text.
+  final double contentReveal;
+
+  /// After the first draw, knots pop when the people in them change.
+  final bool popKnots;
 
   static const _knotY = 44.0;
 
@@ -645,6 +755,7 @@ class _BraidRow extends StatelessWidget {
             Positioned.fill(
               child: CustomPaint(
                 painter: _StrandPainter(
+                  reveal: reveal,
                   strands: draws,
                   knotY: spec.kind == _RowKind.event ? _knotY : 0,
                   connector: bundleCenter != null
@@ -661,7 +772,14 @@ class _BraidRow extends StatelessWidget {
               Positioned(
                 left: stackLeft,
                 top: _knotY - avatar / 2 - 2,
-                child: TPAvatarStack(knotPeople, size: TPAvatarSize.xs, max: 3),
+                child: Opacity(
+                  opacity: contentReveal,
+                  child: TPPop(
+                    key: ValueKey(knotPeople.map((m) => m.id).join(',')),
+                    play: popKnots,
+                    child: TPAvatarStack(knotPeople, size: TPAvatarSize.xs, max: 3),
+                  ),
+                ),
               ),
           ],
         ),
@@ -692,7 +810,12 @@ class _BraidRow extends StatelessWidget {
         children: [
           gutter(0, leftGutter),
           const SizedBox(width: TPSpace.s2),
-          Expanded(child: body),
+          Expanded(
+            child: Opacity(
+              opacity: contentReveal,
+              child: Transform.translate(offset: Offset(0, 8 * (1 - contentReveal)), child: body),
+            ),
+          ),
           if (rightGutter > 0) ...[const SizedBox(width: TPSpace.s2), gutter(1, rightGutter)],
         ],
       ),
@@ -743,7 +866,9 @@ class _StrandDraw {
 }
 
 class _StrandPainter extends CustomPainter {
-  _StrandPainter({required this.strands, required this.knotY, required this.connector, required this.connectorColor});
+  _StrandPainter({required this.reveal, required this.strands, required this.knotY, required this.connector, required this.connectorColor});
+
+  final double reveal;
 
   final List<_StrandDraw> strands;
   final double knotY;
@@ -752,6 +877,14 @@ class _StrandPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    if (reveal <= 0) return;
+    canvas.save();
+    canvas.clipRect(Rect.fromLTWH(-24, 0, size.width + 48, size.height * reveal));
+    _paintStrands(canvas, size);
+    canvas.restore();
+  }
+
+  void _paintStrands(Canvas canvas, Size size) {
     if (connector != null && connector!.$2 > connector!.$1) {
       final p = Paint()
         ..color = connectorColor

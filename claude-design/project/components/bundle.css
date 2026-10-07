@@ -203,3 +203,35 @@ button.tp-row { cursor: pointer; }
 .tp-braid-card.is-loose { background: transparent; box-shadow: none; border: 1.5px dashed var(--border-strong); }
 .tp-braid-card.is-loose.is-mine { border-color: var(--accent); }
 .tp-braid-label { font-weight: 500; }
+
+/* ---------- Motion ----------
+   Calm by default, playful when people come together. Springs are sampled
+   from the same physics as TPMotion in Flutter. */
+:root {
+  --tp-ease: cubic-bezier(0.2, 0, 0, 1);
+  --tp-spring-gentle: linear(0, 0.0308, 0.1058, 0.2043, 0.3121, 0.4195, 0.5205, 0.6117, 0.6915, 0.7595, 0.8162, 0.8625, 0.8996, 0.9288, 0.9512, 0.9682, 0.9807, 0.9898, 0.996, 1.0002, 1.0028, 1.0043, 1.005, 1.0052, 1);
+  --tp-spring-snappy: linear(0, 0.0238, 0.0828, 0.1622, 0.2517, 0.3436, 0.4331, 0.5171, 0.5937, 0.662, 0.7219, 0.7736, 0.8175, 0.8545, 0.8853, 0.9105, 0.9311, 0.9477, 0.9609, 0.9713, 0.9794, 0.9856, 0.9904, 0.9939, 1);
+  --tp-spring-playful: linear(0, 0.0369, 0.128, 0.2489, 0.3813, 0.5122, 0.6331, 0.739, 0.8276, 0.8985, 0.9527, 0.9921, 1.0189, 1.0354, 1.044, 1.0467, 1.0452, 1.0412, 1.0356, 1.0294, 1.0233, 1.0176, 1.0126, 1.0084, 1);
+}
+@keyframes tp-pop { from { transform: scale(0); opacity: 0; } 30% { opacity: 1; } to { transform: scale(1); opacity: 1; } }
+@keyframes tp-rise { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes tp-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes tp-reveal { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes tp-drop { from { transform: translateY(-120%); opacity: 0; } 20% { opacity: 1; } to { transform: none; opacity: 1; } }
+@keyframes tp-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.tp-pop { animation: tp-pop 500ms var(--tp-spring-playful) both; }
+.tp-rise { animation: tp-rise 320ms var(--tp-ease) both; }
+.tp-brand-dot { display: inline-block; border-radius: 50%; background: var(--brand-orange); animation: tp-drop 500ms var(--tp-spring-playful) both; }
+.tp-check path { stroke: var(--accent); stroke-dasharray: 1; stroke-dashoffset: 1; animation: tp-draw 320ms var(--tp-ease) forwards; }
+.tp-braid.is-drawing .tp-braid-svg { animation: tp-reveal linear both; }
+.tp-braid.is-drawing .tp-braid-body, .tp-braid.is-drawing .tp-braid-knot { animation: tp-rise 300ms var(--tp-ease) both; }
+.tp-chip, .tp-tab, .tp-toggle, .tp-tabbar-indicator { transition-timing-function: var(--tp-spring-snappy); transition-duration: 250ms; }
+.tp-bar-fill { transition: width 500ms var(--tp-spring-playful); }
+.tp-motion-demo { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-6); }
+.tp-motion-demo-cell { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); min-width: 96px; }
+@media (prefers-reduced-motion: reduce) {
+  .tp-pop, .tp-rise, .tp-brand-dot, .tp-braid.is-drawing .tp-braid-body, .tp-braid.is-drawing .tp-braid-knot { animation: tp-fade 120ms linear both; }
+  .tp-braid.is-drawing .tp-braid-svg { animation: none; }
+  .tp-check path { animation: none; stroke-dashoffset: 0; }
+  .tp-chip, .tp-tab, .tp-toggle, .tp-tabbar-indicator, .tp-bar-fill { transition-duration: 0ms; }
+}

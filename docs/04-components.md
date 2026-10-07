@@ -185,3 +185,5 @@ Avatar 32 → name `type.subhead` Medium + time `type.footnote` → text `type.c
 
 ### Navigation bar
 Large-title behavior (`SliverAppBar.large` or `CupertinoSliverNavigationBar`): `type.title1` large title collapses to `type.body` Medium inline. Back is `arrow.left` (Bonvoy-style) rather than a chevron + label, because it reads more editorial. On hero screens the nav bar is transparent with glass circle buttons until the hero scrolls away.
+
+Next: [05 · Using the design system in the app](./05-using-in-the-app.md)

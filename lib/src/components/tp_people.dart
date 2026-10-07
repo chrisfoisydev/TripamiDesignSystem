@@ -5,6 +5,7 @@ import '../foundations/tp_icons.dart';
 import '../foundations/tp_layout.dart';
 import '../foundations/tp_palette.dart';
 import '../foundations/tp_type.dart';
+import 'tp_motion.dart';
 
 /// A traveler on a trip.
 @immutable
@@ -208,11 +209,13 @@ class TPActivityDot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = TPColors.of(context);
-    return Container(
+    final dot = Container(
       width: 8,
       height: 8,
       decoration: BoxDecoration(shape: BoxShape.circle, color: urgent ? c.accent : c.textPrimary),
     );
+    // A needs-you dot arrives with the brand's pop; a "new" dot just appears.
+    return urgent ? TPPop(child: dot) : dot;
   }
 }
 

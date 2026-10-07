@@ -18,12 +18,17 @@ Two versions, as supplied, both on transparent grounds with the orange `#FC6316`
 - [`brand/tripami-wordmark.webp`](brand/tripami-wordmark.webp): navy `#02203A` letters, for light grounds.
 - [`brand/tripami-wordmark-reversed.webp`](brand/tripami-wordmark-reversed.webp): white letters, for dark grounds and dark photos.
 
+## Using it in the Tripami app
+
+See **[Using the design system in the app](docs/05-using-in-the-app.md)**: how to add the package, set the theme, and set up Claude Code in the app's repo so it builds with the system.
+
 ## Docs
 
 1. **[Bonvoy study](docs/01-bonvoy-study.md):** about 45 Marriott Bonvoy iOS screens studied on Mobbin, and what Tripami takes from them.
 2. **[Principles](docs/02-principles.md):** six rules, the product-vs-marketing split, and voice.
 3. **[Foundations](docs/03-foundations.md):** color, type, spacing, shape, elevation, icons, imagery, motion.
 4. **[Components](docs/04-components.md):** anatomy, tokens and states for every component.
+5. **[Using it in the app](docs/05-using-in-the-app.md):** adding the package, the theme, and setting up Claude Code in the app repo.
 
 ## The system in one minute
 
@@ -31,6 +36,7 @@ Two versions, as supplied, both on transparent grounds with the orange `#FC6316`
 - **Type:** Bricolage Grotesque, set heavy to echo the wordmark, for trip names and day headings. Inter for UI (Regular titles, uppercase eyebrows). Newsreader for journal text.
 - **Shape:** pills to act, rounded cards to open, circles for people and tools, sheets for side tasks, dashed boxes for what the group hasn't filled yet.
 - **The braid:** the day drawn as one strand per traveler, bundling when people are together and parting when they split. It scales to 50+ by turning strands into group ribbons.
+- **Motion:** calm by default (`TPMotion.ease`, `gentle`), playful only when people come together (`playful` spring, at most once per screen): the braid drawing in, avatars popping when someone joins, the orange dot, a single success check. Everything respects reduced motion.
 - **Icons:** a curated Phosphor set, regular by default and fill for active states.
 - **Contrast:** every allowed text pairing passes WCAG AA in light and dark, enforced by `test/contrast_test.dart`.
 
@@ -70,7 +76,7 @@ Icon(TPIcons.mapPin);
 | `foundations/tp_layout.dart` | `TPSpace`, `TPRadius`, `TPSize`, `TPElevation`, `TPMotion` |
 | `foundations/tp_icons.dart` | `TPIcons` / `TPIconsFill` (Phosphor) |
 | `theme/tp_theme.dart` | `TripamiTheme.light()` / `.dark()`, which restyles standard Material widgets |
-| `components/` | `TPButton`, `TPGlassIconButton`, `TPQuickAction`, `TPFloatingPill`, `TPFilterChip`, `TPUnderlineTabs`, `TPEyebrow`, `TPSectionHeader`, `TPCard`, `TPGlassChip`, `TPTripCoverCard`, `TPTripStrip`, `TPListRow`, `TPSectionBand`, `TPStickyActionBar`, `showTPSheet`, `TPEmptyState`, `TPTabBar`, `TPAvatar`, `TPAvatarStack`, `TPAttribution`, `TPActivityDot`, `TPReactionBar`, `TPPollCard`, `TPItineraryItem`, `TPExpenseRow`, `TPBraidDay`, `TPBraidEventCard`, `TPBraidMarker` |
+| `components/` | `TPButton`, `TPGlassIconButton`, `TPQuickAction`, `TPFloatingPill`, `TPFilterChip`, `TPUnderlineTabs`, `TPEyebrow`, `TPSectionHeader`, `TPCard`, `TPGlassChip`, `TPTripCoverCard`, `TPTripStrip`, `TPListRow`, `TPSectionBand`, `TPStickyActionBar`, `showTPSheet`, `TPEmptyState`, `TPTabBar`, `TPAvatar`, `TPAvatarStack`, `TPAttribution`, `TPActivityDot`, `TPReactionBar`, `TPPollCard`, `TPItineraryItem`, `TPExpenseRow`, `TPBraidDay`, `TPBraidEventCard`, `TPBraidMarker`, `TPPop`, `TPRise`, `TPCountUp`, `TPSuccessCheck`, `TPBrandDot`, `TPHaptics` |
 
 Fonts are bundled in `lib/fonts/`: Bricolage Grotesque, Inter and Newsreader (SIL OFL) and Phosphor Icons (MIT), with their licenses. Requires Flutter ≥ 3.32.
 

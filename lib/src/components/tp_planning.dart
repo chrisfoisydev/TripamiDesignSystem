@@ -190,8 +190,9 @@ class _PollOptionRow extends StatelessWidget {
             borderRadius: BorderRadius.circular(2),
             child: TweenAnimationBuilder<double>(
               tween: Tween(begin: 0, end: share),
-              duration: MediaQuery.disableAnimationsOf(context) ? Duration.zero : TPMotion.slow,
-              curve: TPMotion.ease,
+              // Votes are a people moment: bars spring to their share.
+              duration: TPMotion.reduced(context) ? Duration.zero : TPMotion.playfulDuration,
+              curve: TPMotion.playfulCurve,
               builder: (context, v, _) => LinearProgressIndicator(
                 value: v,
                 minHeight: 3,

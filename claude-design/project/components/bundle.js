@@ -1,4 +1,4 @@
-/* @ds-bundle: {"format":4,"namespace":"Tripami","components":[{"name":"Icon"},{"name":"Button"},{"name":"GlassIconButton"},{"name":"QuickAction"},{"name":"FloatingPill"},{"name":"FilterChip"},{"name":"UnderlineTabs"},{"name":"TextField"},{"name":"Toggle"},{"name":"Eyebrow"},{"name":"SectionHeader"},{"name":"Card"},{"name":"GlassChip"},{"name":"TripCoverCard"},{"name":"TripStrip"},{"name":"ListRow"},{"name":"StickyActionBar"},{"name":"Sheet"},{"name":"EmptyState"},{"name":"Toast"},{"name":"TabBar"},{"name":"Avatar"},{"name":"AvatarStack"},{"name":"Attribution"},{"name":"ActivityDot"},{"name":"ReactionBar"},{"name":"PollCard"},{"name":"ItineraryItem"},{"name":"ExpenseRow"},{"name":"BraidDay"},{"name":"BraidEventCard"},{"name":"BraidMarker"}]} */
+/* @ds-bundle: {"format":4,"namespace":"Tripami","components":[{"name":"Icon"},{"name":"Button"},{"name":"GlassIconButton"},{"name":"QuickAction"},{"name":"FloatingPill"},{"name":"FilterChip"},{"name":"UnderlineTabs"},{"name":"TextField"},{"name":"Toggle"},{"name":"Eyebrow"},{"name":"SectionHeader"},{"name":"Card"},{"name":"GlassChip"},{"name":"TripCoverCard"},{"name":"TripStrip"},{"name":"ListRow"},{"name":"StickyActionBar"},{"name":"Sheet"},{"name":"EmptyState"},{"name":"Toast"},{"name":"TabBar"},{"name":"Avatar"},{"name":"AvatarStack"},{"name":"Attribution"},{"name":"ActivityDot"},{"name":"ReactionBar"},{"name":"PollCard"},{"name":"ItineraryItem"},{"name":"ExpenseRow"},{"name":"BraidDay"},{"name":"BraidEventCard"},{"name":"BraidMarker"},{"name":"Pop"},{"name":"Rise"},{"name":"BrandDot"},{"name":"SuccessCheck"},{"name":"CountUp"}]} */
 // Tripami components for the web. Hand-written from the Flutter package
 // (lib/src/components/*.dart in chrisfoisydev/TripamiDesignSystem); same props, same rules.
 (function () {
@@ -220,7 +220,7 @@
   }
 
   function ActivityDot(p) {
-    return h('span', { className: cx('tp-dot', p.urgent && 'is-urgent'), 'aria-label': p.urgent ? 'Needs you' : 'New' });
+    return h('span', { className: cx('tp-dot', p.urgent && 'is-urgent tp-pop'), 'aria-label': p.urgent ? 'Needs you' : 'New' });
   }
 
   function ReactionBar(p) {
@@ -460,7 +460,7 @@
     });
     var gw = [Math.min(140, Math.max(BRAID.gutter, needed[0])), twoSided ? Math.min(140, Math.max(BRAID.gutter, needed[1])) : 0];
 
-    function gutter(row, side) {
+    function gutter(row, side, timing) {
       var w = gw[side];
       function X(x) { return side === 1 ? w - x : x; }
       var knotY = row.kind === 'event' ? BRAID.knotY : 0;
@@ -484,7 +484,7 @@
               .sort(function (a, b) { return (a.id === youId ? 0 : 1) - (b.id === youId ? 0 : 1); });
             var shown = people.length > 3 ? 4 : people.length, stackW = 28 + (shown - 1) * 20;
             var left0 = Math.max(0, Math.min(w - stackW, (lo + hi) / 2 - stackW / 2));
-            knot = h('div', { className: 'tp-braid-knot', style: { left: left0, top: knotY - 14 } }, h(AvatarStack, { members: people, size: 24, max: 3 }));
+            knot = h('div', { className: 'tp-braid-knot', style: Object.assign({ left: left0, top: knotY - 14 }, timing.card) }, h(AvatarStack, { members: people, size: 24, max: 3 }));
             connector = side === 0 ? [left0 + stackW + 4, w] : [0, left0 - 4];
           } else {
             connector = side === 0 ? [hi + 6, w] : [0, lo - 6];
@@ -492,13 +492,16 @@
         }
       }
       return h('div', { className: 'tp-braid-gutter', style: { width: w } },
-        h('svg', { className: 'tp-braid-svg', width: w, height: 4000, 'aria-hidden': true },
+        h('svg', { className: 'tp-braid-svg', width: w, height: 4000, 'aria-hidden': true, style: timing.strand },
           connector && connector[1] > connector[0] ? h('line', { x1: connector[0], x2: connector[1], y1: knotY, y2: knotY, className: 'tp-braid-connector' }) : null,
           paths),
         knot);
     }
 
-    return h('div', { ref: rootRef, className: 'tp-braid' }, rows.map(function (row, ri) {
+    var n = rows.length, total = 600, cardRise = 300;
+    return h('div', { ref: rootRef, className: cx('tp-braid', p.animate !== false && 'is-drawing'), key: p.replayKey }, rows.map(function (row, ri) {
+      var strandDelay = total * ri / n, strandDur = total / n;
+      var cardDelay = n <= 1 ? 0 : (total - cardRise) * ri / (n - 1);
       var body;
       if (row.kind === 'marker') body = h(BraidMarker, { time: row.time, summary: row.summary });
       else if (row.kind === 'more') body = h('div', { className: 'tp-braid-more' }, h(Button, { variant: 'tertiary', onClick: function () { var n = Object.assign({}, expanded); n[row.mi] = true; exp[1](n); } }, row.label));
@@ -507,9 +510,52 @@
         var detail = [e.start ? (e.end ? e.start + '–' + e.end : e.start) : null, e.place].filter(Boolean).join(' · ');
         body = h(BraidEventCard, { label: braidEventLabel(e, members, youId, groups), title: e.title, detail: detail || null, mine: e.participantIds.indexOf(youId) >= 0 && !everyone, loose: e.loose, now: e.now });
       }
+      var timing = { strand: { animationDelay: strandDelay + 'ms', animationDuration: strandDur + 'ms' }, card: { animationDelay: cardDelay + 'ms' } };
       return h('div', { key: ri, className: 'tp-braid-row is-' + row.kind },
-        gutter(row, 0), h('div', { className: 'tp-braid-body' }, body), twoSided ? gutter(row, 1) : null);
+        gutter(row, 0, timing), h('div', { className: 'tp-braid-body', style: timing.card }, body), twoSided ? gutter(row, 1, timing) : null);
     }));
+  }
+
+  // ---------- Motion ----------
+  // Playful moments only: Pop (people arriving), BrandDot (launch), SuccessCheck
+  // ("Everyone's in"). Calm everywhere else: Rise, CountUp.
+  function Pop(p) {
+    return h('span', { className: 'tp-pop', style: { display: 'inline-block', animationDelay: (p.delay || 0) + 'ms' } }, p.children);
+  }
+
+  function Rise(p) {
+    return h('div', { className: 'tp-rise', style: { animationDelay: Math.min(p.index || 0, 6) * 30 + 'ms' } }, p.children);
+  }
+
+  function BrandDot(p) {
+    var size = p.size || 24;
+    return h('span', { className: 'tp-brand-dot', 'aria-hidden': true, style: { width: size, height: size, animationDelay: (p.delay == null ? 120 : p.delay) + 'ms' } });
+  }
+
+  function SuccessCheck(p) {
+    var size = p.size || 40;
+    return h('svg', { className: 'tp-check', width: size, height: size, viewBox: '0 0 40 40', role: 'img', 'aria-label': 'Done' },
+      h('path', { d: 'M8 21.2 L16.8 29.6 L32.8 12', fill: 'none', strokeWidth: 3.6, strokeLinecap: 'round', strokeLinejoin: 'round', pathLength: 1 }));
+  }
+
+  function CountUp(p) {
+    var st = useState(p.from == null ? p.value : p.from), shown = st[0];
+    var fmt = p.format || function (v) { return String(Math.round(v)); };
+    React.useEffect(function () {
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) { st[1](p.value); return; }
+      var start = null, from = shown, to = p.value, raf;
+      function ease(t) { return 1 - Math.pow(1 - t, 3); }
+      function tick(ts) {
+        if (start == null) start = ts;
+        var t = Math.min(1, (ts - start) / 480);
+        st[1](from + (to - from) * ease(t));
+        if (t < 1) raf = requestAnimationFrame(tick);
+      }
+      raf = requestAnimationFrame(tick);
+      return function () { cancelAnimationFrame(raf); };
+    }, [p.value, p.replayKey]);
+    return h('span', { className: cx('tp-num', p.className) }, fmt(shown));
   }
 
   window.Tripami = Object.assign(window.Tripami || {}, {
@@ -520,6 +566,7 @@
     Toast: Toast, TabBar: TabBar, Avatar: Avatar, AvatarStack: AvatarStack, Attribution: Attribution,
     ActivityDot: ActivityDot, ReactionBar: ReactionBar, PollCard: PollCard, ItineraryItem: ItineraryItem, ExpenseRow: ExpenseRow,
     BraidDay: BraidDay, BraidEventCard: BraidEventCard, BraidMarker: BraidMarker, resolveBraidStrands: resolveBraidStrands,
+    Pop: Pop, Rise: Rise, BrandDot: BrandDot, SuccessCheck: SuccessCheck, CountUp: CountUp,
     iconNames: Object.keys(ICONS),
   });
 })();

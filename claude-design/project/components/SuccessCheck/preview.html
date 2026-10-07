@@ -1,0 +1,16 @@
+<!-- @dsCard group="Motion" height=170 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>SuccessCheck preview</title>
+<style>html,body{margin:0;background:var(--canvas);}</style></head>
+<body>
+<div id="root" class="tp-preview "></div>
+<script>
+  var T = window.Tripami, h = React.createElement;
+  var alex={name:'Alex Rivera',color:'lagoon',online:true}, maya={name:'Maya Chen',color:'plum',online:true}, leo={name:'Leo Okafor',color:'fern'}, jonah={name:'Jonah Weiss',color:'sky'}, priya={name:'Priya Nair',color:'iris'}, sam={name:'Sam Torres',color:'rose'};
+  
+  function Replay(props){var st=React.useState(0);return h('div',{className:'tp-stack-v',style:{gap:16}},h('div',null,h(T.Button,{variant:'secondary',small:true,onClick:function(){st[1](st[0]+1);}},'Replay')),h('div',{key:st[0]},props.render(st[0])));}
+  ReactDOM.createRoot(document.getElementById('root')).render(h(Replay,{render:function(){return h('div',{className:'tp-motion-demo'}, h(T.SuccessCheck,{size:40}), h('div',null,h('div',{className:'title3 tp-ink'},'Everyone’s in.'),h('div',{className:'callout tp-muted'},'All 5 are going to Lunch at Armando.')));}}));
+</script>
+</body>
+</html>

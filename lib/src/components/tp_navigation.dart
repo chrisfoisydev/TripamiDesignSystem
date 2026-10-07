@@ -91,8 +91,8 @@ class _TabCell extends StatelessWidget {
       alignment: Alignment.topCenter,
       children: [
         AnimatedContainer(
-          duration: TPMotion.quick,
-          curve: TPMotion.ease,
+          duration: TPMotion.snappyDuration,
+          curve: TPMotion.snappyCurve,
           width: 32,
           height: 2,
           color: active ? colors.accent : Colors.transparent,
@@ -164,7 +164,8 @@ class TPUnderlineTabs extends StatelessWidget {
                             ),
                           ),
                           AnimatedContainer(
-                            duration: TPMotion.quick,
+                            duration: TPMotion.snappyDuration,
+                            curve: TPMotion.snappyCurve,
                             height: 2,
                             color: i == currentIndex ? c.accent : Colors.transparent,
                           ),
@@ -209,8 +210,8 @@ class TPFilterChip extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: AnimatedContainer(
-          duration: TPMotion.quick,
-          curve: TPMotion.ease,
+          duration: TPMotion.snappyDuration,
+          curve: TPMotion.snappyCurve,
           height: TPSize.chip,
           padding: EdgeInsets.only(left: count != null ? TPSpace.s1 + 2 : TPSpace.s3 + 2, right: TPSpace.s3 + 2),
           decoration: ShapeDecoration(

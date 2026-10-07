@@ -230,18 +230,50 @@ Core set: `house` · `suitcase` (Trips) · `calendarBlank` (Plan) · `chatsCircl
 
 ## Motion
 
-| Token | Value | Use |
-|---|---|---|
-| `motion.duration.instant` | 120ms | Press states, toggles |
-| `motion.duration.quick` | 200ms | Chips, tab switches, fades |
-| `motion.duration.standard` | 320ms | Sheets, card expand |
-| `motion.duration.slow` | 480ms | Hero transitions, vote tallies |
-| `motion.easing.standard` | `cubic-bezier(0.2, 0, 0, 1)` | Most transitions |
-| `motion.easing.exit` | `cubic-bezier(0.4, 0, 1, 1)` | Dismissals |
-| `motion.spring.gentle` | `TPMotion.gentle`: `SpringDescription(mass: 1, stiffness: 224, damping: 25.7)` (≈ 0.42s response, 0.86 damping) | Sheets, cards settling |
+**Calm by default, playful when people come together.** About 90% of motion is quiet and quick. The other 10% is a short list of people moments that get a small bounce. The braid sets the style: things weave, gather and part, and never fly in from off-screen.
 
-- Press feedback: scale to 0.98 + `primaryPressed`, with `HapticFeedback.lightImpact()` on primary actions and `selectionClick()` on tab changes.
-- Votes and totals count up over `slow`. When `MediaQuery.disableAnimationsOf(context)` is true they snap.
-- No looping or decorative animation in product UI.
+**Principles**
+1. **Fast to respond, gentle to settle.** Touches react within 120ms. Things settle on soft springs, not hard stops.
+2. **Bounce is earned.** Only people moments use `playful` (about 5% overshoot), at most one per screen. Chrome, navigation and text never bounce.
+3. **Movement follows the metaphor.** Strands reroute, avatars gather into bundles, cards rise 8pt. Nothing crosses the whole screen.
+4. **The orange dot is the playful signature.**
+
+| Token (`TPMotion.*`) | Value | Use |
+|---|---|---|
+| `instant` / `quick` / `standard` / `slow` | 120 / 200 / 320 / 480ms | Press, fades, sheets, tallies |
+| `ease` | `cubic-bezier(0.2, 0, 0, 1)` | Every everyday transition |
+| `exit` | `cubic-bezier(0.4, 0, 1, 1)` | Dismissals |
+| `gentle` (+ `gentleCurve`, 430ms) | response 0.42s, damping 0.86, no overshoot | Sheets, cards settling, braid rerouting |
+| `snappy` (+ `snappyCurve`, 250ms) | response 0.28s, damping 0.9 | Chips, tab indicators, toggles |
+| `playful` (+ `playfulCurve`, 500ms) | response 0.45s, damping 0.7, ~4.7% overshoot | People moments only |
+| `stagger` | 30ms per item, max 6 | Groups entering together |
+
+On the web, the same springs are CSS `linear()` easings (`--tp-spring-gentle`, `--tp-spring-snappy`, `--tp-spring-playful`), sampled from the same physics.
+
+**Signature moments (the playful 10%)**
+| Moment | Motion | Widget |
+|---|---|---|
+| Launch | The orange dot drops onto the "i" with one bounce | `TPBrandDot` (needs a wordmark without its dot) |
+| Needs-you dot arrives | Pops 0 → 1.05 → 1 | `TPActivityDot(urgent: true)` |
+| Opening a day | Strands draw top to bottom in one 600ms sweep; cards rise as the line reaches them | `TPBraidDay` |
+| Plans change | Strands glide to their new bundles on `gentle` | `TPBraidDay` |
+| Someone joins a plan | The plan's avatars pop; your strand swings in; light haptic | `TPBraidDay` + `TPHaptics.join()` |
+| Voting | Share bars spring to their new size | `TPPollCard` |
+| Everyone's in / Back together / Settled | One accent check draws itself; success haptic; no confetti | `TPSuccessCheck` |
+
+**Everyday motion (the calm 90%)**
+- **Sheets:** rise on `gentle`, with the dim fading in over 200ms.
+- **Navigation:** platform page transitions.
+- **Presses:** scale to 0.98 for 120ms.
+- **Tab indicators and chips:** move on `snappy`.
+- **List rows and cards:** enter with `TPRise`, staggered.
+- **Numbers:** money and counts tick with `TPCountUp` over 480ms, in tabular figures.
+- **Hero photos:** only the slightest scale on scroll (about 1.02).
+
+**Haptics** (`TPHaptics`): `select()` for chips, tabs and options; `join()` for joining, voting and primary actions; `reorder()` for dragging plans; `success()` for "Everyone's in". Nothing on scroll or navigation.
+
+**Never:** confetti, looping or idle animation, bouncing text or navigation, anything longer than about 600ms, or parallax beyond that hint on hero photos.
+
+**Reduced motion** (`TPMotion.reduced(context)`): movement becomes 120ms fades, the braid appears fully drawn, the dot appears without bouncing, and numbers show their final value. Haptics stay.
 
 Next: [04 · Components](./04-components.md)

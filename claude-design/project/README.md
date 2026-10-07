@@ -61,6 +61,15 @@ The Plan view draws the day as a braid (`BraidDay`): one strand per traveler, bu
 - **Depth:** cards use `elevation-1`, floating controls `elevation-2`, sheets `elevation-3`. In dark mode, depth comes from surface lightness and a hairline.
 - **Focus:** a solid 2px `text-primary` outline, offset 2px. It reads at 3:1 or better on every surface in both themes.
 
+## Motion
+
+- **Calm by default, playful when people come together.** Everyday transitions use `cubic-bezier(0.2, 0, 0, 1)` or `--tp-spring-gentle` (no overshoot): 120ms presses, 200ms fades, 320ms entrances (`Rise`), 480ms tallies (`CountUp`). Chips and tab indicators move on `--tp-spring-snappy`.
+- **Bounce only for people moments**, on `--tp-spring-playful` (about 5% overshoot), and at most once per screen: someone joining a plan (`Pop`), a needs-you dot arriving, vote bars, the brand dot (`BrandDot`) at launch.
+- **The braid** draws top to bottom in one 600ms sweep when a day opens, with cards rising as the line reaches them. When plans change, strands glide to their new bundles.
+- **Confirmation** is one `accent` check drawing itself (`SuccessCheck`) and one warm sentence. Never confetti.
+- **Never:** looping or idle animation, bouncing text or navigation, anything over about 600ms, or movement across the whole screen.
+- **Reduced motion:** everything becomes a 120ms fade or appears at rest.
+
 ## Iconography
 
 - Use Phosphor Icons, **regular** weight, as the default (the `Icons` asset group, or `Tripami.Icon` with `name`). Use the **fill** variant only for the active tab or a toggled state (saved heart, your vote).

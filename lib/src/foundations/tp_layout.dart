@@ -1,7 +1,9 @@
 import 'dart:ui' show Brightness;
 
 import 'package:flutter/animation.dart';
+import 'package:flutter/physics.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter/widgets.dart' show BuildContext, MediaQuery;
 
 /// 4pt spacing scale.
 abstract final class TPSpace {
@@ -104,15 +106,67 @@ abstract final class TPBraidMetrics {
   static double widthFor(int count) => (strand + (count - 1) * 0.6).clamp(strand, ribbonMax);
 }
 
+/// Motion: calm by default, playful when people come together.
+///
+/// About 90% of motion uses [ease] and [gentle]: quick to respond, soft to
+/// settle, no overshoot. Only people moments (joining a plan, voting, the
+/// group coming back together, the brand dot) use [playful], and at most once
+/// per screen. Chrome, navigation and text never bounce.
 abstract final class TPMotion {
   static const instant = Duration(milliseconds: 120);
   static const quick = Duration(milliseconds: 200);
   static const standard = Duration(milliseconds: 320);
   static const slow = Duration(milliseconds: 480);
 
+  /// Delay between items entering together (list rows, braid rows). Cap the
+  /// staggered items at [staggerMax]; later ones enter with the last.
+  static const stagger = Duration(milliseconds: 30);
+  static const staggerMax = 6;
+
   static const ease = Cubic(0.2, 0, 0, 1);
   static const exit = Cubic(0.4, 0, 1, 1);
 
-  /// For sheets and cards settling. Roughly response 0.42s, damping 0.86.
+  /// Sheets and cards settling. Response ~0.42s, damping 0.86, no overshoot.
   static const gentle = SpringDescription(mass: 1, stiffness: 224, damping: 25.7);
+
+  /// Presses, toggles, chips, tab indicators. Response ~0.28s, damping 0.9.
+  static const snappy = SpringDescription(mass: 1, stiffness: 504, damping: 40.4);
+
+  /// People moments only. Response ~0.45s, damping 0.7: about 5% overshoot.
+  static const playful = SpringDescription(mass: 1, stiffness: 195, damping: 19.5);
+
+  /// The springs as curves, for implicit animations (`AnimatedFoo`,
+  /// `TweenAnimationBuilder`) together with their settle durations.
+  static const gentleCurve = TPSpringCurve(gentle, settle: 0.43);
+  static const snappyCurve = TPSpringCurve(snappy, settle: 0.25);
+  static const playfulCurve = TPSpringCurve(playful, settle: 0.5);
+  static const gentleDuration = Duration(milliseconds: 430);
+  static const snappyDuration = Duration(milliseconds: 250);
+  static const playfulDuration = Duration(milliseconds: 500);
+
+  /// True when the OS asks for reduced motion: swap movement for 120ms
+  /// crossfades (or nothing), and show end states directly.
+  static bool reduced(BuildContext context) => MediaQuery.maybeDisableAnimationsOf(context) ?? false;
+
+  /// Delay for the [index]th of a group entering together.
+  static Duration staggerFor(int index) => stagger * (index.clamp(0, staggerMax));
+}
+
+/// A [Curve] that follows a spring from 0 to 1. The curve maps the animation's
+/// whole duration onto the spring's settle time, so pair it with the matching
+/// `TPMotion.*Duration`.
+class TPSpringCurve extends Curve {
+  const TPSpringCurve(this.spring, {required this.settle});
+
+  final SpringDescription spring;
+
+  /// Seconds of spring time the curve covers: the spring's settle time
+  /// (within 0.5%), so the motion fills the whole duration.
+  final double settle;
+
+  @override
+  double transformInternal(double t) {
+    final sim = SpringSimulation(spring, 0, 1, 0);
+    return sim.x(t * settle);
+  }
 }

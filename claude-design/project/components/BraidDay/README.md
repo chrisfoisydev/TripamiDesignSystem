@@ -18,3 +18,9 @@ The day as a braid: one strand per traveler running down the left, bundling into
 - A plan you're in with part of the group gets an `accent` outline; plans with everyone don't.
 - The plan happening now gets `accent-subtle`.
 - Avatars where a bundle meets its card, plus names on the card, mean color is never the only cue.
+
+**Motion**
+- On open, strands draw top to bottom in one 600ms sweep, and each card rises as the line reaches it.
+- When plans change, strands glide to their new bundles on the gentle spring, so you can see who moved.
+- When someone joins a plan, its avatars pop.
+- Press Replay to see the draw-in again. Reduced motion shows the day fully drawn.
