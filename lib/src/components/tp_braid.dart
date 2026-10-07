@@ -571,7 +571,15 @@ class _TPBraidDayState extends State<TPBraidDay> with TickerProviderStateMixin {
           final inEvent = [for (var i = 0; i < strands.length; i++) if (assign[i] == e.key) strands[i]];
           final side = inEvent.any((s) => sideOf[s.id] == 0) || inEvent.isEmpty ? 0 : 1;
           keys.add('e$mi:${e.value.id}');
-          rows.add(_RowSpec.event(entry: prev, lanes: lanes, event: e.value, eventStrands: inEvent, side: side));
+          final revealed = visible.indexOf(e) - widget.maxVisibleEvents;
+          rows.add(_RowSpec.event(
+            entry: prev,
+            lanes: lanes,
+            event: e.value,
+            eventStrands: inEvent,
+            side: side,
+            riseIndex: _expanded.contains(mi) && revealed >= 0 ? revealed : null,
+          ));
           prev = lanes;
         }
         if (!showAll) {
@@ -616,6 +624,7 @@ class _TPBraidDayState extends State<TPBraidDay> with TickerProviderStateMixin {
         children: [
           for (var i = 0; i < rows.length; i++)
             _BraidRow(
+              key: ValueKey(keys[i]),
               spec: rows[i],
               reveal: _strandRevealFor(i, rows.length),
               contentReveal: _cardRevealFor(i, rows.length),
@@ -626,6 +635,7 @@ class _TPBraidDayState extends State<TPBraidDay> with TickerProviderStateMixin {
               groups: widget.groups,
               leftGutter: leftGutter,
               rightGutter: rightGutter,
+              // Plans revealed by "Show more" rise in, staggered.
               onMore: rows[i].momentIndex == null ? null : () => setState(() => _expanded.add(rows[i].momentIndex!)),
               onTap: widget.onEventTap,
             ),
@@ -645,9 +655,16 @@ class _RowSpec {
         eventStrands = const [],
         side = 0,
         label = null,
-        momentIndex = null;
-  _RowSpec.event({required this.entry, required this.lanes, required TPBraidEvent this.event, required this.eventStrands, required this.side})
-      : kind = _RowKind.event,
+        momentIndex = null,
+        riseIndex = null;
+  _RowSpec.event({
+    required this.entry,
+    required this.lanes,
+    required TPBraidEvent this.event,
+    required this.eventStrands,
+    required this.side,
+    this.riseIndex,
+  })  : kind = _RowKind.event,
         time = null,
         summary = null,
         label = null,
@@ -658,7 +675,8 @@ class _RowSpec {
         summary = null,
         event = null,
         eventStrands = const [],
-        side = 0;
+        side = 0,
+        riseIndex = null;
 
   final _RowKind kind;
   List<_Lanes> entry;
@@ -670,10 +688,14 @@ class _RowSpec {
   final int side;
   final String? label;
   final int? momentIndex;
+
+  /// Set on plans just revealed by "Show more": their stagger position.
+  final int? riseIndex;
 }
 
 class _BraidRow extends StatelessWidget {
   const _BraidRow({
+    super.key,
     required this.spec,
     required this.reveal,
     required this.contentReveal,
@@ -797,9 +819,14 @@ class _BraidRow extends StatelessWidget {
         ),
       _RowKind.event => Padding(
           padding: const EdgeInsets.only(top: TPSpace.s2, bottom: TPSpace.s2),
-          child: GestureDetector(
-            onTap: onTap == null ? null : () => onTap!(spec.event!),
-            child: _eventCard(),
+          child: TPRise(
+            play: spec.riseIndex != null,
+            index: spec.riseIndex ?? 0,
+            child: TPPressable(
+              onTap: onTap == null ? null : () => onTap!(spec.event!),
+              pressedScale: 0.99,
+              child: _eventCard(),
+            ),
           ),
         ),
     };

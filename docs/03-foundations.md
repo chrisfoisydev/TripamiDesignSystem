@@ -264,16 +264,50 @@ On the web, the same springs are CSS `linear()` easings (`--tp-spring-gentle`, `
 **Everyday motion (the calm 90%)**
 - **Sheets:** rise on `gentle`, with the dim fading in over 200ms.
 - **Navigation:** platform page transitions.
-- **Presses:** scale to 0.98 for 120ms.
-- **Tab indicators and chips:** move on `snappy`.
-- **List rows and cards:** enter with `TPRise`, staggered.
+- **Presses** (`TPPressable`): settle to a smaller scale in 120ms and spring back on `snappy` when released. Use 0.98 for buttons and rows, 0.96 (or 0.94) for small round controls, and 0.99 for cards, so big surfaces barely move.
+- **Tab indicators and chips:** move on `snappy`. The new tab's filled icon scales in from 0.8, and a chip's check grows in.
+- **Changing numbers and badges** (`TPBump`): a 320ms bump to 1.12 and back, for reaction counts, "+N" and chip counts.
+- **List rows and cards:** enter with `TPRise`, staggered. Plans revealed by "Show more" rise the same way.
 - **Numbers:** money and counts tick with `TPCountUp` over 480ms, in tabular figures.
 - **Hero photos:** only the slightest scale on scroll (about 1.02).
 
-**Haptics** (`TPHaptics`): `select()` for chips, tabs and options; `join()` for joining, voting and primary actions; `reorder()` for dragging plans; `success()` for "Everyone's in". Nothing on scroll or navigation.
+### Haptics
+
+A haptic answers **your own touch**, or confirms that **the group finished something**. Other people's changes arriving from the server never buzz; they get motion only. Each gesture gets at most one haptic.
+
+| `TPHaptics.*` | Feels like | Used for |
+|---|---|---|
+| `select()` | Selection tick | Changing tab, chip, segment, toggle or option; the Map/List pill |
+| `join()` | Light tap | Primary buttons, voting, reacting, joining a plan |
+| `reorder()` | Medium tap | Picking up and dropping a plan while dragging |
+| `success()` | Firm tap, then a light one 90ms later | "Everyone's in", "Back together", "Settled" (with `TPSuccessCheck`) |
+| `warning()` | Heavy tap | Something refused: an invalid field, a delete that can't happen |
+
+Silent: secondary, tertiary and destructive buttons (the confirm in the sheet carries the weight), tapping the tab you're already on, opening sheets, toasts, scrolling and navigation.
+
+`TPHaptics.enabled = false` turns them all off, so an in-app "Vibration" setting is one line. The phone's own system haptics setting still applies.
+
+### What each component does
+
+| Component | Motion | Haptic |
+|---|---|---|
+| `TPButton` | Press 0.98 | Primary: `join` |
+| `TPGlassIconButton` · `TPQuickAction` | Press 0.94 / 0.96 | None |
+| `TPFloatingPill` | Press 0.96 | `select` |
+| `TPCard(onTap)` · `TPTripCoverCard` · braid plan cards | Press 0.99 / 0.98 / 0.99 | None |
+| `TPTabBar` · `TPUnderlineTabs` | Indicator on `snappy`; filled icon scales in | `select` on change |
+| `TPFilterChip` | Fill on `snappy`; check grows in; count bumps | `select` |
+| `TPToggle` | Platform switch | `select` |
+| `TPReactionBar` | Press 0.94; count bumps; colors ease to "mine" | `join` (add-reaction is silent) |
+| `TPAvatarStack` | A new face pops on `playful`; the others glide over; "+N" bumps | None |
+| `TPActivityDot(urgent)` | Pops on `playful` | None |
+| `TPPollCard` | Bars spring; counts tick; a new voter pops; the last vote draws the check; the winner's check pops | `success` on the last vote, only if it happens on screen |
+| `TPBraidDay` | Draw-in, reroute, knot pop, Show-more rise | None (a join is the button's `join`) |
+
+A state that was already true when the screen opened (a finished poll, for example) shows at rest, with no animation and no haptic.
 
 **Never:** confetti, looping or idle animation, bouncing text or navigation, anything longer than about 600ms, or parallax beyond that hint on hero photos.
 
-**Reduced motion** (`TPMotion.reduced(context)`): movement becomes 120ms fades, the braid appears fully drawn, the dot appears without bouncing, and numbers show their final value. Haptics stay.
+**Reduced motion** (`TPMotion.reduced(context)`): movement becomes 120ms fades, the braid appears fully drawn, the dot appears without bouncing, and numbers show their final value, presses don't scale and bumps are skipped. Haptics stay.
 
 Next: [04 · Components](./04-components.md)

@@ -8,6 +8,8 @@ Each component lists its **anatomy**, the **tokens** it uses, its **states**, an
 
 ## Actions
 
+Motion and haptics are built into every component; the full table is in [03 · Foundations › Motion](./03-foundations.md#what-each-component-does). For a custom tappable, wrap it in `TPPressable` and pick its `TPHaptic`.
+
 ### Button · `TPButton.primary / .secondary / .tertiary / .destructive`, `TPGlassIconButton`
 | Variant | Look | When |
 |---|---|---|
@@ -58,8 +60,8 @@ Text tabs in `type.callout`, `text.secondary`. Active tab is `text.primary` with
 Tripami: **Upcoming · Planning · Past** (Trips), **Plan · Ideas · Booked** (Itinerary).
 *Bonvoy ref:* Current / Past / Canceled.
 
-### Toggle, checkbox, radio · `Switch` / `Checkbox` / `Radio` via `TripamiTheme`
-Platform controls (use `Switch.adaptive` for the iOS look). The toggle's on-state tint is **ink**, not green and not accent. Checkboxes are ink-filled rounded squares (`radius.xs`) with a white check.
+### Toggle, checkbox, radio · `TPToggle`, or `Switch` / `Checkbox` / `Radio` via `TripamiTheme`
+`TPToggle` is the settings row: label, optional detail and an adaptive switch; the whole row toggles and plays the selection haptic. Otherwise use the platform controls (`Switch.adaptive` for the iOS look). The toggle's on-state tint is **ink**, not green and not accent. Checkboxes are ink-filled rounded squares (`radius.xs`) with a white check.
 
 ### Date range picker
 Full-screen sheet with a sticky ink header ("TRAVEL DATES" eyebrow + "Thu, 12 Jun → Tue, 17 Jun"). Selected endpoints are ink circles; the range between them is a `bg.sunken` band. Group availability overlay: under each date, small **member-color dots** for who marked themselves free.

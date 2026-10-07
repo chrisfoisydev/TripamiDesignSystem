@@ -6,4 +6,5 @@ Pill button. **Primary** is the ink pill and appears at most once per view. **Se
 
 - Sentence case, verb first: "Create trip", "Add expense", "Vote".
 - Never fill a button with `accent`. Never use more than one primary per view, and never put icons on both sides.
-- Pressed: scale 0.98 and `action-primary-pressed`. Disabled: 32% opacity.
+- Pressed: scale 0.98 and `action-primary-pressed`, springing back on release. Disabled: 32% opacity.
+- **Haptic:** primary plays a light tap (`join`). Secondary, tertiary and destructive are silent: the confirm in the sheet carries the weight.

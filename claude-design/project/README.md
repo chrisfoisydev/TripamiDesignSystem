@@ -68,7 +68,15 @@ The Plan view draws the day as a braid (`BraidDay`): one strand per traveler, bu
 - **The braid** draws top to bottom in one 600ms sweep when a day opens, with cards rising as the line reaches them. When plans change, strands glide to their new bundles.
 - **Confirmation** is one `accent` check drawing itself (`SuccessCheck`) and one warm sentence. Never confetti.
 - **Never:** looping or idle animation, bouncing text or navigation, anything over about 600ms, or movement across the whole screen.
-- **Reduced motion:** everything becomes a 120ms fade or appears at rest.
+- **Every component moves on its own:** presses scale (0.98 buttons and chips, 0.96 small round controls, 0.94 reaction pills, 0.99 cards) and spring back; changed counts bump; chip checks grow in; a new face pops into an avatar stack; the last vote draws the check. A state already true when the screen opens shows at rest.
+- **Reduced motion:** everything becomes a 120ms fade or appears at rest, and presses don't scale.
+
+## Haptics
+
+- **A haptic answers your own touch, or confirms the group finished something.** Other people's changes never buzz. One per gesture at most.
+- `select` (tick): changing tab, chip, toggle or option. `join` (light): primary buttons, voting, reacting. `reorder` (medium): dragging plans. `success` (firm, then light): "Everyone's in", with `SuccessCheck`. `warning` (heavy): something refused.
+- Silent: secondary, tertiary and destructive buttons, the current tab, sheets, toasts, scrolling, navigation.
+- Components already play theirs (see the **Haptics** card). On the web, `Tripami.haptic(kind)` vibrates where the browser allows; in Flutter, `TPHaptics`.
 
 ## Iconography
 

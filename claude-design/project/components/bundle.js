@@ -11,6 +11,36 @@
     return Array.prototype.filter.call(arguments, Boolean).join(' ');
   }
 
+  // ---------- Haptics ----------
+  // On device, Flutter's TPHaptics plays these. In the browser they use the
+  // Vibration API where it exists (Android Chrome) and stay silent elsewhere,
+  // so prototypes carry the same intent. Set Tripami.hapticsEnabled = false to mute.
+  var HAPTICS = { select: 8, join: 12, reorder: 20, success: [18, 90, 10], warning: [30, 40, 30] };
+  function haptic(kind) {
+    if (window.Tripami && window.Tripami.hapticsEnabled === false) return;
+    if (navigator.vibrate && HAPTICS[kind]) { try { navigator.vibrate(HAPTICS[kind]); } catch (e) { /* not allowed yet */ } }
+  }
+  function withHaptic(kind, fn) {
+    return fn ? function (e) { haptic(kind); fn(e); } : function () { haptic(kind); };
+  }
+  // The previous render's value (for "did this just change?").
+  function usePrev(v) {
+    var r = React.useRef(v), prev = r.current;
+    React.useEffect(function () { r.current = v; });
+    return prev;
+  }
+  // The value from the first render: what was already there when the screen opened.
+  function useFirst(v) {
+    var r = React.useRef(null);
+    if (r.current === null) r.current = v;
+    return r.current;
+  }
+  function useMounted() {
+    var r = React.useRef(false);
+    React.useEffect(function () { r.current = true; }, []);
+    return r.current;
+  }
+
   // ---------- Icon ----------
   function Icon(p) {
     var set = ICONS[p.name] || ICONS.circle;
@@ -27,7 +57,7 @@
   function Button(p) {
     var variant = p.variant || 'primary';
     var cls = cx('tp-btn', 'tp-btn-' + variant, p.small || variant === 'tertiary' || variant === 'destructive' ? 'tp-btn-sm button-small' : 'button', p.expand && 'tp-btn-expand', p.className);
-    return h('button', { type: p.type || 'button', className: cls, onClick: p.onClick, disabled: p.disabled || p.loading, 'aria-busy': p.loading || undefined },
+    return h('button', { type: p.type || 'button', className: cls, onClick: variant === 'primary' ? withHaptic('join', p.onClick) : p.onClick, 'data-haptic': variant === 'primary' ? 'join' : undefined, disabled: p.disabled || p.loading, 'aria-busy': p.loading || undefined },
       p.loading ? h('span', { className: 'tp-spinner', 'aria-label': 'Loading' }) : p.children,
       variant === 'tertiary' ? h(Icon, { name: 'arrowRight', size: 16 }) : null);
   }
@@ -44,18 +74,22 @@
   }
 
   function FloatingPill(p) {
-    return h('button', { type: 'button', className: 'tp-floating button-small', onClick: p.onClick },
+    return h('button', { type: 'button', className: 'tp-floating button-small', onClick: withHaptic('select', p.onClick), 'data-haptic': 'select' },
       p.icon ? h(Icon, { name: p.icon, size: 18 }) : null, p.children);
   }
 
   // ---------- Inputs ----------
   function FilterChip(p) {
+    var own = useState(!!p.defaultSelected);
+    var selected = p.selected != null ? p.selected : own[0];
+    var prevCount = usePrev(p.count), mounted = useMounted();
     return h('button', {
-      type: 'button', className: cx('tp-chip button-small', p.selected && 'is-selected', p.count != null && 'has-count'),
-      'aria-pressed': !!p.selected, onClick: p.onClick,
+      type: 'button', className: cx('tp-chip button-small', selected && 'is-selected', p.count != null && 'has-count'),
+      'aria-pressed': !!selected, 'data-haptic': 'select',
+      onClick: withHaptic('select', function (e) { if (p.selected == null) own[1](!own[0]); if (p.onClick) p.onClick(e); }),
     },
-      p.count != null ? h('span', { className: 'tp-chip-count caption' }, p.count)
-        : p.selected ? h(Icon, { name: 'check', size: 16 }) : null,
+      p.count != null ? h('span', { key: 'c' + p.count, className: cx('tp-chip-count caption', prevCount !== p.count && 'tp-bump') }, p.count)
+        : selected ? h('span', { className: cx('tp-chip-check', mounted && 'tp-grow-in') }, h(Icon, { name: 'check', size: 16 })) : null,
       h('span', null, p.children),
       p.dropdown ? h(Icon, { name: 'caretDown', size: 14 }) : null);
   }
@@ -65,7 +99,7 @@
     return h('div', { className: 'tp-tabs', role: 'tablist' }, p.labels.map(function (l, i) {
       return h('button', {
         key: l, type: 'button', role: 'tab', 'aria-selected': i === cur, className: cx('tp-tab callout', i === cur && 'is-active'),
-        onClick: function () { st[1](i); if (p.onChange) p.onChange(i); },
+        'data-haptic': 'select', onClick: function () { if (i !== cur) haptic('select'); st[1](i); if (p.onChange) p.onChange(i); },
       }, l);
     }));
   }
@@ -85,7 +119,7 @@
       h('span', { className: 'body' }, p.label),
       h('button', {
         type: 'button', role: 'switch', 'aria-checked': st[0], 'aria-label': p.label,
-        className: cx('tp-toggle', st[0] && 'is-on'), onClick: function () { st[1](!st[0]); },
+        className: cx('tp-toggle', st[0] && 'is-on'), 'data-haptic': 'select', onClick: function () { haptic('select'); st[1](!st[0]); },
       }, h('span', { className: 'tp-toggle-thumb' })));
   }
 
@@ -142,6 +176,7 @@
         h('span', { className: 'body tp-ink' }, p.label),
         p.detail ? h('span', { className: 'footnote tp-muted' }, p.detail) : null),
       p.value ? h('span', { className: 'callout tp-muted tp-num' }, p.value) : null,
+      p.trailing || null,
       p.onClick && p.chevron !== false ? h(Icon, { name: 'caretRight', size: 18 }) : null);
   }
 
@@ -179,12 +214,14 @@
   }
 
   function TabBar(p) {
-    var st = useState(p.value != null ? p.value : 0), cur = st[0];
+    var st = useState(p.value != null ? p.value : 0), cur = st[0], mounted = useMounted();
     return h('nav', { className: 'tp-tabbar' }, p.items.map(function (it, i) {
       var active = i === cur;
-      return h('button', { key: it.label, type: 'button', className: cx('tp-tabbar-item', active && 'is-active'), 'aria-current': active ? 'page' : undefined, onClick: function () { st[1](i); } },
+      return h('button', { key: it.label, type: 'button', className: cx('tp-tabbar-item', active && 'is-active'), 'aria-current': active ? 'page' : undefined, 'data-haptic': 'select', onClick: function () { if (i !== cur) haptic('select'); st[1](i); } },
         h('span', { className: 'tp-tabbar-indicator' }),
-        h('span', { className: 'tp-tabbar-icon' }, h(Icon, { name: it.icon, fill: active, size: 24 }), it.activity ? h(ActivityDot, { urgent: it.activity === 'urgent' }) : null),
+        h('span', { className: 'tp-tabbar-icon' },
+          h('span', { key: String(active), className: cx('tp-tabbar-glyph', active && mounted && 'tp-icon-in') }, h(Icon, { name: it.icon, fill: active, size: 24 })),
+          it.activity ? h(ActivityDot, { urgent: it.activity === 'urgent' }) : null),
         h('span', { className: 'caption' }, it.label));
     }));
   }
@@ -199,18 +236,22 @@
   function Avatar(p) {
     var size = p.size || 40, m = p.member;
     var color = 'var(--member-' + (m.color || 'lagoon') + ')';
-    return h('span', { className: 'tp-avatar', style: { width: size, height: size }, title: m.name },
+    return h('span', { className: cx('tp-avatar', p.className), style: { width: size, height: size }, title: m.name },
       m.photo
         ? h('span', { className: 'tp-avatar-ring', style: { background: color } }, h('img', { src: m.photo, alt: m.name }))
         : h('span', { className: cx('tp-avatar-face', size >= 40 ? 'subhead' : 'caption'), style: { background: color, fontSize: size >= 56 ? size * 0.36 : undefined } }, initials(m.name, size)),
       p.presence && m.online ? h('span', { className: 'tp-presence' }) : null);
   }
 
+  // Someone joining after the stack first appears pops in; "+N" bumps.
   function AvatarStack(p) {
     var max = p.max || 4, size = p.size || 32, shown = p.members.slice(0, max), extra = p.members.length - shown.length;
+    var first = useFirst(p.members.map(function (m) { return m.name; })), prevExtra = usePrev(extra);
     return h('span', { className: cx('tp-stack', p.onImage && 'on-image'), 'aria-label': p.members.length + ' travelers' },
-      shown.map(function (m) { return h(Avatar, { key: m.name, member: m, size: size }); }),
-      extra > 0 ? h('span', { className: 'tp-avatar tp-stack-more caption tp-num', style: { width: size, height: size } }, '+' + extra) : null);
+      shown.map(function (m) {
+        return h(Avatar, { key: m.name, member: m, size: size, className: first.indexOf(m.name) >= 0 ? null : 'tp-pop' });
+      }),
+      extra > 0 ? h('span', { key: 'more' + extra, className: cx('tp-avatar tp-stack-more caption tp-num', prevExtra !== extra && 'tp-bump'), style: { width: size, height: size } }, '+' + extra) : null);
   }
 
   function Attribution(p) {
@@ -223,10 +264,20 @@
     return h('span', { className: cx('tp-dot', p.urgent && 'is-urgent tp-pop'), 'aria-label': p.urgent ? 'Needs you' : 'New' });
   }
 
+  // Tapping a reaction toggles yours (light haptic); a pill bumps when its count changes.
   function ReactionBar(p) {
+    var own = useState(p.reactions), list = p.onReact ? p.reactions : own[0];
+    var prev = usePrev(list);
+    function react(r) {
+      haptic('join');
+      if (p.onReact) return p.onReact(r);
+      own[1](list.map(function (x) { return x.emoji !== r.emoji ? x : { emoji: x.emoji, count: x.count + (x.mine ? -1 : 1), mine: !x.mine }; }));
+    }
     return h('div', { className: 'tp-reactions' },
-      p.reactions.slice(0, 3).map(function (r) {
-        return h('button', { key: r.emoji, type: 'button', className: cx('tp-reaction caption tp-num', r.mine && 'is-mine') }, r.emoji + ' ' + r.count);
+      list.slice(0, 3).map(function (r) {
+        var before = prev && prev.filter(function (x) { return x.emoji === r.emoji; })[0];
+        var changed = before && before.count !== r.count;
+        return h('button', { key: r.emoji + r.count, type: 'button', 'data-haptic': 'join', onClick: function () { react(r); }, className: cx('tp-reaction caption tp-num', r.mine && 'is-mine', changed && 'tp-bump') }, r.emoji + ' ' + r.count);
       }),
       p.onAdd !== false ? h('button', { type: 'button', className: 'tp-reaction', 'aria-label': 'Add reaction' }, h(Icon, { name: 'smiley', size: 16 })) : null);
   }
@@ -239,9 +290,16 @@
     return 'Waiting on ' + names[0] + ', ' + names[1] + ' and ' + (names.length - 2) + ' more.';
   }
 
+  // The last vote while on screen draws the check (success haptic); a winner
+  // decided on screen pops its check. A poll already finished on arrival is at rest.
   function PollCard(p) {
     var total = p.options.reduce(function (s, o) { return s + o.voters.length; }, 0);
-    var closed = !!p.decidedId;
+    var closed = !!p.decidedId, waiting = p.waitingOn || [];
+    var everyone = !closed && waiting.length === 0;
+    var prevWaiting = usePrev(waiting.length), prevDecided = usePrev(p.decidedId);
+    var live = React.useRef({ everyone: false, decided: false });
+    if (prevWaiting > 0 && waiting.length === 0) live.current.everyone = true;
+    if (!prevDecided && p.decidedId) live.current.decided = true;
     return h(Card, null,
       h('div', { className: 'tp-poll-head' }, h(Eyebrow, { className: 'tp-grow' }, p.eyebrow),
         p.deadline && !closed ? h('span', { className: 'footnote tp-accent' }, p.deadline) : null),
@@ -253,15 +311,16 @@
           h('div', { className: 'tp-poll-row' },
             o.image ? h('img', { className: 'tp-thumb', src: o.image, alt: '' }) : h('span', { className: 'tp-thumb tp-thumb-empty' }, h(Icon, { name: 'forkKnife', size: 20 })),
             h('div', { className: 'tp-grow tp-min0' },
-              h('div', { className: 'body tp-strong tp-ellipsis' }, o.title, won ? h(Icon, { name: 'checkCircle', fill: true, size: 18, className: 'tp-accent' }) : null),
+              h('div', { className: 'body tp-strong tp-ellipsis' }, o.title, won ? h('span', { className: cx('tp-poll-won', live.current.decided && 'tp-pop') }, h(Icon, { name: 'checkCircle', fill: true, size: 18, className: 'tp-accent' })) : null),
               o.detail ? h('div', { className: 'footnote tp-muted tp-ellipsis' }, o.detail) : null),
             h(AvatarStack, { members: o.voters, size: 24, max: 3 }),
-            h('span', { className: 'subhead tp-num tp-poll-count' }, o.voters.length)),
+            h(CountUp, { value: o.voters.length, className: 'subhead tp-poll-count' })),
           h('div', { className: 'tp-bar' }, h('span', { className: cx('tp-bar-fill', (mine || won) && 'is-mine'), style: { width: Math.round(share * 100) + '%' } })));
       }),
       h('div', { className: 'tp-poll-foot' },
-        h('span', { className: 'footnote tp-muted tp-grow' }, closed ? 'Decided' : waitingCopy(p.waitingOn)),
-        !closed && p.onVote !== false ? h(Button, { small: true }, p.myVoteId ? 'Change vote' : 'Vote') : null));
+        everyone ? h(SuccessCheck, { key: String(live.current.everyone), size: 20, still: !live.current.everyone }) : null,
+        h('span', { className: 'footnote tp-muted tp-grow' }, closed ? 'Decided' : waitingCopy(waiting)),
+        !closed && p.onVote !== false ? h(Button, { small: true, onClick: typeof p.onVote === 'function' ? p.onVote : undefined }, p.myVoteId ? 'Change vote' : 'Vote') : null));
   }
 
   function ItineraryItem(p) {
@@ -534,7 +593,12 @@
 
   function SuccessCheck(p) {
     var size = p.size || 40;
-    return h('svg', { className: 'tp-check', width: size, height: size, viewBox: '0 0 40 40', role: 'img', 'aria-label': 'Done' },
+    React.useEffect(function () {
+      if (p.still || p.haptic === false) return;
+      var t = setTimeout(function () { haptic('success'); }, 320);
+      return function () { clearTimeout(t); };
+    }, []);
+    return h('svg', { className: cx('tp-check', p.still && 'is-still'), width: size, height: size, viewBox: '0 0 40 40', role: 'img', 'aria-label': 'Done' },
       h('path', { d: 'M8 21.2 L16.8 29.6 L32.8 12', fill: 'none', strokeWidth: 3.6, strokeLinecap: 'round', strokeLinejoin: 'round', pathLength: 1 }));
   }
 
@@ -567,6 +631,7 @@
     ActivityDot: ActivityDot, ReactionBar: ReactionBar, PollCard: PollCard, ItineraryItem: ItineraryItem, ExpenseRow: ExpenseRow,
     BraidDay: BraidDay, BraidEventCard: BraidEventCard, BraidMarker: BraidMarker, resolveBraidStrands: resolveBraidStrands,
     Pop: Pop, Rise: Rise, BrandDot: BrandDot, SuccessCheck: SuccessCheck, CountUp: CountUp,
+    haptic: haptic, hapticsEnabled: true,
     iconNames: Object.keys(ICONS),
   });
 })();

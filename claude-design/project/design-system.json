@@ -690,8 +690,8 @@
   },
   "lastChange": {
     "by": "Claude",
-    "at": "2026-10-07T00:40:17.575236+00:00",
+    "at": "2026-10-07T15:02:58Z",
     "via": "Claude Code",
-    "note": "Added motion: springs, the braid draw-in and reroute, Pop, Rise, BrandDot, SuccessCheck and CountUp."
+    "note": "Built haptics and press, bump and arrival motion into every component; added the Haptics card."
   }
 }

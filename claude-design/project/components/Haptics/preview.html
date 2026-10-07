@@ -1,0 +1,16 @@
+<!-- @dsCard group="Motion" height=470 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Haptics preview</title>
+<style>html,body{margin:0;background:var(--canvas);}</style></head>
+<body>
+<div id="root" class="tp-preview "></div>
+<script>
+  var T = window.Tripami, h = React.createElement;
+  var alex={name:'Alex Rivera',color:'lagoon',online:true}, maya={name:'Maya Chen',color:'plum',online:true}, leo={name:'Leo Okafor',color:'fern'}, jonah={name:'Jonah Weiss',color:'sky'}, priya={name:'Priya Nair',color:'iris'}, sam={name:'Sam Torres',color:'rose'};
+  
+  function Replay(props){var st=React.useState(0);return h('div',{className:'tp-stack-v',style:{gap:16}},h('div',null,h(T.Button,{variant:'secondary',small:true,onClick:function(){st[1](st[0]+1);}},'Replay')),h('div',{key:st[0]},props.render(st[0])));}
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{style:{maxWidth:460}}, [['select','Selection tick','Tab, chip, toggle'],['join','Light tap','Vote, react, primary button'],['reorder','Medium tap','Drag a plan'],['success','Firm, then light','Everyone’s in'],['warning','Heavy tap','Something refused']].map(function(r,i){return h(T.ListRow,{key:r[0],label:r[0],detail:r[1]+' · '+r[2],chevron:false,divider:i<4,trailing:h(T.Button,{variant:'secondary',small:true,onClick:function(){T.haptic(r[0]);}},'Try')});}), h('div',{className:'tp-row-wrap',style:{marginTop:16,gap:12}}, h(T.Button,{small:true},'Press me'), h(T.FilterChip,{defaultSelected:false},'Tap me'), h(T.ReactionBar,{reactions:[{emoji:'🍝',count:4}],onAdd:false}))));
+</script>
+</body>
+</html>

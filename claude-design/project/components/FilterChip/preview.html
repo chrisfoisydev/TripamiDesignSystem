@@ -10,7 +10,7 @@
   var alex={name:'Alex Rivera',color:'lagoon',online:true}, maya={name:'Maya Chen',color:'plum',online:true}, leo={name:'Leo Okafor',color:'fern'}, jonah={name:'Jonah Weiss',color:'sky'}, priya={name:'Priya Nair',color:'iris'}, sam={name:'Sam Torres',color:'rose'};
   
   function Replay(props){var st=React.useState(0);return h('div',{className:'tp-stack-v',style:{gap:16}},h('div',null,h(T.Button,{variant:'secondary',small:true,onClick:function(){st[1](st[0]+1);}},'Replay')),h('div',{key:st[0]},props.render(st[0])));}
-  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'tp-row-wrap'}, h(T.FilterChip,{selected:true},'Fri 13'), h(T.FilterChip,null,'Sat 14'), h(T.FilterChip,{dropdown:true},'Budget'), h(T.FilterChip,{count:2},'Filters')));
+  ReactDOM.createRoot(document.getElementById('root')).render(h(function ChipDemo(){var n=React.useState(2);return h('div',{className:'tp-row-wrap'}, h(T.FilterChip,{defaultSelected:true},'Fri 13'), h(T.FilterChip,{defaultSelected:false},'Sat 14'), h(T.FilterChip,{dropdown:true,selected:false},'Budget'), h(T.FilterChip,{count:n[0],onClick:function(){n[1](n[0]%5+1);}},'Filters'));}));
 </script>
 </body>
 </html>

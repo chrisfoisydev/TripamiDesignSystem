@@ -6,10 +6,12 @@ import '../foundations/tp_colors.dart';
 import '../foundations/tp_icons.dart';
 import '../foundations/tp_layout.dart';
 import '../foundations/tp_type.dart';
+import 'tp_motion.dart';
 import 'tp_people.dart';
 import 'tp_text.dart';
 
 /// Surface card: radius md, soft elevation (hairline in dark mode).
+/// Tappable cards settle to 0.99 while pressed.
 class TPCard extends StatelessWidget {
   const TPCard({super.key, required this.child, this.padding = const EdgeInsets.all(TPSpace.s4), this.onTap});
 
@@ -21,21 +23,25 @@ class TPCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = TPColors.of(context);
     final brightness = Theme.of(context).brightness;
-    return DecoratedBox(
-      decoration: ShapeDecoration(
-        color: c.surface,
-        shadows: TPElevation.of(brightness),
-        shape: RoundedSuperellipseBorder(
-          borderRadius: BorderRadius.circular(TPRadius.md),
-          side: brightness == Brightness.dark ? BorderSide(color: c.hairline) : BorderSide.none,
+    return TPPressable.scaleOnly(
+      enabled: onTap != null,
+      pressedScale: 0.99,
+      child: DecoratedBox(
+        decoration: ShapeDecoration(
+          color: c.surface,
+          shadows: TPElevation.of(brightness),
+          shape: RoundedSuperellipseBorder(
+            borderRadius: BorderRadius.circular(TPRadius.md),
+            side: brightness == Brightness.dark ? BorderSide(color: c.hairline) : BorderSide.none,
+          ),
         ),
-      ),
-      child: ClipRSuperellipse(
-        borderRadius: BorderRadius.circular(TPRadius.md),
-        child: GestureDetector(
-          onTap: onTap,
-          behavior: HitTestBehavior.opaque,
-          child: Padding(padding: padding, child: child),
+        child: ClipRSuperellipse(
+          borderRadius: BorderRadius.circular(TPRadius.md),
+          child: GestureDetector(
+            onTap: onTap,
+            behavior: HitTestBehavior.opaque,
+            child: Padding(padding: padding, child: child),
+          ),
         ),
       ),
     );
@@ -76,7 +82,7 @@ class TPGlassChip extends StatelessWidget {
 }
 
 /// Trip cover card: 4:5 photo, serif trip name bottom-left on a scrim, status
-/// chip top-left, traveler stack bottom-right.
+/// chip top-left, traveler stack bottom-right. Settles to 0.98 while pressed.
 class TPTripCoverCard extends StatelessWidget {
   const TPTripCoverCard({
     super.key,
@@ -107,8 +113,9 @@ class TPTripCoverCard extends StatelessWidget {
     return Semantics(
       button: onTap != null,
       label: '$title, $subtitle${status != null ? ', $status' : ''}',
-      child: GestureDetector(
+      child: TPPressable(
         onTap: onTap,
+        behavior: HitTestBehavior.deferToChild,
         child: DecoratedBox(
           decoration: ShapeDecoration(
             shape: RoundedSuperellipseBorder(borderRadius: BorderRadius.circular(TPRadius.lg)),

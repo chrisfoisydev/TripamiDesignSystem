@@ -6,6 +6,7 @@ import '../foundations/tp_layout.dart';
 import '../foundations/tp_type.dart';
 import 'tp_actions.dart';
 import 'tp_containers.dart';
+import 'tp_motion.dart';
 import 'tp_people.dart';
 import 'tp_text.dart';
 
@@ -22,7 +23,12 @@ class TPPollOption {
 
 /// Group decision card. Each option shows its voters' faces and a 3pt share
 /// bar: ink for others, accent orange for the option you voted for.
-class TPPollCard extends StatelessWidget {
+///
+/// Motion: bars spring to their share, counts tick, a new voter's face pops
+/// in. When the last person votes while the card is on screen, a check draws
+/// itself with a success haptic; when a winner is decided, its check pops.
+/// A poll that was already finished when the screen opened shows these at rest.
+class TPPollCard extends StatefulWidget {
   const TPPollCard({
     super.key,
     required this.eyebrow,
@@ -49,10 +55,27 @@ class TPPollCard extends StatelessWidget {
   final VoidCallback? onVote;
 
   @override
+  State<TPPollCard> createState() => _TPPollCardState();
+}
+
+class _TPPollCardState extends State<TPPollCard> {
+  bool _everyoneLive = false;
+  bool _decidedLive = false;
+
+  @override
+  void didUpdateWidget(TPPollCard old) {
+    super.didUpdateWidget(old);
+    if (old.waitingOn.isNotEmpty && widget.waitingOn.isEmpty) _everyoneLive = true;
+    if (old.decidedId == null && widget.decidedId != null) _decidedLive = true;
+  }
+
+  @override
   Widget build(BuildContext context) {
     final c = TPColors.of(context);
-    final total = options.fold<int>(0, (sum, o) => sum + o.voters.length);
-    final closed = decidedId != null;
+    final w = widget;
+    final total = w.options.fold<int>(0, (sum, o) => sum + o.voters.length);
+    final closed = w.decidedId != null;
+    final everyone = !closed && w.waitingOn.isEmpty;
 
     return TPCard(
       child: Column(
@@ -60,35 +83,40 @@ class TPPollCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Expanded(child: TPEyebrow(eyebrow)),
-              if (deadline != null && !closed)
-                Text(deadline!, style: TPType.footnote.copyWith(color: c.accent)),
+              Expanded(child: TPEyebrow(w.eyebrow)),
+              if (w.deadline != null && !closed)
+                Text(w.deadline!, style: TPType.footnote.copyWith(color: c.accent)),
             ],
           ),
           const SizedBox(height: TPSpace.s2),
-          Text(question, style: TPType.title3.copyWith(color: c.textPrimary)),
+          Text(w.question, style: TPType.title3.copyWith(color: c.textPrimary)),
           const SizedBox(height: TPSpace.s4),
-          for (final o in options)
+          for (final o in w.options)
             _PollOptionRow(
               option: o,
               share: total == 0 ? 0 : o.voters.length / total,
-              mine: o.id == myVoteId,
-              won: o.id == decidedId,
-              dimmed: closed && o.id != decidedId,
+              mine: o.id == w.myVoteId,
+              won: o.id == w.decidedId,
+              celebrate: _decidedLive,
+              dimmed: closed && o.id != w.decidedId,
               colors: c,
             ),
           const SizedBox(height: TPSpace.s2),
           Row(
             children: [
+              if (everyone) ...[
+                TPSuccessCheck(key: ValueKey(_everyoneLive), size: 20, animate: _everyoneLive),
+                const SizedBox(width: TPSpace.s1),
+              ],
               Expanded(
                 child: Text(
                   closed ? 'Decided' : _waitingCopy(),
                   style: TPType.footnote.copyWith(color: c.textSecondary),
                 ),
               ),
-              if (!closed && onVote != null) ...[
+              if (!closed && w.onVote != null) ...[
                 const SizedBox(width: TPSpace.s3),
-                TPButton.primary(label: myVoteId == null ? 'Vote' : 'Change vote', onPressed: onVote, small: true),
+                TPButton.primary(label: w.myVoteId == null ? 'Vote' : 'Change vote', onPressed: w.onVote, small: true),
               ],
             ],
           ),
@@ -98,7 +126,7 @@ class TPPollCard extends StatelessWidget {
   }
 
   String _waitingCopy() {
-    final names = waitingOn.map((m) => m.firstName).toList();
+    final names = widget.waitingOn.map((m) => m.firstName).toList();
     return switch (names.length) {
       0 => 'Everyone has voted.',
       1 => 'Waiting on ${names[0]}.',
@@ -114,6 +142,7 @@ class _PollOptionRow extends StatelessWidget {
     required this.share,
     required this.mine,
     required this.won,
+    required this.celebrate,
     required this.dimmed,
     required this.colors,
   });
@@ -122,6 +151,9 @@ class _PollOptionRow extends StatelessWidget {
   final double share;
   final bool mine;
   final bool won;
+
+  /// The win happened while on screen, so its check pops.
+  final bool celebrate;
   final bool dimmed;
   final TPColors colors;
 
@@ -161,7 +193,7 @@ class _PollOptionRow extends StatelessWidget {
                         ),
                         if (won) ...[
                           const SizedBox(width: TPSpace.s1 + 2),
-                          Icon(TPIconsFill.checkCircle, size: 18, color: c.accent),
+                          TPPop(play: celebrate, child: Icon(TPIconsFill.checkCircle, size: 18, color: c.accent)),
                         ],
                       ],
                     ),
@@ -180,8 +212,14 @@ class _PollOptionRow extends StatelessWidget {
               const SizedBox(width: TPSpace.s2),
               SizedBox(
                 width: 16,
-                child: Text('${option.voters.length}',
-                    textAlign: TextAlign.end, style: TPType.subhead.tabular.copyWith(color: titleColor)),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: TPCountUp(
+                    value: option.voters.length,
+                    format: (v) => '$v',
+                    style: TPType.subhead.copyWith(color: titleColor),
+                  ),
+                ),
               ),
             ],
           ),

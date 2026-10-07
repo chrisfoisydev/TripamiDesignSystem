@@ -6,3 +6,5 @@ A group decision. Each option shows who voted (faces) and a 3px share bar: navy 
 
 - Names beat counts: "Waiting on Jonah and Priya."
 - Closed: the winner gets a filled `accent` check and the other options dim.
+
+**Motion:** share bars spring to their size, counts tick, and a new voter's face pops in. When the last person votes while the card is on screen, a check draws itself beside "Everyone has voted." with a success haptic, and a winner decided on screen pops its check. A poll that was already finished when the screen opened shows all of this at rest. Try the buttons below the card.

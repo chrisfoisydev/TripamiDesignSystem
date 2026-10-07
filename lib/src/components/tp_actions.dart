@@ -1,12 +1,12 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../foundations/tp_colors.dart';
 import '../foundations/tp_icons.dart';
 import '../foundations/tp_layout.dart';
 import '../foundations/tp_type.dart';
+import 'tp_motion.dart';
 
 enum TPButtonVariant { primary, secondary, tertiary, destructive }
 
@@ -16,6 +16,9 @@ enum TPButtonVariant { primary, secondary, tertiary, destructive }
 /// - [TPButton.secondary]: outline pill, an equal alternative to a primary.
 /// - [TPButton.tertiary]: text + arrow, for low-emphasis navigation.
 /// - [TPButton.destructive]: tertiary in critical red; confirm in a sheet.
+///
+/// Every variant scales to 0.98 while pressed. The primary also plays
+/// [TPHaptics.join] on tap; the others are silent.
 class TPButton extends StatelessWidget {
   const TPButton.primary({
     super.key,
@@ -68,7 +71,7 @@ class TPButton extends StatelessWidget {
     final onTap = onPressed == null || loading
         ? null
         : () {
-            if (variant == TPButtonVariant.primary) HapticFeedback.lightImpact();
+            if (variant == TPButtonVariant.primary) TPHaptics.join();
             onPressed!();
           };
 
@@ -112,42 +115,9 @@ class TPButton extends StatelessWidget {
         ),
     };
 
-    return _PressScale(
+    return TPPressable.scaleOnly(
       enabled: onTap != null,
       child: expand ? SizedBox(width: double.infinity, child: button) : button,
-    );
-  }
-}
-
-/// Scales a child to 0.98 while pressed.
-class _PressScale extends StatefulWidget {
-  const _PressScale({required this.child, required this.enabled});
-  final Widget child;
-  final bool enabled;
-
-  @override
-  State<_PressScale> createState() => _PressScaleState();
-}
-
-class _PressScaleState extends State<_PressScale> {
-  bool _down = false;
-
-  void _set(bool v) {
-    if (widget.enabled && v != _down) setState(() => _down = v);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Listener(
-      onPointerDown: (_) => _set(true),
-      onPointerUp: (_) => _set(false),
-      onPointerCancel: (_) => _set(false),
-      child: AnimatedScale(
-        scale: _down ? 0.98 : 1,
-        duration: TPMotion.instant,
-        curve: TPMotion.ease,
-        child: widget.child,
-      ),
     );
   }
 }
@@ -171,9 +141,9 @@ class TPGlassIconButton extends StatelessWidget {
     return Semantics(
       button: true,
       label: semanticLabel,
-      child: GestureDetector(
+      child: TPPressable(
         onTap: onPressed,
-        behavior: HitTestBehavior.opaque,
+        pressedScale: 0.94,
         child: SizedBox.square(
           dimension: TPSize.hitTarget,
           child: Center(
@@ -216,9 +186,9 @@ class TPQuickAction extends StatelessWidget {
     final brightness = Theme.of(context).brightness;
     return Semantics(
       button: true,
-      child: GestureDetector(
+      child: TPPressable(
         onTap: onPressed,
-        behavior: HitTestBehavior.opaque,
+        pressedScale: 0.96,
         child: SizedBox(
           width: 72,
           child: Column(
@@ -252,6 +222,7 @@ class TPQuickAction extends StatelessWidget {
 }
 
 /// Floating ink pill above the tab bar, for example "Map" / "List".
+/// It switches views, so it plays [TPHaptics.select].
 class TPFloatingPill extends StatelessWidget {
   const TPFloatingPill({
     super.key,
@@ -267,23 +238,86 @@ class TPFloatingPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = TPColors.of(context);
-    return DecoratedBox(
-      decoration: const ShapeDecoration(shape: StadiumBorder(), shadows: TPElevation.floating),
-      child: FilledButton(
-        onPressed: onPressed,
-        style: const ButtonStyle(
-          minimumSize: WidgetStatePropertyAll(Size(TPSize.hitTarget, TPSize.hitTarget)),
-          padding: WidgetStatePropertyAll(EdgeInsets.symmetric(horizontal: TPSpace.s5)),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (icon != null) ...[
-              Icon(icon, size: 18, color: c.actionPrimaryText),
-              const SizedBox(width: TPSpace.s2),
+    return TPPressable.scaleOnly(
+      enabled: onPressed != null,
+      pressedScale: 0.96,
+      child: DecoratedBox(
+        decoration: const ShapeDecoration(shape: StadiumBorder(), shadows: TPElevation.floating),
+        child: FilledButton(
+          onPressed: onPressed == null
+              ? null
+              : () {
+                  TPHaptics.select();
+                  onPressed!();
+                },
+          style: const ButtonStyle(
+            minimumSize: WidgetStatePropertyAll(Size(TPSize.hitTarget, TPSize.hitTarget)),
+            padding: WidgetStatePropertyAll(EdgeInsets.symmetric(horizontal: TPSpace.s5)),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (icon != null) ...[
+                Icon(icon, size: 18, color: c.actionPrimaryText),
+                const SizedBox(width: TPSpace.s2),
+              ],
+              Text(label, style: TPType.buttonSmall),
             ],
-            Text(label, style: TPType.buttonSmall),
-          ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Settings toggle row: label (and optional detail) with an ink switch.
+/// Plays [TPHaptics.select] when flipped. The switch itself slides on
+/// the platform's own motion.
+class TPToggle extends StatelessWidget {
+  const TPToggle({super.key, required this.label, required this.value, required this.onChanged, this.detail});
+
+  final String label;
+  final String? detail;
+  final bool value;
+  final ValueChanged<bool>? onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = TPColors.of(context);
+    final change = onChanged == null
+        ? null
+        : (bool v) {
+            TPHaptics.select();
+            onChanged!(v);
+          };
+    return MergeSemantics(
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: change == null ? null : () => change(!value),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: detail != null ? TPSize.rowTwoLine : TPSize.rowMin),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: TPSpace.margin, vertical: TPSpace.s2),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(label, style: TPType.body.copyWith(color: c.textPrimary)),
+                      if (detail != null) ...[
+                        const SizedBox(height: 2),
+                        Text(detail!, style: TPType.footnote.copyWith(color: c.textSecondary)),
+                      ],
+                    ],
+                  ),
+                ),
+                const SizedBox(width: TPSpace.s3),
+                Switch.adaptive(value: value, onChanged: change),
+              ],
+            ),
+          ),
         ),
       ),
     );

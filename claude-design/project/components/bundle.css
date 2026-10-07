@@ -227,6 +227,23 @@ button.tp-row { cursor: pointer; }
 .tp-braid.is-drawing .tp-braid-body, .tp-braid.is-drawing .tp-braid-knot { animation: tp-rise 300ms var(--tp-ease) both; }
 .tp-chip, .tp-tab, .tp-toggle, .tp-tabbar-indicator { transition-timing-function: var(--tp-spring-snappy); transition-duration: 250ms; }
 .tp-bar-fill { transition: width 500ms var(--tp-spring-playful); }
+/* Press: settle quickly on the standard ease, spring back on release (TPPressable). */
+.tp-btn, .tp-floating, .tp-chip, .tp-reaction, .tp-quick-disc, .tp-glass-btn-disc { transition: transform 250ms var(--tp-spring-snappy), background-color 250ms var(--tp-spring-snappy), border-color 250ms var(--tp-spring-snappy), color 250ms var(--tp-spring-snappy); }
+.tp-btn:active, .tp-chip:active { transform: scale(0.98); }
+.tp-floating:active, .tp-quick:active .tp-quick-disc { transform: scale(0.96); }
+.tp-reaction:active, .tp-glass-btn:active .tp-glass-btn-disc { transform: scale(0.94); }
+.tp-btn:active, .tp-chip:active, .tp-floating:active, .tp-quick:active .tp-quick-disc, .tp-reaction:active, .tp-glass-btn:active .tp-glass-btn-disc { transition-duration: 120ms; transition-timing-function: var(--tp-ease); }
+.tp-btn:disabled:active { transform: none; }
+/* Bump: a changed count or badge (TPBump). */
+@keyframes tp-bump { 0% { transform: scale(1); animation-timing-function: var(--tp-ease); } 30% { transform: scale(1.12); animation-timing-function: var(--tp-spring-playful); } 100% { transform: scale(1); } }
+.tp-bump { animation: tp-bump 320ms both; }
+/* A chip's check grows in; a tab's filled icon settles in. Both snappy, never playful. */
+@keyframes tp-grow-in { from { transform: scale(0.5); opacity: 0; max-width: 0; } to { transform: none; opacity: 1; max-width: 24px; } }
+@keyframes tp-icon-in { from { transform: scale(0.8); opacity: 0; } to { transform: none; opacity: 1; } }
+.tp-chip-check, .tp-tabbar-glyph, .tp-poll-won { display: inline-flex; }
+.tp-grow-in { animation: tp-grow-in 250ms var(--tp-spring-snappy) both; }
+.tp-icon-in { animation: tp-icon-in 250ms var(--tp-spring-snappy) both; }
+.tp-check.is-still path { animation: none; stroke-dashoffset: 0; }
 .tp-motion-demo { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-6); }
 .tp-motion-demo-cell { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); min-width: 96px; }
 @media (prefers-reduced-motion: reduce) {
@@ -234,4 +251,6 @@ button.tp-row { cursor: pointer; }
   .tp-braid.is-drawing .tp-braid-svg { animation: none; }
   .tp-check path { animation: none; stroke-dashoffset: 0; }
   .tp-chip, .tp-tab, .tp-toggle, .tp-tabbar-indicator, .tp-bar-fill { transition-duration: 0ms; }
+  .tp-bump, .tp-grow-in, .tp-icon-in { animation: none; }
+  .tp-btn:active, .tp-chip:active, .tp-floating:active, .tp-quick:active .tp-quick-disc, .tp-reaction:active, .tp-glass-btn:active .tp-glass-btn-disc { transform: none; }
 }

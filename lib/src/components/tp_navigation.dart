@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../foundations/tp_colors.dart';
 import '../foundations/tp_icons.dart';
 import '../foundations/tp_layout.dart';
 import '../foundations/tp_type.dart';
+import 'tp_motion.dart';
 import 'tp_people.dart';
 
 @immutable
@@ -35,6 +35,9 @@ class TPTabItem {
 
 /// Tab bar with Bonvoy's top-edge indicator, in the accent orange. Outline icons,
 /// filled when active. Activity is a dot, never a number.
+///
+/// Changing tab plays [TPHaptics.select]; the new tab's filled icon settles
+/// in on the snappy spring. Tapping the current tab is silent.
 class TPTabBar extends StatelessWidget {
   const TPTabBar({super.key, required this.items, required this.currentIndex, required this.onTap});
 
@@ -63,7 +66,7 @@ class TPTabBar extends StatelessWidget {
                     child: GestureDetector(
                       behavior: HitTestBehavior.opaque,
                       onTap: () {
-                        HapticFeedback.selectionClick();
+                        if (i != currentIndex) TPHaptics.select();
                         onTap(i);
                       },
                       child: _TabCell(item: items[i], active: i == currentIndex, colors: c),
@@ -105,7 +108,21 @@ class _TabCell extends StatelessWidget {
               Stack(
                 clipBehavior: Clip.none,
                 children: [
-                  Icon(active ? item.activeIcon : item.icon, size: 24, color: color),
+                  AnimatedSwitcher(
+                    duration: TPMotion.reduced(context) ? Duration.zero : TPMotion.snappyDuration,
+                    switchInCurve: TPMotion.snappyCurve,
+                    switchOutCurve: TPMotion.exit,
+                    transitionBuilder: (child, a) => FadeTransition(
+                      opacity: a,
+                      child: ScaleTransition(scale: Tween(begin: 0.8, end: 1.0).animate(a), child: child),
+                    ),
+                    child: Icon(
+                      active ? item.activeIcon : item.icon,
+                      key: ValueKey(active),
+                      size: 24,
+                      color: color,
+                    ),
+                  ),
                   if (item.hasActivity)
                     Positioned(right: -4, top: -2, child: TPActivityDot(urgent: item.urgent)),
                 ],
@@ -121,7 +138,8 @@ class _TabCell extends StatelessWidget {
 }
 
 /// Text tabs with a 2pt accent underline on the active tab and a hairline
-/// under the row: Upcoming · Planning · Past.
+/// under the row: Upcoming · Planning · Past. Changing tab plays
+/// [TPHaptics.select].
 class TPUnderlineTabs extends StatelessWidget {
   const TPUnderlineTabs({super.key, required this.labels, required this.currentIndex, required this.onChanged});
 
@@ -147,7 +165,10 @@ class TPUnderlineTabs extends StatelessWidget {
                   button: true,
                   child: GestureDetector(
                     behavior: HitTestBehavior.opaque,
-                    onTap: () => onChanged(i),
+                    onTap: () {
+                      if (i != currentIndex) TPHaptics.select();
+                      onChanged(i);
+                    },
                     child: IntrinsicWidth(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -184,6 +205,9 @@ class TPUnderlineTabs extends StatelessWidget {
 
 /// Filter chip. Selected uses the accent (subtle fill, accent border and text).
 /// [count] shows an ink badge on the leading edge.
+///
+/// Tapping plays [TPHaptics.select]. The check grows in on the snappy spring,
+/// and the count badge bumps when its number changes.
 class TPFilterChip extends StatelessWidget {
   const TPFilterChip({
     super.key,
@@ -207,8 +231,10 @@ class TPFilterChip extends StatelessWidget {
     return Semantics(
       selected: selected,
       button: true,
-      child: GestureDetector(
+      child: TPPressable(
         onTap: onTap,
+        haptic: TPHaptic.select,
+        behavior: HitTestBehavior.deferToChild,
         child: AnimatedContainer(
           duration: TPMotion.snappyDuration,
           curve: TPMotion.snappyCurve,
@@ -222,18 +248,36 @@ class TPFilterChip extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               if (count != null) ...[
-                Container(
-                  width: 24,
-                  height: 24,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(color: c.actionPrimary, shape: BoxShape.circle),
-                  child: Text('$count', style: TPType.caption.tabular.copyWith(color: c.actionPrimaryText)),
+                TPBump(
+                  value: count,
+                  child: Container(
+                    width: 24,
+                    height: 24,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(color: c.actionPrimary, shape: BoxShape.circle),
+                    child: Text('$count', style: TPType.caption.tabular.copyWith(color: c.actionPrimaryText)),
+                  ),
                 ),
                 const SizedBox(width: TPSpace.s2),
-              ] else if (selected) ...[
-                Icon(TPIcons.check, size: 16, color: fg),
-                const SizedBox(width: TPSpace.s1 + 2),
-              ],
+              ] else
+                AnimatedSize(
+                  duration: TPMotion.reduced(context) ? Duration.zero : TPMotion.snappyDuration,
+                  curve: TPMotion.snappyCurve,
+                  child: selected
+                      ? Padding(
+                          padding: const EdgeInsets.only(right: TPSpace.s1 + 2),
+                          // Snappy, not playful: choosing a filter isn't a people moment.
+                          child: TweenAnimationBuilder<double>(
+                            tween: Tween(begin: TPMotion.reduced(context) ? 1 : 0.5, end: 1),
+                            duration: TPMotion.snappyDuration,
+                            curve: TPMotion.snappyCurve,
+                            builder: (context, v, child) =>
+                                Opacity(opacity: ((v - 0.5) * 2).clamp(0, 1), child: Transform.scale(scale: v, child: child)),
+                            child: Icon(TPIcons.check, size: 16, color: fg),
+                          ),
+                        )
+                      : const SizedBox.shrink(),
+                ),
               Text(label, style: TPType.buttonSmall.copyWith(color: fg)),
               if (dropdown) ...[
                 const SizedBox(width: TPSpace.s1),

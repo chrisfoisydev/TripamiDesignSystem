@@ -50,7 +50,7 @@ MaterialApp(
 | Magic numbers for padding and radius | `TPSpace.s4`, `TPSpace.screen`, `TPRadius.md`, `TPSize.hitTarget` |
 | `Icons.*` | `TPIcons.*` (outline), `TPIconsFill.*` (active or toggled) |
 | `Duration(milliseconds: …)`, `Curves.*` | `TPMotion.quick`, `TPMotion.ease`, `TPMotion.gentleCurve`; `TPMotion.reduced(context)` |
-| `HapticFeedback.*` | `TPHaptics.select()`, `.join()`, `.reorder()`, `.success()` |
+| `HapticFeedback.*`, `GestureDetector` for taps | Nothing for TP widgets (built in). Custom controls: `TPPressable(haptic: TPHaptic.select, …)` or `TPHaptics.select()`, `.join()`, `.reorder()`, `.success()`, `.warning()` |
 | Hand-built components | `TPButton`, `TPTripCoverCard`, `TPBraidDay`, `TPPollCard`, `TPExpenseRow`… (list in the README) |
 
 A traveler is a `TPMember` with a `TPMemberColor`. Assign colors in join order with `TPMemberColor.forJoinIndex(i)`; the trip creator gets `lagoon`.
@@ -85,6 +85,8 @@ Claude Code reads a `CLAUDE.md` at the repo root at the start of every session, 
      No exclamation marks in system copy.
    - Plan view: `TPBraidDay`. Motion: calm by default (`TPMotion.ease`, `gentle`); the `playful`
      spring only for people moments, at most once per screen; always respect `TPMotion.reduced`.
+   - Haptics: TP widgets already play them; don't add more. Custom tappables use `TPPressable` with the
+     matching `TPHaptic`. Haptics answer the user's own touch or a group success, never remote updates.
    - Every text pairing must pass WCAG AA in light and dark.
    ```
 

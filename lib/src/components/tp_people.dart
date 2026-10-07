@@ -113,7 +113,11 @@ class TPAvatar extends StatelessWidget {
 }
 
 /// Overlapping avatars, max [max] shown, then "+N".
-class TPAvatarStack extends StatelessWidget {
+///
+/// Someone joining after the stack first appears pops in on the playful
+/// spring while the others glide over to make room, and "+N" bumps. The
+/// people already there on first build just appear.
+class TPAvatarStack extends StatefulWidget {
   const TPAvatarStack(this.members, {super.key, this.size = TPAvatarSize.sm, this.max = 4, this.onImage = false});
 
   final List<TPMember> members;
@@ -124,14 +128,25 @@ class TPAvatarStack extends StatelessWidget {
   final bool onImage;
 
   @override
+  State<TPAvatarStack> createState() => _TPAvatarStackState();
+}
+
+class _TPAvatarStackState extends State<TPAvatarStack> {
+  late final Set<String> _initial = {for (final m in widget.members) m.id};
+
+  @override
   Widget build(BuildContext context) {
     final c = TPColors.of(context);
-    final d = size.dimension;
-    final shown = members.take(max).toList();
+    final members = widget.members;
+    final d = widget.size.dimension;
+    final shown = members.take(widget.max).toList();
     final extra = members.length - shown.length;
     const overlap = TPSpace.s2;
     final count = shown.length + (extra > 0 ? 1 : 0);
-    final stroke = onImage ? c.glass : c.surface;
+    final stroke = widget.onImage ? c.glass : c.surface;
+    final step = d + 4 - overlap;
+    final reduced = TPMotion.reduced(context);
+    final glide = reduced ? Duration.zero : TPMotion.gentleDuration;
 
     Widget ring(Widget child) => Container(
           decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: stroke, width: 2)),
@@ -141,26 +156,45 @@ class TPAvatarStack extends StatelessWidget {
     return Semantics(
       label: '${members.length} travelers: ${members.map((m) => m.firstName).join(', ')}',
       excludeSemantics: true,
-      child: SizedBox(
+      child: AnimatedContainer(
+        duration: glide,
+        curve: TPMotion.gentleCurve,
         height: d + 4,
-        width: count == 0 ? 0 : (d + 4) + (count - 1) * (d + 4 - overlap),
+        width: count == 0 ? 0 : (d + 4) + (count - 1) * step,
         child: Stack(
+          clipBehavior: Clip.none,
           children: [
             for (var i = 0; i < shown.length; i++)
-              Positioned(left: i * (d + 4 - overlap), child: ring(TPAvatar(shown[i], size: size))),
+              AnimatedPositioned(
+                key: ValueKey(shown[i].id),
+                duration: glide,
+                curve: TPMotion.gentleCurve,
+                left: i * step,
+                top: 0,
+                child: _initial.contains(shown[i].id)
+                    ? ring(TPAvatar(shown[i], size: widget.size))
+                    : TPPop(child: ring(TPAvatar(shown[i], size: widget.size))),
+              ),
             if (extra > 0)
-              Positioned(
-                left: shown.length * (d + 4 - overlap),
-                child: ring(Container(
-                  width: d,
-                  height: d,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(shape: BoxShape.circle, color: onImage ? c.glass : c.sunken),
-                  child: Text(
-                    '+$extra',
-                    style: TPType.caption.tabular.copyWith(color: onImage ? c.textOnImage : c.textSecondary),
-                  ),
-                )),
+              AnimatedPositioned(
+                key: const ValueKey('_more'),
+                duration: glide,
+                curve: TPMotion.gentleCurve,
+                left: shown.length * step,
+                top: 0,
+                child: TPBump(
+                  value: extra,
+                  child: ring(Container(
+                    width: d,
+                    height: d,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(shape: BoxShape.circle, color: widget.onImage ? c.glass : c.sunken),
+                    child: Text(
+                      '+$extra',
+                      style: TPType.caption.tabular.copyWith(color: widget.onImage ? c.textOnImage : c.textSecondary),
+                    ),
+                  )),
+                ),
               ),
           ],
         ),
@@ -229,6 +263,9 @@ class TPReaction {
 
 /// User reactions. Emoji appear here because they are user content; they are
 /// never used as UI icons.
+///
+/// Reacting plays [TPHaptics.join] and presses like a button; a pill bumps
+/// when its count changes and eases between the plain and "mine" colors.
 class TPReactionBar extends StatelessWidget {
   const TPReactionBar({super.key, required this.reactions, this.onReact, this.onAdd});
 
@@ -239,9 +276,15 @@ class TPReactionBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = TPColors.of(context);
-    Widget pill({required Widget child, bool mine = false, VoidCallback? onTap}) => GestureDetector(
+    Widget pill({required Widget child, bool mine = false, VoidCallback? onTap, TPHaptic haptic = TPHaptic.join}) =>
+        TPPressable(
           onTap: onTap,
-          child: Container(
+          haptic: haptic,
+          pressedScale: 0.94,
+          behavior: HitTestBehavior.deferToChild,
+          child: AnimatedContainer(
+            duration: TPMotion.snappyDuration,
+            curve: TPMotion.snappyCurve,
             height: 28,
             padding: const EdgeInsets.symmetric(horizontal: TPSpace.s2),
             decoration: ShapeDecoration(
@@ -257,12 +300,16 @@ class TPReactionBar extends StatelessWidget {
       runSpacing: TPSpace.s1 + 2,
       children: [
         for (final r in reactions.take(3))
-          pill(
-            mine: r.mine,
-            onTap: onReact == null ? null : () => onReact!(r),
-            child: Text(
-              '${r.emoji} ${r.count}',
-              style: TPType.caption.tabular.copyWith(color: r.mine ? c.accent : c.textSecondary),
+          TPBump(
+            key: ValueKey(r.emoji),
+            value: (r.count, r.mine),
+            child: pill(
+              mine: r.mine,
+              onTap: onReact == null ? null : () => onReact!(r),
+              child: Text(
+                '${r.emoji} ${r.count}',
+                style: TPType.caption.tabular.copyWith(color: r.mine ? c.accent : c.textSecondary),
+              ),
             ),
           ),
         if (onAdd != null)
@@ -271,6 +318,7 @@ class TPReactionBar extends StatelessWidget {
             label: 'Add reaction',
             child: pill(
               onTap: onAdd,
+              haptic: TPHaptic.none,
               child: Icon(TPIcons.smiley, size: 16, color: c.textSecondary),
             ),
           ),

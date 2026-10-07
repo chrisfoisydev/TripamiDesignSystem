@@ -4,4 +4,4 @@ Text tabs with a 2px `accent` underline on the active tab and a hairline under t
 
 **Props:** `labels` (string[]), `value`, `onChange(index)`.
 
-Keep labels to one word. Use at most four tabs.
+Keep labels to one word. Use at most four tabs. **Haptic:** selection tick when the tab changes; tapping the current tab is silent.
