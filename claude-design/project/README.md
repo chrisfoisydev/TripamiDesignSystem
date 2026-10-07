@@ -26,6 +26,8 @@ Tripami is a collaborative group-travel app. Its product UI pairs a hotel concie
 
 ## Color
 
+**Light is the default theme.** Tripami opens in light (paper canvas, navy ink) whatever the device is set to; dark is a user choice in settings, fully specified and contrast-checked. Design and review in light first, then check dark.
+
 - The brand is two colors from the logo: `brand-navy` (#02203A) and `brand-orange` (#FC6316). `brand-orange` is 3.0:1 on white, so it appears only in the logo, the cover and brand moments. In the UI, orange is `accent`, the same hue deepened to pass AA.
 
 - Screens sit on `canvas` (warm paper). Cards, sheets, sticky bars and the tab bar sit on `surface`. Use `sunken` for section bands on hub screens, input wells and the "+N" avatar.

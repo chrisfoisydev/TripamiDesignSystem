@@ -84,13 +84,21 @@
 
 .tp-glass-chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: var(--radius-sm); background: var(--glass); color: var(--text-on-image); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
 
-.tp-cover { position: relative; overflow: hidden; border-radius: var(--radius-lg); box-shadow: var(--elevation-1); max-width: 100%; color: var(--text-on-image); }
+.tp-cover { position: relative; overflow: hidden; border-radius: var(--radius-lg); box-shadow: var(--elevation-1); max-width: 100%; color: var(--text-on-image); display: flex; flex-direction: column; container-type: inline-size; }
 .tp-cover.no-image { background: var(--sunken); color: var(--text-primary); }
 .tp-cover-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .tp-scrim { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, var(--scrim-end) 100%); }
-.tp-cover-status { position: absolute; top: var(--space-4); left: var(--space-4); }
-.tp-cover-foot { position: absolute; left: var(--space-6); right: var(--space-6); bottom: var(--space-6); display: flex; align-items: flex-end; gap: var(--space-3); }
-.tp-cover-title { margin-bottom: var(--space-2); text-wrap: balance; }
+.tp-cover-status { position: relative; align-self: flex-start; margin: var(--space-4) 0 0 var(--space-4); }
+.tp-cover-foot { position: relative; margin-top: auto; padding: var(--space-3) var(--space-6) var(--space-6); display: flex; align-items: flex-end; gap: var(--space-3); }
+.tp-cover-foot > .tp-grow { min-width: 0; }
+.tp-cover-foot > .tp-stack { flex: none; }
+.tp-cover-title { margin-bottom: var(--space-2); text-wrap: balance; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; overflow: hidden; }
+.tp-cover-sub { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+/* Narrow covers (two-up grids): smaller title, travelers under the subtitle. */
+@container (max-width: 240px) {
+  .tp-cover-title { font-size: 24px; line-height: 28px; letter-spacing: -0.4px; -webkit-line-clamp: 3; }
+  .tp-cover-foot { flex-direction: column; align-items: flex-start; }
+}
 .tp-cover.no-image .tp-cover-sub { color: var(--text-secondary); }
 
 .tp-strip { display: flex; }

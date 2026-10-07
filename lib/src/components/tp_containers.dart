@@ -133,31 +133,43 @@ class TPTripCoverCard extends StatelessWidget {
                   if (hasImage) DecoratedBox(decoration: BoxDecoration(gradient: c.scrim)),
                   if (status != null)
                     Positioned(top: TPSpace.s4, left: TPSpace.s4, child: TPGlassChip(label: status!)),
+                  // The text block lives below the status chip and truncates rather than
+                  // ever running into it. Narrow cards (two-up grids) get a smaller title
+                  // and the travelers under the subtitle instead of beside it.
                   Positioned(
                     left: TPSpace.s6,
                     right: TPSpace.s6,
                     bottom: TPSpace.s6,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(title, style: TPType.display.copyWith(color: textColor)),
-                              const SizedBox(height: TPSpace.s2),
-                              Text(
-                                subtitle,
-                                style: TPType.subhead.copyWith(color: hasImage ? textColor : c.textSecondary),
-                              ),
-                            ],
+                    top: status != null ? TPSpace.s4 + 28 + TPSpace.s3 : TPSpace.s6,
+                    child: LayoutBuilder(builder: (context, box) {
+                      final compact = box.maxWidth < 240;
+                      final titleStyle = compact
+                          ? TPType.display.copyWith(fontSize: 24, height: 28 / 24, letterSpacing: -0.4, color: textColor)
+                          : TPType.display.copyWith(color: textColor);
+                      final stack = TPAvatarStack(members, size: TPAvatarSize.xs, onImage: hasImage);
+                      final text = Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Flexible(
+                            child: Text(title, maxLines: compact ? 3 : 4, overflow: TextOverflow.ellipsis, style: titleStyle),
                           ),
-                        ),
-                        const SizedBox(width: TPSpace.s3),
-                        TPAvatarStack(members, size: TPAvatarSize.xs, onImage: hasImage),
-                      ],
-                    ),
+                          const SizedBox(height: TPSpace.s2),
+                          Text(
+                            subtitle,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TPType.subhead.copyWith(color: hasImage ? textColor : c.textSecondary),
+                          ),
+                          if (compact && members.isNotEmpty) ...[const SizedBox(height: TPSpace.s3), stack],
+                        ],
+                      );
+                      if (compact || members.isEmpty) return text;
+                      return Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [Expanded(child: text), const SizedBox(width: TPSpace.s3), stack],
+                      );
+                    }),
                   ),
                 ],
               ),

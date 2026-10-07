@@ -6,12 +6,13 @@ import '../foundations/tp_colors.dart';
 import '../foundations/tp_layout.dart';
 import '../foundations/tp_type.dart';
 
-/// Builds Tripami's [ThemeData].
+/// Builds Tripami's [ThemeData]. Tripami is **light by default**; dark is opt-in.
 ///
 /// ```dart
 /// MaterialApp(
 ///   theme: TripamiTheme.light(),
 ///   darkTheme: TripamiTheme.dark(),
+///   themeMode: TripamiTheme.defaultMode, // light; pass a user setting to offer dark
 /// );
 /// ```
 ///
@@ -19,6 +20,11 @@ import '../foundations/tp_type.dart';
 /// primary actions, the accent only for selection, underline inputs, sheets with a
 /// grabber, and no Material tint or ripple color shifts.
 abstract final class TripamiTheme {
+  /// The default appearance: always light, whatever the phone is set to.
+  /// Offer dark as a setting (Light / Dark / Match phone) and pass the user's
+  /// choice as `themeMode` instead.
+  static const defaultMode = ThemeMode.light;
+
   static ThemeData light() => _build(Brightness.light, TPColors.light);
   static ThemeData dark() => _build(Brightness.dark, TPColors.dark);
 

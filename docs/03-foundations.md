@@ -10,6 +10,8 @@ In Dart, read colors with `TPColors.of(context)` so light and dark resolve autom
 
 ## Color
 
+**Light is the default theme.** The app opens in light whatever the phone is set to (`themeMode: TripamiTheme.defaultMode`). Dark is a choice the user makes in settings (Light · Dark · Match phone); it is fully specified below and passes the same contrast checks. Design and review in light first.
+
 ### Brand: from the logo
 The logo is a navy wordmark with an orange dot on the "i". Those two colors are the brand, and the product UI uses them the way the logo does: navy carries everything, and orange is one small, deliberate point.
 

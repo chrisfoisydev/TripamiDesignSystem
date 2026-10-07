@@ -34,10 +34,12 @@ import 'package:tripami_design_system/tripami_design_system.dart';
 MaterialApp(
   theme: TripamiTheme.light(),
   darkTheme: TripamiTheme.dark(),
-  // themeMode defaults to system: dark mode follows the phone.
+  themeMode: TripamiTheme.defaultMode, // light by default
   home: const TripsScreen(),
 );
 ```
+
+**Tripami is light by default.** Flutter's own default (`ThemeMode.system`) would follow the phone into dark mode, so always pass `themeMode`. To offer dark mode, add an Appearance setting (Light · Dark · Match phone) and pass the user's choice instead (`ThemeMode.dark` / `.system`). The dark theme is fully specified and contrast-checked, so it's ready when you want it.
 
 `TripamiTheme` restyles standard Material widgets, so existing `FilledButton`, `TextField`, `Switch`, `SnackBar` and `showModalBottomSheet` calls look right straight away.
 
@@ -71,7 +73,8 @@ Claude Code reads a `CLAUDE.md` at the repo root at the start of every session, 
    (github.com/chrisfoisydev/TripamiDesignSystem). Its README and docs/ are the reference; the
    visual reference is the Claude Design system at https://claude.ai/artifact/RfRNGEUDTXnSNNXjGYTbpa.
 
-   - Wrap the app in `TripamiTheme.light()` / `.dark()`. Never hard-code colors, font sizes,
+   - Wrap the app in `TripamiTheme.light()` / `.dark()` with `themeMode: TripamiTheme.defaultMode` (light by default;
+     dark only when the user picks it in settings). Never hard-code colors, font sizes,
      spacing, radii, durations or curves: use `TPColors.of(context)`, `TPType`, `TPSpace`,
      `TPRadius`, `TPSize`, `TPMotion`.
    - Use `TP*` widgets before building new ones. If a screen needs something the system doesn't
