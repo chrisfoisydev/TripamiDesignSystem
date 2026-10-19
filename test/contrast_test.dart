@@ -2,6 +2,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/painting.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tripami_design_system/tripami_design_system.dart';
 
@@ -46,6 +47,23 @@ void main() {
       expect(contrast(const Color(0xFFFFFFFF), m.color), greaterThanOrEqualTo(4.5), reason: m.name);
     }
   });
+
+  // A switch that's on shows its thumb at 3:1 against the ink track (WCAG
+  // 1.4.11), in dark too, where ink is light. Off, it's white on the light
+  // track with a shadow, as the platform draws it.
+  for (final (name, theme) in [
+    ('light', TripamiTheme.light()),
+    ('dark', TripamiTheme.dark()),
+    ('high contrast light', TripamiTheme.highContrastLight()),
+    ('high contrast dark', TripamiTheme.highContrastDark()),
+  ]) {
+    test('$name switch thumb stands out on its track when on', () {
+      const on = {WidgetState.selected};
+      final thumb = theme.switchTheme.thumbColor!.resolve(on)!;
+      final track = theme.switchTheme.trackColor!.resolve(on)!;
+      expect(contrast(thumb, track), greaterThanOrEqualTo(3));
+    });
+  }
 
   test('members are assigned in join order and cycle', () {
     expect(TPMemberColor.forJoinIndex(0), TPMemberColor.lagoon);

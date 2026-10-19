@@ -207,9 +207,11 @@ abstract final class TripamiTheme {
         padding: const EdgeInsets.symmetric(horizontal: TPSpace.s3),
         showCheckmark: true,
       ),
-      // Toggle on-state is ink, not green and not accent.
+      // Toggle on-state is ink, not green and not accent. On ink the thumb is
+      // the ink pill's text color, so it shows in dark too, where ink is light.
       switchTheme: SwitchThemeData(
-        thumbColor: all(Colors.white),
+        thumbColor: WidgetStateProperty.resolveWith(
+            (s) => s.contains(WidgetState.selected) ? c.actionPrimaryText : Colors.white),
         trackColor: WidgetStateProperty.resolveWith(
             (s) => s.contains(WidgetState.selected) ? c.actionPrimary : c.borderStrong),
         trackOutlineColor: all(Colors.transparent),

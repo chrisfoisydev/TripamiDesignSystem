@@ -62,7 +62,7 @@ Tripami: **Upcoming · Planning · Past** (Trips), **Plan · Ideas · Booked** (
 *Bonvoy ref:* Current / Past / Canceled.
 
 ### Toggle, checkbox, radio · `TPToggle`, or `Switch` / `Checkbox` / `Radio` via `TripamiTheme`
-`TPToggle` is the settings row: label, optional detail and an adaptive switch; the whole row toggles and plays the selection haptic. Otherwise use the platform controls (`Switch.adaptive` for the iOS look). The toggle's on-state tint is **ink**, not green and not accent. Checkboxes are ink-filled rounded squares (`radius.xs`) with a white check.
+`TPToggle` is the settings row: label, optional detail and an adaptive switch; the whole row toggles and plays the selection haptic. Otherwise use the platform controls (`Switch.adaptive` for the iOS look). The toggle's on-state tint is **ink**, not green and not accent, with the ink pill's text color as its thumb so it stays visible in dark, where ink is light. Checkboxes are ink-filled rounded squares (`radius.xs`) with a white check.
 
 ### Date range picker
 Full-screen sheet with a sticky ink header ("TRAVEL DATES" eyebrow + "Thu, 12 Jun → Tue, 17 Jun"). Selected endpoints are ink circles; the range between them is a `bg.sunken` band. Group availability overlay: under each date, small **member-color dots** for who marked themselves free.
