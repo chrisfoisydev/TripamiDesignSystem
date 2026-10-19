@@ -36,7 +36,7 @@ void main() {
       expect(TPFormat.time(at(0, 30)), '12:30am', reason: 'just after midnight');
       expect(TPFormat.time(at(23, 45)), '11:45pm');
       expect(TPFormat.dayShort(at(0, 0)), 'Wed 18');
-      expect(TPFormat.dayLong(at(0, 0)), 'Wednesday 18 November');
+      expect(TPFormat.dayLong(at(0, 0)), 'Wednesday, November 18');
     });
     test('names', () {
       expect(TPFormat.names(['Sandra']), 'Sandra');

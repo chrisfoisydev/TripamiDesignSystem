@@ -3,7 +3,7 @@
 /// Times are 12-hour, lowercase, with minutes only when they aren't zero
 /// ("3pm", "9:30am"). Durations use "h" and "min" with a space
 /// ("1 h 50 min", "45 min"). Days are short on chips ("Wed 18") and long in
-/// titles ("Wednesday 18 November"). Names join with commas and "and".
+/// titles ("Wednesday, November 18"); dates elsewhere read "Wed, Nov 18". Names join with commas and "and".
 abstract final class TPFormat {
   static const _days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   static const _months = [
@@ -31,8 +31,8 @@ abstract final class TPFormat {
   /// "Wed 18": day chips and compact labels.
   static String dayShort(DateTime d) => '${_days[d.weekday - 1].substring(0, 3)} ${d.day}';
 
-  /// "Wednesday 18 November": titles.
-  static String dayLong(DateTime d) => '${_days[d.weekday - 1]} ${d.day} ${_months[d.month - 1]}';
+  /// "Wednesday, November 18": titles.
+  static String dayLong(DateTime d) => '${_days[d.weekday - 1]}, ${_months[d.month - 1]} ${d.day}';
 
   /// "Sandra", "Sandra and LeAnn", "Shannon, Christy and Sarah",
   /// and past [max] names, "Shannon, Christy and 3 others".

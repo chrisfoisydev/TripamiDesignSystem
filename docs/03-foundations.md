@@ -187,7 +187,7 @@ Why not SF Pro and New York? Apple's license restricts them to Apple platforms, 
 |---|---|---|---|---|---|---|
 | `type.display` | Bricolage Grotesque | 34 / 38 | ExtraBold 800 | −0.7 | displaySmall | Trip name on hero, Memories title |
 | `type.title1` | Inter | 28 / 34 | Regular | −0.4 | headlineLarge | Screen large titles ("Trips") |
-| `type.diaryHeading` | Bricolage Grotesque | 24 / 30 | Bold 700 | −0.3 | headlineMedium | Day headings ("Friday, 13 June") |
+| `type.diaryHeading` | Bricolage Grotesque | 24 / 30 | Bold 700 | −0.3 | headlineMedium | Day headings ("Friday, June 13") |
 | `type.title2` | Inter | 22 / 28 | Medium | −0.2 | headlineSmall | Section titles ("Needs your vote") |
 | `type.title3` | Inter | 18 / 24 | Medium | −0.1 | titleLarge | Card titles, sheet titles |
 | `type.body` | Inter | 17 / 24 | Regular | −0.2 | bodyLarge | Body, row labels |
@@ -314,7 +314,8 @@ Full rules: **[07 · Imagery](./07-imagery.md)** (real photos only, sources and 
 | Time | 12-hour, lowercase, minutes only when not zero | `3pm`, `9:30am` |
 | Duration | `h` and `min`, rounded up | `1 h 50 min`, `2 h`, `45 min` |
 | Day on a chip | Short weekday + date | `Wed 18` |
-| Day in a title | Full weekday, date, month | `Wednesday 18 November` |
+| Day in a title | Full weekday, month, date | `Wednesday, November 18` |
+| Date | Short weekday, month, date | `Wed, Nov 18`; ranges `Nov 14–27` |
 | Several people | Commas and "and"; past 3, "and N others" | `Shannon, Christy and Sarah`, `Maya, Leo and 3 others` |
 | A person | First name | `Sarah`, not `Sarah Johnson` |
 
