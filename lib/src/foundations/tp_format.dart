@@ -1,6 +1,7 @@
 /// How Tripami writes times, durations, days and groups of people.
 ///
-/// Times are 24-hour ("13:00"). Durations use "h" and "min" with a space
+/// Times are 12-hour, lowercase, with minutes only when they aren't zero
+/// ("3pm", "9:30am"). Durations use "h" and "min" with a space
 /// ("1 h 50 min", "45 min"). Days are short on chips ("Wed 18") and long in
 /// titles ("Wednesday 18 November"). Names join with commas and "and".
 abstract final class TPFormat {
@@ -10,8 +11,12 @@ abstract final class TPFormat {
     'July', 'August', 'September', 'October', 'November', 'December',
   ];
 
-  /// "09:30", "13:00".
-  static String time(DateTime t) => '${_two(t.hour)}:${_two(t.minute)}';
+  /// "9:30am", "3pm", "12pm" (noon), "12am" (midnight).
+  static String time(DateTime t) {
+    final hour = t.hour % 12 == 0 ? 12 : t.hour % 12;
+    final suffix = t.hour < 12 ? 'am' : 'pm';
+    return t.minute == 0 ? '$hour$suffix' : '$hour:${_two(t.minute)}$suffix';
+  }
 
   /// "1 h 50 min", "2 h", "45 min", "1 min". Rounds up to the next whole
   /// minute, so a countdown never shows "0 min" while time is left.

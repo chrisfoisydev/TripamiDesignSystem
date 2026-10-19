@@ -311,7 +311,7 @@ Full rules: **[07 · Imagery](./07-imagery.md)** (real photos only, sources and 
 
 | What | Format | Example |
 |---|---|---|
-| Time | 24-hour | `13:00`, `09:30` |
+| Time | 12-hour, lowercase, minutes only when not zero | `3pm`, `9:30am` |
 | Duration | `h` and `min`, rounded up | `1 h 50 min`, `2 h`, `45 min` |
 | Day on a chip | Short weekday + date | `Wed 18` |
 | Day in a title | Full weekday, date, month | `Wednesday 18 November` |

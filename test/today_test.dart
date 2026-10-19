@@ -30,7 +30,11 @@ void main() {
       expect(TPFormat.duration(Duration.zero), '0 min');
     });
     test('times and days', () {
-      expect(TPFormat.time(at(9, 5)), '09:05');
+      expect(TPFormat.time(at(9, 5)), '9:05am');
+      expect(TPFormat.time(at(15, 0)), '3pm');
+      expect(TPFormat.time(at(12, 0)), '12pm', reason: 'noon');
+      expect(TPFormat.time(at(0, 30)), '12:30am', reason: 'just after midnight');
+      expect(TPFormat.time(at(23, 45)), '11:45pm');
       expect(TPFormat.dayShort(at(0, 0)), 'Wed 18');
       expect(TPFormat.dayLong(at(0, 0)), 'Wednesday 18 November');
     });
@@ -48,7 +52,7 @@ void main() {
     const travel = '5 min walk from the Vatican';
     test('quiet, then counting down, then due', () {
       expect(TPLeaveByHint.stateAt(at(10, 40), by), TPLeaveState.calm);
-      expect(TPLeaveByHint.labelAt(at(10, 40), by, travel), 'Leave by 12:55 · 5 min walk from the Vatican');
+      expect(TPLeaveByHint.labelAt(at(10, 40), by, travel), 'Leave by 12:55pm · 5 min walk from the Vatican');
       expect(TPLeaveByHint.stateAt(at(12, 47), by), TPLeaveState.soon);
       expect(TPLeaveByHint.labelAt(at(12, 47), by, travel), 'Leave in 8 min · 5 min walk from the Vatican');
       expect(TPLeaveByHint.stateAt(by, by), TPLeaveState.due);
@@ -111,14 +115,14 @@ void main() {
         now: at(10, 40),
         companions: const [sandra],
       )));
-      expect(find.text('NOW · UNTIL 12:30'), findsOneWidget);
+      expect(find.text('NOW · UNTIL 12:30PM'), findsOneWidget);
       expect(find.text('1 h 50 min left'), findsOneWidget);
       expect(find.text('With Sandra'), findsOneWidget);
       final bar = tester.widget<TPProgressBar>(find.byType(TPProgressBar));
       expect(bar.value, closeTo(70 / 180, 0.001));
       expect(
         tester.getSemantics(find.byType(TPNowCard)).label,
-        'Now · until 12:30. Vatican Museums, Viale Vaticano. 1 h 50 min left. With Sandra.',
+        'Now · until 12:30pm. Vatican Museums, Viale Vaticano. 1 h 50 min left. With Sandra.',
       );
     });
 
@@ -139,7 +143,7 @@ void main() {
         TPNowCard(title: 'Vatican Museums', start: at(9, 30), end: at(12, 30), now: at(10, 40), companions: const [sandra]),
         textScale: 3.1,
       ));
-      expect(find.text('09:30 – 12:30'), findsOneWidget);
+      expect(find.text('9:30am – 12:30pm'), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
   });
