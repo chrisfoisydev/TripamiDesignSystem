@@ -63,7 +63,7 @@ Selected: `accent.subtle` fill, `accent.default` border and text, leading `check
 *Bonvoy ref:* "Room Type", "Points", "Standard Rates" chips. *Change:* selection uses the accent, not grey.
 
 ### Choice chip · `TPChoiceChip`, `TPChoices`
-One of a set (an event's type, status or day). A white `bg.surface` pill, 44pt high (36 with `small`), `type.button`, no border or check: selected, it fills ink with ink-text. A choice with its own meaning passes a `color` (Confirmed fills `status.positive`); its label is white on a dark fill and navy on a light one, so it passes contrast in dark mode too. `TPChoices(fill: true)` spreads a short set evenly across the width; other sets, and every set at large text, wrap. Long sets such as days scroll sideways.
+One of a set (an event's type, status or day). A white `bg.surface` pill, 44pt high (36 with `small`), `type.button`, no border or check: selected, it fills ink with ink-text. A choice with its own meaning passes a `color` (Confirmed fills `status.positive`); its label is white on a dark fill and navy on a light one, so it passes contrast in dark mode too. A chip is as wide as its label plus 12pt each side. `TPChoices(fill: true)` spreads a short set across the width, each chip's share in proportion to its label, when every label fits on one row; otherwise, other sets, and every set at large text, wrap, so no label breaks mid-word. Long sets such as days scroll sideways.
 *Differs from* `TPFilterChip`, which filters a list and marks its selection with the accent and a check.
 
 ### Quick pill · `TPQuickPill`

@@ -1,6 +1,7 @@
 // The event editor's pieces: boxed fields, choice chips, quick pills, the
 // two-step delete and the dimmed avatar.
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tripami_design_system/tripami_design_system.dart';
 
@@ -44,12 +45,39 @@ void main() {
           ]),
           scale: scale,
         );
+    // Wide enough for every label (the test font's letters are squares):
+    // one row, shared by label length, no label broken.
+    tester.view.physicalSize = const Size(700, 844);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
     await tester.pumpWidget(four(1));
-    expect(find.byType(Row), findsWidgets);
-    expect(tester.getSize(find.byType(TPChoiceChip).first).width, tester.getSize(find.byType(TPChoiceChip).last).width);
+    expect(find.byType(Wrap), findsNothing);
+    final chips = find.byType(TPChoiceChip);
+    expect(tester.getSize(chips.last).width, greaterThan(tester.getSize(chips.first).width));
+    expect({for (final e in chips.evaluate()) tester.getTopLeft(find.byWidget(e.widget)).dy}.length, 1);
+    for (final label in ['Meal', 'Activity', 'Travel', 'Free time']) {
+      expect(tester.renderObject<RenderParagraph>(find.text(label)).didExceedMaxLines, isFalse);
+      expect(tester.getSize(find.text(label)).height, lessThan(30), reason: '$label wrapped');
+    }
+    // Too narrow for every label: they wrap instead of breaking words.
+    tester.view.physicalSize = const Size(390, 844);
+    await tester.pumpWidget(four(1));
+    expect(find.byType(Wrap), findsOneWidget);
     await tester.pumpWidget(four(2));
     expect(find.byType(Wrap), findsOneWidget);
     expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('chips in a wrapping set are as wide as their labels', (tester) async {
+    await tester.pumpWidget(host(TPChoices(children: [
+      for (final s in ['Suggested', 'Tentative', 'Confirmed'])
+        TPChoiceChip(label: s, selected: false, onTap: () {}),
+      TPQuickPill(label: 'Just me', onTap: () {}),
+    ])));
+    final row = tester.getSize(find.byType(Wrap)).width;
+    for (final f in [find.byType(TPChoiceChip), find.byType(TPQuickPill)])
+      expect(tester.getSize(f.first).width, lessThan(row / 3));
   });
 
   testWidgets('the first tap arms a delete; only the second deletes', (tester) async {

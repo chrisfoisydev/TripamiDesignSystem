@@ -15,9 +15,9 @@ abstract final class TPField {
   static InputDecoration boxed(BuildContext context, {String? hint, Widget? suffix}) {
     final c = TPColors.of(context);
     OutlineInputBorder edge(Color color, [double width = 1]) => OutlineInputBorder(
-          borderRadius: BorderRadius.circular(TPRadius.md),
-          borderSide: BorderSide(color: color, width: width),
-        );
+      borderRadius: BorderRadius.circular(TPRadius.md),
+      borderSide: BorderSide(color: color, width: width),
+    );
     return InputDecoration(
       hintText: hint,
       hintStyle: TPType.body.copyWith(color: c.textTertiary),
@@ -78,23 +78,27 @@ class TPChoiceChip extends StatelessWidget {
           duration: TPMotion.reduced(context) ? Duration.zero : TPMotion.quick,
           curve: TPMotion.ease,
           constraints: BoxConstraints(minHeight: small ? TPSize.chip : TPSize.hitTarget),
-          alignment: Alignment.center,
-          padding: const EdgeInsets.symmetric(horizontal: TPSpace.s4),
+          padding: const EdgeInsets.symmetric(horizontal: _chipPadding),
           decoration: BoxDecoration(
             color: selected ? fill : c.surface,
             borderRadius: BorderRadius.circular(TPRadius.pill),
           ),
-          child: Text(
-            label,
-            textAlign: TextAlign.center,
-            style: TPType.button.copyWith(
-              color: !selected
-                  ? c.textPrimary
-                  : color == null
-                      ? c.actionPrimaryText
-                      : ThemeData.estimateBrightnessForColor(fill) == Brightness.dark
-                          ? Colors.white
-                          : TPPalette.textPrimaryLight,
+          // As wide as its label: centred in a row's share, never stretched
+          // across a wrapping set.
+          child: Align(
+            widthFactor: 1,
+            child: Text(
+              label,
+              textAlign: TextAlign.center,
+              style: TPType.button.copyWith(
+                color: !selected
+                    ? c.textPrimary
+                    : color == null
+                    ? c.actionPrimaryText
+                    : ThemeData.estimateBrightnessForColor(fill) == Brightness.dark
+                    ? Colors.white
+                    : TPPalette.textPrimaryLight,
+              ),
             ),
           ),
         ),
@@ -103,8 +107,11 @@ class TPChoiceChip extends StatelessWidget {
   }
 }
 
-/// A set of [TPChoiceChip]s. [fill] spreads them evenly across the width
-/// (an event's four types); otherwise, and at large text, they wrap.
+const _chipPadding = TPSpace.s3;
+
+/// A set of [TPChoiceChip]s. [fill] spreads them across the width (an
+/// event's four types), each sized to its label, when every label fits on
+/// one row; otherwise, and at large text, they wrap.
 class TPChoices extends StatelessWidget {
   const TPChoices({super.key, required this.children, this.fill = false});
 
@@ -112,9 +119,40 @@ class TPChoices extends StatelessWidget {
   final bool fill;
 
   @override
-  Widget build(BuildContext context) => fill && !TPA11y.largeText(context)
-      ? Row(spacing: TPSpace.s2, children: [for (final c in children) Expanded(child: c)])
-      : Wrap(spacing: TPSpace.s2, runSpacing: TPSpace.s2, children: children);
+  Widget build(BuildContext context) {
+    Widget wrap() => Wrap(spacing: TPSpace.s2, runSpacing: TPSpace.s2, children: children);
+    if (!fill || TPA11y.largeText(context)) return wrap();
+    final scaler = MediaQuery.textScalerOf(context);
+    // Each chip's natural width: its label plus padding.
+    final widths = [
+      for (final c in children)
+        c is TPChoiceChip
+            ? (TextPainter(
+                    text: TextSpan(text: c.label, style: TPType.button),
+                    textScaler: scaler,
+                    textDirection: TextDirection.ltr,
+                    maxLines: 1,
+                  )..layout()).width.ceilToDouble() +
+                  2 * _chipPadding
+            : null,
+    ];
+    if (widths.contains(null)) {
+      return Row(
+        spacing: TPSpace.s2,
+        children: [for (final c in children) Expanded(child: c)],
+      );
+    }
+    final natural = widths.fold<double>(0, (a, w) => a + w!) + TPSpace.s2 * (children.length - 1);
+    return LayoutBuilder(
+      builder: (context, constraints) => natural > constraints.maxWidth
+          ? wrap()
+          // Shares in proportion to each label, so every chip gets at least its own width.
+          : Row(
+              spacing: TPSpace.s2,
+              children: [for (final (i, c) in children.indexed) Expanded(flex: widths[i]!.round(), child: c)],
+            ),
+    );
+  }
 }
 
 /// Quick pill: a shortcut that sets a choice rather than being one, such as
@@ -138,12 +176,14 @@ class TPQuickPill extends StatelessWidget {
         onTap: onTap,
         child: Container(
           constraints: const BoxConstraints(minHeight: TPSize.buttonSmall),
-          alignment: Alignment.center,
           padding: const EdgeInsets.symmetric(horizontal: TPSpace.s4),
           decoration: BoxDecoration(color: c.accentSubtle, borderRadius: BorderRadius.circular(TPRadius.pill)),
-          child: Text(
-            label,
-            style: TPType.buttonSmall.copyWith(color: onTap == null ? c.textTertiary : c.textPrimary),
+          child: Align(
+            widthFactor: 1,
+            child: Text(
+              label,
+              style: TPType.buttonSmall.copyWith(color: onTap == null ? c.textTertiary : c.textPrimary),
+            ),
           ),
         ),
       ),
