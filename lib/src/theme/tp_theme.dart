@@ -209,6 +209,13 @@ abstract final class TripamiTheme {
       ),
       // Toggle on-state is ink, not green and not accent. On ink the thumb is
       // the ink pill's text color, so it shows in dark too, where ink is light.
+      // The days inside a picked range: the soft accent, so their ink numbers
+      // stay readable (Material falls back to the full accent).
+      datePickerTheme: DatePickerThemeData(
+        rangeSelectionBackgroundColor: c.accentSubtle,
+        rangePickerBackgroundColor: c.canvas,
+        rangePickerHeaderBackgroundColor: c.canvas,
+      ),
       switchTheme: SwitchThemeData(
         thumbColor: WidgetStateProperty.resolveWith(
             (s) => s.contains(WidgetState.selected) ? c.actionPrimaryText : Colors.white),

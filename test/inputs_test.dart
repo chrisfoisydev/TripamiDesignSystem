@@ -117,4 +117,16 @@ void main() {
     expect((d.focusedBorder! as OutlineInputBorder).borderSide.color, c.actionPrimary);
     expect(find.text('Dinner, museum, train…'), findsOneWidget);
   });
+
+  test('a picked date range is the soft accent under ink numbers', () {
+    for (final (theme, c) in [
+      (TripamiTheme.light(), TPColors.light),
+      (TripamiTheme.dark(), TPColors.dark),
+    ]) {
+      final band = theme.datePickerTheme.rangeSelectionBackgroundColor!;
+      expect(band, c.accentSubtle);
+      final lum = [band.computeLuminance(), c.textPrimary.computeLuminance()]..sort();
+      expect((lum[1] + 0.05) / (lum[0] + 0.05), greaterThanOrEqualTo(4.5));
+    }
+  });
 }
