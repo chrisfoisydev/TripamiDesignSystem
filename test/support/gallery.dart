@@ -172,6 +172,25 @@ final Map<String, Widget> gallery = {
   'TPExpenseRow': const TPExpenseRow(icon: TPIcons.forkKnife, title: 'Dinner at Taberna da Rua', paidBy: maya, splitWays: 6, amount: '€214.50', yourShare: '€35.75', youOwe: true),
   'TPBraidDay': TPBraidDay(members: crew, youId: 'alex', moments: day),
   'TPEyebrow': const TPEyebrow('Arrive'),
+  'TPChoiceChip': const TPChoices(fill: true, children: [
+    TPChoiceChip(label: 'Meal', selected: false, onTap: _noop),
+    TPChoiceChip(label: 'Activity', selected: true, onTap: _noop),
+    TPChoiceChip(label: 'Travel', selected: false, onTap: _noop),
+    TPChoiceChip(label: 'Free time', selected: false, onTap: _noop),
+  ]),
+  'TPChoiceChip (status)': TPChoices(children: [
+    const TPChoiceChip(label: 'Tentative', selected: false, onTap: _noop),
+    Builder(builder: (context) => TPChoiceChip(label: 'Confirmed', selected: true, color: TPColors.of(context).positive, onTap: _noop)),
+  ]),
+  'TPQuickPill': const Wrap(spacing: 8, children: [
+    TPQuickPill(label: 'Everyone here', onTap: _noop),
+    TPQuickPill(label: 'Just me', onTap: _noop),
+  ]),
+  'TPConfirmDelete': const TPConfirmDelete(label: 'Delete event', confirmLabel: 'Tap again to delete for everyone', onConfirmed: _noop),
+  'TPAvatar (dimmed)': const Row(children: [TPAvatar(maya, size: TPAvatarSize.lg), TPAvatar(leo, size: TPAvatarSize.lg, dimmed: true)]),
+  'TPField.boxed': Builder(
+    builder: (context) => TextField(decoration: TPField.boxed(context, hint: 'Dinner, museum, train…')),
+  ),
   'TPGlassChip': const ColoredBox(color: Color(0xFF3A4A5C), child: TPGlassChip(label: 'In 6 days', icon: TPIcons.clock)),
   'TPSuccessCheck': const TPSuccessCheck(haptic: false),
   'TPCountUp': TPCountUp(value: 42, format: (v) => '€$v'),

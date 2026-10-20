@@ -56,13 +56,25 @@ enum TPAvatarSize {
 /// [invited]: someone asked to join who hasn't yet. A dashed `border.strong`
 /// ring around initials in `text.secondary`, no fill: the system's dashed
 /// shape for "a space the group hasn't filled yet".
+///
+/// [dimmed]: not part of this (not going to a plan): greyscale at 45%
+/// opacity, ring included. Screen readers hear "…, not going".
 class TPAvatar extends StatelessWidget {
-  const TPAvatar(this.member, {super.key, this.size = TPAvatarSize.md, this.showPresence = false, this.invited = false});
+  const TPAvatar(this.member,
+      {super.key, this.size = TPAvatarSize.md, this.showPresence = false, this.invited = false, this.dimmed = false});
 
   final TPMember member;
   final TPAvatarSize size;
   final bool showPresence;
   final bool invited;
+  final bool dimmed;
+
+  static const _greyscale = ColorFilter.matrix([
+    .2126, .7152, .0722, 0, 0, //
+    .2126, .7152, .0722, 0, 0,
+    .2126, .7152, .0722, 0, 0,
+    0, 0, 0, 1, 0,
+  ]);
 
   @override
   Widget build(BuildContext context) {
@@ -105,20 +117,22 @@ class TPAvatar extends StatelessWidget {
             child: Text(d < 32 ? member.initials.characters.first : member.initials, style: initialsStyle),
           );
 
+    final Widget shown = dimmed ? Opacity(opacity: .45, child: ColorFiltered(colorFilter: _greyscale, child: face)) : face;
     return Semantics(
-      label: invited
-          ? '${member.name}, invited'
-          : member.online && showPresence
-              ? '${member.name}, online'
-              : member.name,
+      label: [
+        member.name,
+        if (invited) 'invited',
+        if (dimmed) 'not going',
+        if (!invited && !dimmed && member.online && showPresence) 'online',
+      ].join(', '),
       excludeSemantics: true,
       child: SizedBox.square(
         dimension: d,
         child: Stack(
           clipBehavior: Clip.none,
           children: [
-            face,
-            if (showPresence && member.online)
+            shown,
+            if (showPresence && member.online && !dimmed)
               Positioned(
                 right: 0,
                 bottom: 0,

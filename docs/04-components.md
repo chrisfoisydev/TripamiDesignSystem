@@ -23,6 +23,9 @@ States: default · pressed (scale .98, `primaryPressed`) · disabled (opacity .3
 Never: accent-filled buttons, gradients, more than one primary per view, icons on both sides.
 *Bonvoy ref:* black "Select Room", "Book Now", "Sign In" pills; "Join Marriott Bonvoy →" tertiary.
 
+### Two-step delete · `TPConfirmDelete`
+For deleting something the crew shares. An accent-colored "Delete event" link; the first tap turns it into a filled accent pill, "Tap again to delete for everyone", and only that second tap deletes. The package's answer to "no filled destructive button": a single tap never deletes.
+
 ### Quick action · `TPQuickAction`
 56pt `bg.surface` circle, `elevation.2`, 22pt `TPIcons` glyph in `text.primary`, `type.footnote` label 8pt below, max 2 lines. Used in a horizontally scrolling row of 4–6 on the Trip Home.
 Tripami set: **Invite · Add plan · Split · Map · Chat · Photos**.
@@ -47,6 +50,9 @@ Eyebrow label (`type.eyebrow`, `text.secondary`) → 8pt → value in `type.body
 User input is shown exactly as typed. Never uppercase it.
 *Bonvoy ref:* Guest Information form.
 
+### Text field: boxed · `TPField.boxed(context, hint:, suffix:)`
+For forms where each field stands on its own (the event editor): the eyebrow label above, then a white `bg.surface` box with a 1pt `border.hairline` and `radius.md`, 16pt padding, hint in `text.tertiary`. Focused, the border is 1.5pt ink; on error, `status.critical`. A tappable value such as a time uses the same box via `InputDecorator`, with its icon as the suffix.
+
 ### Text field: well
 For chat composer, comments and notes: `bg.sunken`, `radius.sm`, 12/16 padding, `type.body`. Notes and journal entries use `type.diaryBody` (New York).
 
@@ -55,6 +61,13 @@ Height 36, `radius.pill`, 1pt `border.strong`, `type.buttonSmall`, optional trai
 The chip hugs its label on one line ("Wed 18", never two lines). A row of chips scrolls sideways instead of squeezing; only a chip wider than the screen (very large text) ellipsizes.
 Selected: `accent.subtle` fill, `accent.default` border and text, leading `checkmark`. With a count, a 20pt ink circle holding white `type.caption` numerals sits on the leading edge.
 *Bonvoy ref:* "Room Type", "Points", "Standard Rates" chips. *Change:* selection uses the accent, not grey.
+
+### Choice chip · `TPChoiceChip`, `TPChoices`
+One of a set (an event's type, status or day). A white `bg.surface` pill, 44pt high (36 with `small`), `type.button`, no border or check: selected, it fills ink with ink-text. A choice with its own meaning passes a `color` (Confirmed fills `status.positive`); its label is white on a dark fill and navy on a light one, so it passes contrast in dark mode too. `TPChoices(fill: true)` spreads a short set evenly across the width; other sets, and every set at large text, wrap. Long sets such as days scroll sideways.
+*Differs from* `TPFilterChip`, which filters a list and marks its selection with the accent and a check.
+
+### Quick pill · `TPQuickPill`
+A shortcut that sets a choice rather than being one: "Everyone here", "Just me". `accent.subtle` fill, `type.buttonSmall` in `text.primary`, `radius.pill`, 40pt high.
 
 ### Segmented tabs: underline · `TPUnderlineTabs`
 Text tabs in `type.callout`, `text.secondary`. Active tab is `text.primary` with a 2pt accent underline matching the text width. A hairline runs under the whole row.
@@ -153,6 +166,9 @@ Presence: a 10pt dot at the bottom-right in `status.positive` for online/at the 
 
 ### Invited avatar · `TPAvatar(invited: true)`
 Someone asked to join who hasn't yet: a dashed 1.5pt `border.strong` ring, initials in `text.secondary`, no fill (the dashed shape means "not filled yet"). Screen readers hear "Sarah Johnson, invited".
+
+### Dimmed avatar · `TPAvatar(dimmed: true)`
+Someone who isn't part of this, such as a traveler not going to a plan: the avatar in greyscale at 45% opacity, ring included, with no presence dot. Screen readers hear "Sam Rivera, not going". Combines with `invited`.
 
 ### Role tag · `TPRoleTag.neutral / .pending`
 A pill label for a role or status: `type.caption` 600. **Neutral** (`sunken`, `text.secondary`) for roles like "Organizer". **Pending** (amber tone) for something waiting on that person, like "Invited". Never navy or orange fills.

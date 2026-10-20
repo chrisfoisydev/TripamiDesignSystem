@@ -325,3 +325,71 @@ class TPToggle extends StatelessWidget {
     );
   }
 }
+
+/// Two-step delete for something shared: an accent "Delete" link arms it, and
+/// the filled accent pill it becomes ("Tap again to delete for everyone")
+/// confirms. A first tap alone never deletes. Plays [TPHaptics.warning] when
+/// armed.
+class TPConfirmDelete extends StatefulWidget {
+  const TPConfirmDelete({super.key, required this.label, required this.confirmLabel, required this.onConfirmed});
+
+  final String label, confirmLabel;
+
+  /// Null disables it.
+  final VoidCallback? onConfirmed;
+
+  @override
+  State<TPConfirmDelete> createState() => _TPConfirmDeleteState();
+}
+
+class _TPConfirmDeleteState extends State<TPConfirmDelete> {
+  bool armed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = TPColors.of(context);
+    if (!armed) {
+      return Center(
+        child: Semantics(
+          button: true,
+          enabled: widget.onConfirmed != null,
+          label: widget.label,
+          excludeSemantics: true,
+          child: TPPressable(
+            onTap: widget.onConfirmed == null ? null : () => setState(() => armed = true),
+            haptic: TPHaptic.warning,
+            expandTapTarget: true,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: TPSpace.s3, horizontal: TPSpace.s4),
+              child: Text(
+                widget.label,
+                style: TPType.button.copyWith(color: widget.onConfirmed == null ? c.textTertiary : c.accent),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+    return Semantics(
+      button: true,
+      liveRegion: true,
+      label: widget.confirmLabel,
+      excludeSemantics: true,
+      child: TPPressable(
+        onTap: widget.onConfirmed,
+        child: Container(
+          constraints: const BoxConstraints(minHeight: TPSize.buttonLarge),
+          alignment: Alignment.center,
+          padding: const EdgeInsets.symmetric(horizontal: TPSpace.s6),
+          decoration: BoxDecoration(color: c.accent, borderRadius: BorderRadius.circular(TPRadius.pill)),
+          child: Text(
+            widget.confirmLabel,
+            textAlign: TextAlign.center,
+            style: TPType.button.copyWith(color: c.onAccent),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
