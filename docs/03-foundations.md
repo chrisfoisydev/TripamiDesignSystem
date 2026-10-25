@@ -294,7 +294,7 @@ In dark mode shadows are replaced by surface lightness (`bg.surface` → `bg.rai
 - No emoji as icons. Emoji appear only as user reactions.
 - To add an icon, add its codepoint to `lib/src/foundations/tp_icons.dart` in both classes. The curated list keeps the vocabulary small.
 
-Core set: `house` · `suitcase` (Trips) · `calendarBlank` (Plan) · `chatsCircle` (Chat) · `notebook` (Memories) · `userCircle` (You) · `mapTrifold` · `mapPin` · `userPlus` (invite) · `receipt` (split) · `images` · `camera` · `heart` · `export` · `dotsThree` · `caretRight` · `x` · `arrowLeft` · `arrowRight` · `magnifyingGlass` · `pencilSimple` · `checkCircle` · `sealCheck` (booked) · `smiley` (react) · `forkKnife` · `bell` · `airplane` · `bed` · `ticket` · `wallet` · `clock` · `envelopeSimple` (email) · `clipboardText` (paste) · `fileText` (document) · `train`.
+Core set: `house` · `suitcase` (Trips) · `calendarBlank` (Plan) · `chatsCircle` (Chat) · `notebook` (Memories) · `userCircle` (You) · `mapTrifold` · `mapPin` · `userPlus` (invite) · `receipt` (split) · `images` · `camera` · `heart` · `export` · `dotsThree` · `caretRight` · `x` · `arrowLeft` · `arrowRight` · `magnifyingGlass` · `pencilSimple` · `checkCircle` · `sealCheck` (booked) · `smiley` (react) · `forkKnife` · `bell` · `airplane` · `bed` · `ticket` · `wallet` · `clock` · `envelopeSimple` (email) · `clipboardText` (paste) · `fileText` (document) · `train` · `car` (rides, transfers, rental cars).
 
 ---
 
